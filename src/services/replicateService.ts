@@ -27,8 +27,8 @@ export const transformImage = async ({
   model = "imageToImage",
   guidance_scale = 15,
   negative_prompt = "lowres, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, realistic",
-  prompt_strength = 1,
-  num_inference_steps = 100
+  prompt_strength = model === "interiorDesign" ? 0.8 : 1,
+  num_inference_steps = model === "interiorDesign" ? 50 : 100
 }: ReplicateRequest): Promise<ReplicateResponse> => {
   if (!image) {
     throw new Error("Image is required");

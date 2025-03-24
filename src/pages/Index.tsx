@@ -1,5 +1,6 @@
+
 import React, { useState, useRef } from 'react';
-import { Upload, Image } from 'lucide-react';
+import { Upload, Image, Sliders } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,6 +14,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Slider
+} from "@/components/ui/slider";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { transformImage } from '@/services/replicateService';
 
 const Index = () => {
@@ -21,7 +30,12 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [modelType, setModelType] = useState<"imageToImage" | "interiorDesign">("imageToImage");
+  const [modelType, setModelType] = useState<"imageToImage" | "interiorDesign">("interiorDesign");
+  const [advancedSettings, setAdvancedSettings] = useState({
+    guidance_scale: 15,
+    prompt_strength: 0.8,
+    num_inference_steps: 50
+  });
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = (file: File) => {
@@ -65,6 +79,25 @@ const Index = () => {
     }
   };
 
+  const handleModelTypeChange = (value: "imageToImage" | "interiorDesign") => {
+    setModelType(value);
+    
+    // Set default values based on model type
+    if (value === "interiorDesign") {
+      setAdvancedSettings({
+        guidance_scale: 15,
+        prompt_strength: 0.8,
+        num_inference_steps: 50
+      });
+    } else {
+      setAdvancedSettings({
+        guidance_scale: 15,
+        prompt_strength: 1,
+        num_inference_steps: 100
+      });
+    }
+  };
+
   const handleGenerate = async () => {
     if (!image) {
       toast.error('Please upload an image first');
@@ -82,7 +115,10 @@ const Index = () => {
       const result = await transformImage({
         prompt,
         image,
-        model: modelType
+        model: modelType,
+        guidance_scale: advancedSettings.guidance_scale,
+        prompt_strength: advancedSettings.prompt_strength,
+        num_inference_steps: advancedSettings.num_inference_steps
       });
       
       if (result.output) {
@@ -93,12 +129,7 @@ const Index = () => {
       }
     } catch (error) {
       console.error('Error generating image:', error);
-      
-      if (error.message === 'REPLICATE_API_KEY_NOT_CONFIGURED') {
-        toast.error('Replicate API key is not configured. Please set the VITE_REPLICATE_API_KEY environment variable.');
-      } else {
-        toast.error(error.message || 'An error occurred');
-      }
+      toast.error(error.message || 'An error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -112,10 +143,10 @@ const Index = () => {
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-4xl animate-fade-in">
         <h1 className="text-3xl md:text-4xl font-light text-center mb-2 tracking-tight">
-          Image <span className="font-semibold">Transformer</span>
+          Interior <span className="font-semibold">Design AI</span>
         </h1>
         <p className="text-muted-foreground text-center mb-8">
-          Upload an image, enter a prompt, and transform it with AI
+          Transform your interior spaces with AI-powered design suggestions
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -162,7 +193,7 @@ const Index = () => {
                     <div className="image-placeholder">
                       <div className="flex flex-col items-center text-gray-500">
                         <Upload size={32} className="mb-2 text-gray-400" />
-                        <p className="text-sm font-medium mb-1">Drag and drop an image</p>
+                        <p className="text-sm font-medium mb-1">Upload a room photo</p>
                         <p className="text-xs">or click to browse</p>
                       </div>
                     </div>
@@ -176,26 +207,79 @@ const Index = () => {
                   </label>
                   <Select 
                     value={modelType} 
-                    onValueChange={(value) => setModelType(value as "imageToImage" | "interiorDesign")}
+                    onValueChange={(value) => handleModelTypeChange(value as "imageToImage" | "interiorDesign")}
                   >
                     <SelectTrigger id="model-type">
                       <SelectValue placeholder="Select transformation type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="imageToImage">Standard Image Transform</SelectItem>
                       <SelectItem value="interiorDesign">Interior Design</SelectItem>
+                      <SelectItem value="imageToImage">Standard Image Transform</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 
                 {/* Prompt Field */}
                 <div className="space-y-2">
-                  <label htmlFor="prompt" className="text-sm font-medium">
-                    Prompt
-                  </label>
+                  <div className="flex justify-between">
+                    <label htmlFor="prompt" className="text-sm font-medium">
+                      Design Prompt
+                    </label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <Sliders className="h-4 w-4" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-80">
+                        <div className="space-y-4">
+                          <h4 className="font-medium">Advanced Settings</h4>
+                          <div className="space-y-2">
+                            <div className="flex justify-between">
+                              <label className="text-sm">Guidance Scale: {advancedSettings.guidance_scale}</label>
+                            </div>
+                            <Slider 
+                              value={[advancedSettings.guidance_scale]} 
+                              min={1} 
+                              max={20} 
+                              step={0.1}
+                              onValueChange={(value) => setAdvancedSettings({...advancedSettings, guidance_scale: value[0]})}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between">
+                              <label className="text-sm">Prompt Strength: {advancedSettings.prompt_strength.toFixed(1)}</label>
+                            </div>
+                            <Slider 
+                              value={[advancedSettings.prompt_strength]} 
+                              min={0} 
+                              max={1} 
+                              step={0.1}
+                              onValueChange={(value) => setAdvancedSettings({...advancedSettings, prompt_strength: value[0]})}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between">
+                              <label className="text-sm">Steps: {advancedSettings.num_inference_steps}</label>
+                            </div>
+                            <Slider 
+                              value={[advancedSettings.num_inference_steps]} 
+                              min={10} 
+                              max={150} 
+                              step={1}
+                              onValueChange={(value) => setAdvancedSettings({...advancedSettings, num_inference_steps: value[0]})}
+                            />
+                          </div>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
                   <Textarea
                     id="prompt"
-                    placeholder="Describe how you want to transform the image..."
+                    placeholder={modelType === "interiorDesign" 
+                      ? "Describe the interior design you want (e.g., A modern minimalist living room with light wood floors, white walls, and touches of green from indoor plants...)" 
+                      : "Describe how you want to transform the image..."
+                    }
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                     className="resize-none"
@@ -212,7 +296,7 @@ const Index = () => {
                   disabled={!image || !prompt.trim() || isLoading}
                   className="transition-all-300"
                 >
-                  {isLoading ? 'Transforming...' : 'Transform with AI'}
+                  {isLoading ? 'Generating...' : 'Generate Design'}
                 </Button>
               </div>
             </Card>
@@ -222,7 +306,7 @@ const Index = () => {
           <div className="space-y-6 animate-scale-in" style={{ animationDelay: '0.2s' }}>
             <Card className="overflow-hidden border border-gray-200 shadow-sm">
               <div className="p-6">
-                <h2 className="text-xl font-medium mb-4">Output</h2>
+                <h2 className="text-xl font-medium mb-4">Result</h2>
                 
                 <div className="h-64 bg-gray-100 rounded-lg overflow-hidden">
                   {isLoading ? (
@@ -238,7 +322,7 @@ const Index = () => {
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
                       <p className="text-muted-foreground text-sm">
-                        AI-transformed image will appear here
+                        Your AI-generated design will appear here
                       </p>
                     </div>
                   )}
@@ -252,7 +336,7 @@ const Index = () => {
                       onClick={() => {
                         const link = document.createElement('a');
                         link.href = output;
-                        link.download = 'transformed-image.png';
+                        link.download = 'ai-interior-design.png';
                         link.click();
                       }}
                     >
@@ -266,7 +350,7 @@ const Index = () => {
         </div>
         
         <p className="text-sm text-muted-foreground text-center mt-8">
-          This app uses AI to transform your images based on your prompts.
+          Powered by AI to transform your interior spaces.
         </p>
       </div>
     </div>
