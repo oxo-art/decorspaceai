@@ -1,20 +1,8 @@
 
-import React, { useState, useRef } from 'react';
-import { Upload, Image, Sliders } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
+import React, { useState } from 'react';
 import { toast } from 'sonner';
-import { Card } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { 
-  Slider
-} from "@/components/ui/slider";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import InputSection from '@/components/InteriorDesign/InputSection';
+import OutputSection from '@/components/InteriorDesign/OutputSection';
 import { transformImage } from '@/services/replicateService';
 
 const Index = () => {
@@ -29,48 +17,6 @@ const Index = () => {
     prompt_strength: 0.8,
     num_inference_steps: 50
   });
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleImageUpload = (file: File) => {
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please upload an image file');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      if (e.target?.result) {
-        setImage(e.target.result as string);
-        setOutput(null);
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      handleImageUpload(e.target.files[0]);
-    }
-  };
-  
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-  
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-  
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-    
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleImageUpload(e.dataTransfer.files[0]);
-    }
-  };
 
   const handleGenerate = async () => {
     if (!image) {
@@ -109,10 +55,6 @@ const Index = () => {
     }
   };
 
-  const triggerFileInput = () => {
-    fileInputRef.current?.click();
-  };
-
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-4xl animate-fade-in">
@@ -124,181 +66,24 @@ const Index = () => {
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Input Section */}
-          <div className="space-y-6 animate-scale-in" style={{ animationDelay: '0.1s' }}>
-            <Card className="overflow-hidden border border-gray-200 shadow-sm">
-              <div className="p-6">
-                <h2 className="text-xl font-medium mb-4">Input</h2>
-                
-                {/* Image Upload Area */}
-                <div 
-                  className={cn(
-                    "file-drop-area h-64 mb-4",
-                    isDragging && "active"
-                  )}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                  onClick={triggerFileInput}
-                >
-                  <input 
-                    type="file" 
-                    className="hidden" 
-                    accept="image/*" 
-                    ref={fileInputRef}
-                    onChange={handleFileInputChange}
-                  />
-                  
-                  {image ? (
-                    <div className="relative w-full h-full">
-                      <img 
-                        src={image} 
-                        alt="Uploaded" 
-                        className="w-full h-full object-contain rounded-lg"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50 rounded-lg">
-                        <Button variant="secondary" size="sm" className="gap-2">
-                          <Upload size={16} />
-                          <span>Change Image</span>
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="image-placeholder">
-                      <div className="flex flex-col items-center text-gray-500">
-                        <Upload size={32} className="mb-2 text-gray-400" />
-                        <p className="text-sm font-medium mb-1">Upload a room photo</p>
-                        <p className="text-xs">or click to browse</p>
-                      </div>
-                    </div>
-                  )}
-                </div> {/* This is the missing closing div tag */}
-                
-                {/* Prompt Field */}
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <label htmlFor="prompt" className="text-sm font-medium">
-                      Design Prompt
-                    </label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                          <Sliders className="h-4 w-4" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-80">
-                        <div className="space-y-4">
-                          <h4 className="font-medium">Advanced Settings</h4>
-                          <div className="space-y-2">
-                            <div className="flex justify-between">
-                              <label className="text-sm">Guidance Scale: {advancedSettings.guidance_scale}</label>
-                            </div>
-                            <Slider 
-                              value={[advancedSettings.guidance_scale]} 
-                              min={1} 
-                              max={20} 
-                              step={0.1}
-                              onValueChange={(value) => setAdvancedSettings({...advancedSettings, guidance_scale: value[0]})}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex justify-between">
-                              <label className="text-sm">Prompt Strength: {advancedSettings.prompt_strength.toFixed(1)}</label>
-                            </div>
-                            <Slider 
-                              value={[advancedSettings.prompt_strength]} 
-                              min={0} 
-                              max={1} 
-                              step={0.1}
-                              onValueChange={(value) => setAdvancedSettings({...advancedSettings, prompt_strength: value[0]})}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex justify-between">
-                              <label className="text-sm">Steps: {advancedSettings.num_inference_steps}</label>
-                            </div>
-                            <Slider 
-                              value={[advancedSettings.num_inference_steps]} 
-                              min={10} 
-                              max={150} 
-                              step={1}
-                              onValueChange={(value) => setAdvancedSettings({...advancedSettings, num_inference_steps: value[0]})}
-                            />
-                          </div>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-                  <Textarea
-                    id="prompt"
-                    placeholder="Describe the interior design you want (e.g., A modern minimalist living room with light wood floors, white walls, and touches of green from indoor plants...)"
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    className="resize-none"
-                    rows={3}
-                  />
-                </div>
-              </div>
-              
-              <Separator />
-              
-              <div className="p-4 flex justify-end items-center">
-                <Button 
-                  onClick={handleGenerate}
-                  disabled={!image || !prompt.trim() || isLoading}
-                  className="transition-all-300"
-                >
-                  {isLoading ? 'Generating...' : 'Generate Design'}
-                </Button>
-              </div>
-            </Card>
-          </div>
+          <InputSection
+            image={image}
+            setImage={setImage}
+            prompt={prompt}
+            setPrompt={setPrompt}
+            isDragging={isDragging}
+            setIsDragging={setIsDragging}
+            setOutput={setOutput}
+            advancedSettings={advancedSettings}
+            setAdvancedSettings={setAdvancedSettings}
+            isLoading={isLoading}
+            handleGenerate={handleGenerate}
+          />
           
-          {/* Output Section */}
-          <div className="space-y-6 animate-scale-in" style={{ animationDelay: '0.2s' }}>
-            <Card className="overflow-hidden border border-gray-200 shadow-sm">
-              <div className="p-6">
-                <h2 className="text-xl font-medium mb-4">Result</h2>
-                
-                <div className="h-64 bg-gray-100 rounded-lg overflow-hidden">
-                  {isLoading ? (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="w-16 h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
-                    </div>
-                  ) : output ? (
-                    <img 
-                      src={output} 
-                      alt="Output" 
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <p className="text-muted-foreground text-sm">
-                        Your AI-generated design will appear here
-                      </p>
-                    </div>
-                  )}
-                </div>
-                
-                {output && (
-                  <div className="mt-4">
-                    <Button 
-                      variant="outline" 
-                      className="w-full"
-                      onClick={() => {
-                        const link = document.createElement('a');
-                        link.href = output;
-                        link.download = 'ai-interior-design.png';
-                        link.click();
-                      }}
-                    >
-                      Download
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </Card>
-          </div>
+          <OutputSection 
+            isLoading={isLoading}
+            output={output}
+          />
         </div>
         
         <p className="text-sm text-muted-foreground text-center mt-8">
