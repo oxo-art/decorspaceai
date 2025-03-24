@@ -23,7 +23,7 @@ serve(async (req) => {
       )
     }
 
-    const { model, prompt, image, ...otherParams } = await req.json()
+    const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps } = await req.json()
     
     // Determine which model to use
     let modelVersion
@@ -37,7 +37,10 @@ serve(async (req) => {
         input: {
           image: image,
           prompt: prompt,
-          ...otherParams
+          guidance_scale: guidance_scale || 15,
+          negative_prompt: negative_prompt || "lowres, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, realistic",
+          prompt_strength: prompt_strength || 0.8,
+          num_inference_steps: num_inference_steps || 50
         },
       }
     } else {
@@ -53,7 +56,7 @@ serve(async (req) => {
     }
 
     console.log(`Using Replicate model: ${modelVersion}`)
-    console.log("Request parameters:", { prompt, ...otherParams })
+    console.log("Request parameters:", { prompt, guidance_scale, negative_prompt, prompt_strength, num_inference_steps })
 
     // Create prediction
     const response = await fetch("https://api.replicate.com/v1/predictions", {
