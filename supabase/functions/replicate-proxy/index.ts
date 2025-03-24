@@ -2,7 +2,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1"
 import { corsHeaders, handleCorsPreflightRequest, createErrorResponse } from "./utils.ts"
-import { handleUpscaleModel } from "./upscaleModel.ts"
 import { handleInteriorDesignModel } from "./interiorDesignModel.ts"
 import { handleDefaultModel } from "./defaultModel.ts"
 
@@ -19,15 +18,13 @@ serve(async (req) => {
       return createErrorResponse('API key not configured on server');
     }
 
-    const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps, scale, face_enhance } = await req.json()
+    const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps } = await req.json()
     
     try {
       let result;
       
       // Determine which model to use
-      if (model === "upscale") {
-        result = await handleUpscaleModel(image, scale, face_enhance, REPLICATE_API_KEY);
-      } else if (model === "interiorDesign") {
+      if (model === "interiorDesign") {
         result = await handleInteriorDesignModel(
           image, 
           prompt, 

@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 export interface ReplicateRequest {
   prompt: string;
   image?: string;
-  model?: "imageToImage" | "interiorDesign" | "upscale";
+  model?: "imageToImage" | "interiorDesign";
   guidance_scale?: number;
   negative_prompt?: string;
   prompt_strength?: number;
@@ -35,7 +35,7 @@ export const transformImage = async ({
     throw new Error("Image is required");
   }
 
-  if (!prompt && model !== "upscale") {
+  if (!prompt) {
     throw new Error("Prompt is required");
   }
 
@@ -83,61 +83,6 @@ export const transformImage = async ({
     // More user-friendly error message
     const errorMessage = error.message || "Failed to transform image. Please try again later.";
     
-    toast.error(errorMessage);
-    
-    return {
-      id: "error",
-      status: "error",
-      output: null,
-      error: errorMessage
-    };
-  }
-};
-
-/**
- * Upscales an image using Real-ESRGAN model
- */
-export const upscaleImage = async (imageUrl: string): Promise<ReplicateResponse> => {
-  if (!imageUrl) {
-    throw new Error("Image URL is required for upscaling");
-  }
-
-  try {
-    console.log("Starting image upscaling");
-    
-    // Call the Supabase Edge Function with the upscale model
-    const { data, error } = await supabase.functions.invoke("replicate-proxy", {
-      body: {
-        model: "upscale",
-        image: imageUrl,
-        scale: 4,
-        face_enhance: true
-      }
-    });
-    
-    if (error) {
-      console.error("Error calling Edge Function for upscaling:", error);
-      throw new Error(error.message || "Failed to upscale image");
-    }
-    
-    console.log("Upscaling Edge Function response:", data);
-    
-    // Extract the output URL from the response
-    let outputUrl = null;
-    if (data.output) {
-      outputUrl = Array.isArray(data.output) ? data.output[0] : data.output;
-    }
-    
-    return {
-      id: data.id || "upscale-run",
-      status: data.status || "success",
-      output: outputUrl,
-      error: data.error || null
-    };
-  } catch (error) {
-    console.error("Error upscaling image:", error);
-    
-    const errorMessage = error.message || "Failed to upscale image. Please try again later.";
     toast.error(errorMessage);
     
     return {
