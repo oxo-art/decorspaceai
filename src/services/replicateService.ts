@@ -39,27 +39,38 @@ export const transformImage = async ({
   }
 
   try {
-    // Get the API URL from environment variable or use the default backend proxy URL
-    const apiUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:3000/api/replicate";
+    // Get the API token from environment variable
+    const apiToken = import.meta.env.VITE_REPLICATE_API_TOKEN;
+    
+    if (!apiToken) {
+      throw new Error("Replicate API token is not configured. Please set the VITE_REPLICATE_API_TOKEN environment variable.");
+    }
     
     console.log("Starting image transformation with model:", model);
     console.log("Parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
     
-    // Send request to backend proxy
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model,
-        prompt,
-        image,
+    // Define the request body based on the model type
+    const requestBody = {
+      version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
+      input: {
+        image: image,
+        prompt: prompt,
         guidance_scale,
         negative_prompt,
         prompt_strength,
         num_inference_steps
-      }),
+      }
+    };
+    
+    // Call the Replicate API directly with the "wait" preference
+    const response = await fetch("https://api.replicate.com/v1/predictions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiToken}`,
+        "Content-Type": "application/json",
+        "Prefer": "wait" // This tells the API to wait for the prediction to complete
+      },
+      body: JSON.stringify(requestBody),
     });
     
     if (!response.ok) {
@@ -70,12 +81,18 @@ export const transformImage = async ({
     const result = await response.json();
     console.log("API response:", result);
     
+    // Extract the output from the response
+    let outputUrl = null;
+    if (result.output && Array.isArray(result.output) && result.output.length > 0) {
+      outputUrl = result.output[0];
+    }
+    
     // Return the response in the expected format
     return {
-      id: result.id || "proxy-run",
+      id: result.id || "replicate-run",
       status: result.status || "success",
-      output: result.output || null,
-      error: result.error || null
+      output: outputUrl,
+      error: null
     };
   } catch (error) {
     console.error("Error transforming image:", error);
