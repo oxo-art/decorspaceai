@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Download, Eye } from 'lucide-react';
+import { Download, Eye, Maximize } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Dialog,
@@ -131,14 +131,16 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
           </div>
           
           <Dialog open={isPreviewDialogOpen} onOpenChange={setIsPreviewDialogOpen}>
-            <DialogContent className="max-w-[90vw] w-auto max-h-[90vh] p-6 border bg-background">
-              <div className="relative bg-background rounded-lg overflow-hidden flex flex-col items-center justify-center">
-                <img 
-                  src={previewImage}
-                  alt="Interior Design Preview" 
-                  className="max-w-full max-h-[70vh] object-contain mb-4"
-                />
-                <div className="flex gap-4 w-full justify-center">
+            <DialogContent className="max-w-[95vw] w-[95vw] max-h-[95vh] h-[95vh] p-0 border bg-background">
+              <div className="relative bg-background rounded-lg overflow-hidden flex flex-col items-center justify-center h-full">
+                <div className="flex-1 w-full flex items-center justify-center overflow-hidden p-4">
+                  <img 
+                    src={previewImage}
+                    alt="Interior Design Preview" 
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+                <div className="flex gap-4 w-full justify-center p-4 border-t">
                   <Button 
                     onClick={handleDownload}
                     className="flex items-center gap-2"
