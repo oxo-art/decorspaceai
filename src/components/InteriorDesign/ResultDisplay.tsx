@@ -1,5 +1,7 @@
 
 import { Button } from '@/components/ui/button';
+import { Download } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface ResultDisplayProps {
   isLoading: boolean;
@@ -7,12 +9,34 @@ interface ResultDisplayProps {
 }
 
 const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
-  const handleDownload = () => {
-    if (output) {
+  const handleDownload = async () => {
+    if (!output) return;
+    
+    try {
+      // Fetch the image first to handle potential CORS issues
+      const response = await fetch(output);
+      if (!response.ok) {
+        throw new Error('Failed to download image');
+      }
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      // Create an anchor element and trigger download
       const link = document.createElement('a');
-      link.href = output;
-      link.download = 'ai-interior-design.png';
+      link.href = url;
+      link.download = 'interior-design.png';
+      document.body.appendChild(link);
       link.click();
+      
+      // Clean up
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+      
+      toast.success('Download started');
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Failed to download image. Try right-clicking and Save Image As instead.');
     }
   };
 
@@ -47,6 +71,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
             className="w-full"
             onClick={handleDownload}
           >
+            <Download className="mr-2 h-4 w-4" />
             Download
           </Button>
         </div>
