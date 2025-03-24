@@ -3,7 +3,7 @@ import { corsHeaders, waitForPrediction } from "./utils.ts";
 
 export const handleDenoiseModel = async (
   image: string,
-  scale: number = 4,
+  scale: number = 2,
   apiKey: string
 ) => {
   console.log("Using denoising model with parameters:", { scale });
@@ -19,7 +19,7 @@ export const handleDenoiseModel = async (
       version: "c8c34a15a22e407f70e08feb45c28fe010d8bc92e5cfea6e47ce5b44d4c1a7b6", // Updated Real-ESRGAN model version
       input: {
         image: image,
-        scale: scale,
+        scale: 2,  // Lowering scale to more conservative value
         face_enhance: true,
       }
     }),
