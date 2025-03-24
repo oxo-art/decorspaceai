@@ -3,7 +3,7 @@ import { corsHeaders, waitForPrediction } from "./utils.ts";
 
 export const handleDenoiseModel = async (
   image: string,
-  scale: number = 4, // Updated default to 4x scale
+  scale: number = 2,
   apiKey: string
 ) => {
   console.log("Using denoising model with parameters:", { scale });
@@ -22,7 +22,6 @@ export const handleDenoiseModel = async (
         scale: scale,
         face_enhance: true,
         tile: 0, // Auto tile size
-        target_dpi: 96 // Added DPI specification
       }
     }),
   });
