@@ -116,10 +116,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         <Button 
           variant="outline" 
           size="sm" 
-          className="w-full gap-2" 
+          className="w-full gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 border-gray-300" 
           onClick={triggerFileInput}
         >
-          <ImageIcon size={16} />
+          <ImageIcon size={16} className="text-gray-700" />
           Change Image
         </Button>
       )}

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Download, ZoomIn } from 'lucide-react';
+import { Download, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface ResultDisplayProps {
@@ -12,6 +12,7 @@ interface ResultDisplayProps {
 const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
   const [isUpscaling, setIsUpscaling] = useState(false);
   const [upscaledImage, setUpscaledImage] = useState<string | null>(null);
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
 
   const handleDownload = async () => {
     if (!output && !upscaledImage) return;
@@ -46,29 +47,36 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
     }
   };
 
-  const handleUpscale = async () => {
+  const handlePreview = async () => {
     if (!output || isUpscaling) return;
     
-    setIsUpscaling(true);
-    toast.info('Upscaling image...');
-    
-    try {
-      // Simulating upscaling with a delay
-      // In a real implementation, this would call an API to upscale the image
-      setTimeout(() => {
-        setUpscaledImage(output);
-        setIsUpscaling(false);
-        toast.success('Image upscaled successfully!');
-      }, 2000);
+    if (!upscaledImage) {
+      setIsUpscaling(true);
+      toast.info('Preparing high-resolution preview...');
       
-    } catch (error) {
-      console.error('Upscale error:', error);
-      toast.error('Failed to upscale image. Please try again.');
-      setIsUpscaling(false);
+      try {
+        // Simulate upscaling with a delay
+        // In a real implementation, this would call an API to upscale the image
+        setTimeout(() => {
+          setUpscaledImage(output);
+          setIsPreviewMode(true);
+          setIsUpscaling(false);
+          toast.success('High-resolution preview ready!');
+        }, 2000);
+        
+      } catch (error) {
+        console.error('Preview error:', error);
+        toast.error('Failed to generate preview. Please try again.');
+        setIsUpscaling(false);
+      }
+    } else {
+      // Toggle preview mode if upscaled image already exists
+      setIsPreviewMode(!isPreviewMode);
     }
   };
 
-  const displayImage = upscaledImage || output;
+  // Determine which image to display based on preview mode
+  const displayImage = isPreviewMode ? upscaledImage : output;
 
   return (
     <div>
@@ -108,11 +116,11 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
           <Button 
             variant="outline"
             className="flex-1"
-            onClick={handleUpscale}
-            disabled={isUpscaling || !!upscaledImage}
+            onClick={handlePreview}
+            disabled={isUpscaling}
           >
-            <ZoomIn className="mr-2 h-4 w-4" />
-            {isUpscaling ? 'Upscaling...' : upscaledImage ? 'Upscaled' : 'Upscale'}
+            <Eye className="mr-2 h-4 w-4" />
+            {isUpscaling ? 'Loading...' : isPreviewMode ? 'Original' : 'Preview HD'}
           </Button>
         </div>
       )}
