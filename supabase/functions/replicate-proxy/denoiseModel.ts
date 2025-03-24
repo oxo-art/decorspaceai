@@ -16,11 +16,12 @@ export const handleDenoiseModel = async (
       Authorization: `Token ${apiKey}`,
     },
     body: JSON.stringify({
-      version: "c8c34a15a22e407f70e08feb45c28fe010d8bc92e5cfea6e47ce5b44d4c1a7b6", // Updated Real-ESRGAN model version
+      version: "42fed1c4974146d4d2414e2be2c5277c7fcba946c7871be8f5b6fac3b965195a", // Real-ESRGAN model
       input: {
         image: image,
-        scale: 2,  // Lowering scale to more conservative value
+        scale: scale,
         face_enhance: true,
+        tile: 0, // Auto tile size
       }
     }),
   });

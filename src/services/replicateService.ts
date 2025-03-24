@@ -45,7 +45,7 @@ export const transformImage = async ({
 
   try {
     console.log("Starting image transformation with model:", model);
-    console.log("Parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps, resample_output, scale });
+    console.log("Parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps, resample_output });
     
     const { data, error } = await supabase.functions.invoke("replicate-proxy", {
       body: {
