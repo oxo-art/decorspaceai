@@ -267,15 +267,29 @@ const Index = () => {
         </div>
         
         <div className="bg-amber-50 border border-amber-200 p-4 rounded-md mt-8 text-amber-800">
-          <h3 className="text-lg font-medium mb-2">API Key Notice</h3>
+          <h3 className="text-lg font-medium mb-2">API Key Setup Instructions</h3>
           <p className="text-sm">
-            This application requires a Replicate API key to function. For security reasons, the API key must be set as an environment variable:
+            This application requires a Replicate API key to function. You need to set it up as an environment variable:
           </p>
-          <ul className="list-disc list-inside mt-2 text-sm">
-            <li>Set <code className="bg-amber-100 px-1 rounded">VITE_REPLICATE_API_KEY</code> in your environment</li>
-            <li>For local development, add it to your <code className="bg-amber-100 px-1 rounded">.env</code> file</li>
-            <li>For production, configure it in your hosting environment</li>
-          </ul>
+          <ol className="list-decimal list-inside mt-2 text-sm space-y-2">
+            <li>Create a <a href="https://replicate.com/account/api-tokens" target="_blank" rel="noopener noreferrer" className="underline hover:text-amber-600">Replicate account</a> and get your API key</li>
+            <li>For local development:
+              <ul className="list-disc list-inside ml-4 mt-1">
+                <li>Create a <code className="bg-amber-100 px-1 rounded">.env</code> file in your project root</li>
+                <li>Add <code className="bg-amber-100 px-1 rounded">VITE_REPLICATE_API_KEY=your_api_key_here</code> to the file</li>
+                <li>Restart your development server</li>
+              </ul>
+            </li>
+            <li>For production deployment:
+              <ul className="list-disc list-inside ml-4 mt-1">
+                <li>Configure <code className="bg-amber-100 px-1 rounded">VITE_REPLICATE_API_KEY</code> in your hosting environment's settings</li>
+                <li>Most platforms offer environment variable configuration in their dashboard</li>
+              </ul>
+            </li>
+          </ol>
+          <div className="mt-4 text-xs italic">
+            <strong>Note:</strong> Do not expose your API key in the client-side code or commit it to version control.
+          </div>
         </div>
         
         <p className="text-sm text-muted-foreground text-center mt-8">
