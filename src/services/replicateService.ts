@@ -24,7 +24,7 @@ export interface ReplicateResponse {
 export const transformImage = async ({
   prompt, 
   image,
-  model = "imageToImage",
+  model = "interiorDesign", // Change default to interiorDesign
   guidance_scale = 15,
   negative_prompt = "lowres, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, realistic",
   prompt_strength = model === "interiorDesign" ? 0.8 : 1,
@@ -60,12 +60,35 @@ export const transformImage = async ({
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.detail || "Error calling API");
+      // Handle non-200 responses properly
+      const errorText = await response.text();
+      let errorDetail;
+      try {
+        // Try to parse as JSON, but don't fail if it's not valid JSON
+        errorDetail = JSON.parse(errorText);
+      } catch (e) {
+        // If it's not valid JSON, use the raw text
+        errorDetail = { detail: errorText || "Error calling API" };
+      }
+      throw new Error(errorDetail.detail || "Error calling API");
     }
 
-    // Our proxy will already poll and wait for the result
-    const result = await response.json();
+    // Safely handle response parsing
+    let responseText = await response.text();
+    let result;
+    
+    // Only try to parse if there's actual content
+    if (responseText && responseText.trim()) {
+      try {
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error("Failed to parse response:", responseText);
+        throw new Error("Invalid response from server");
+      }
+    } else {
+      throw new Error("Empty response from server");
+    }
+
     return result;
   } catch (error) {
     console.error("Error transforming image:", error);

@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Upload, Image, Sliders } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -8,13 +7,6 @@ import { toast } from 'sonner';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Slider
 } from "@/components/ui/slider";
 import {
@@ -30,7 +22,7 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [modelType, setModelType] = useState<"imageToImage" | "interiorDesign">("interiorDesign");
+  const [modelType] = useState<"interiorDesign">("interiorDesign");
   const [advancedSettings, setAdvancedSettings] = useState({
     guidance_scale: 15,
     prompt_strength: 0.8,
@@ -76,25 +68,6 @@ const Index = () => {
     
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       handleImageUpload(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleModelTypeChange = (value: "imageToImage" | "interiorDesign") => {
-    setModelType(value);
-    
-    // Set default values based on model type
-    if (value === "interiorDesign") {
-      setAdvancedSettings({
-        guidance_scale: 15,
-        prompt_strength: 0.8,
-        num_inference_steps: 50
-      });
-    } else {
-      setAdvancedSettings({
-        guidance_scale: 15,
-        prompt_strength: 1,
-        num_inference_steps: 100
-      });
     }
   };
 
@@ -198,26 +171,6 @@ const Index = () => {
                       </div>
                     </div>
                   )}
-                </div>
-                
-                {/* Model Type Selection */}
-                <div className="space-y-2 mb-4">
-                  <label htmlFor="model-type" className="text-sm font-medium">
-                    Transformation Type
-                  </label>
-                  <Select 
-                    value={modelType} 
-                    onValueChange={(value) => handleModelTypeChange(value as "imageToImage" | "interiorDesign")}
-                  >
-                    <SelectTrigger id="model-type">
-                      <SelectValue placeholder="Select transformation type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="interiorDesign">Interior Design</SelectItem>
-                      <SelectItem value="imageToImage">Standard Image Transform</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
                 
                 {/* Prompt Field */}
                 <div className="space-y-2">
@@ -276,10 +229,7 @@ const Index = () => {
                   </div>
                   <Textarea
                     id="prompt"
-                    placeholder={modelType === "interiorDesign" 
-                      ? "Describe the interior design you want (e.g., A modern minimalist living room with light wood floors, white walls, and touches of green from indoor plants...)" 
-                      : "Describe how you want to transform the image..."
-                    }
+                    placeholder="Describe the interior design you want (e.g., A modern minimalist living room with light wood floors, white walls, and touches of green from indoor plants...)"
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                     className="resize-none"
