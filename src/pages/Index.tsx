@@ -58,8 +58,8 @@ const Index = () => {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-4xl animate-fade-in">
-        <h1 className="text-3xl md:text-4xl font-light text-center mb-2 tracking-tight">
-          Interior <span className="font-semibold">Design AI</span>
+        <h1 className="text-3xl md:text-4xl font-jacques-francois-shadow text-center mb-2 tracking-tight">
+          Decorspace <span className="font-semibold">AI</span>
         </h1>
         <p className="text-muted-foreground text-center mb-8">
           Transform your interior spaces with AI-powered design suggestions
