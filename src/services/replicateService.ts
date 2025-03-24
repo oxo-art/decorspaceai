@@ -1,3 +1,4 @@
+
 import { toast } from "sonner";
 
 export interface ReplicateRequest {
@@ -17,8 +18,9 @@ export interface ReplicateResponse {
   error: string | null;
 }
 
-// This value should be provided by an environment variable in your deployment
-// For local development, you would need to set this in your environment
+// This is where we get the API key from the environment variables
+// For local development with Vite, use import.meta.env.VITE_REPLICATE_API_KEY
+// For production, ensure this is set in your hosting environment
 const REPLICATE_API_KEY = import.meta.env.VITE_REPLICATE_API_KEY || "";
 
 /**
@@ -41,10 +43,23 @@ export const transformImage = async ({
     throw new Error("Prompt is required");
   }
 
-  if (!REPLICATE_API_KEY) {
-    toast.error("Replicate API key is not configured");
-    throw new Error("Replicate API key is not configured");
+  // Check if API key is available
+  const apiKey = REPLICATE_API_KEY || localStorage.getItem("REPLICATE_API_KEY");
+  
+  if (!apiKey) {
+    // If no API key is found, show a prompt to enter it
+    const userApiKey = prompt("Please enter your Replicate API key:");
+    
+    if (!userApiKey) {
+      toast.error("Replicate API key is required");
+      throw new Error("Replicate API key is required");
+    }
+    
+    // Save to localStorage for future use
+    localStorage.setItem("REPLICATE_API_KEY", userApiKey);
   }
+
+  const effectiveApiKey = apiKey || localStorage.getItem("REPLICATE_API_KEY");
 
   try {
     // Determine which model to use
@@ -82,7 +97,7 @@ export const transformImage = async ({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${REPLICATE_API_KEY}`,
+        Authorization: `Token ${effectiveApiKey}`,
       },
       body: JSON.stringify(requestBody),
     });
@@ -95,7 +110,7 @@ export const transformImage = async ({
     const prediction = await response.json();
     
     // Poll for results
-    const result = await checkPredictionStatus(prediction.id);
+    const result = await checkPredictionStatus(prediction.id, effectiveApiKey);
     return result;
   } catch (error) {
     console.error("Error transforming image:", error);
@@ -107,7 +122,7 @@ export const transformImage = async ({
 /**
  * Polls the Replicate API for a prediction's status until it completes
  */
-const checkPredictionStatus = async (id: string): Promise<ReplicateResponse> => {
+const checkPredictionStatus = async (id: string, apiKey: string): Promise<ReplicateResponse> => {
   const maxAttempts = 30;
   let attempts = 0;
 
@@ -118,7 +133,7 @@ const checkPredictionStatus = async (id: string): Promise<ReplicateResponse> => 
           `https://api.replicate.com/v1/predictions/${id}`,
           {
             headers: {
-              Authorization: `Token ${REPLICATE_API_KEY}`,
+              Authorization: `Token ${apiKey}`,
               "Content-Type": "application/json",
             },
           }

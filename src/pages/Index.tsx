@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Upload, Image } from 'lucide-react';
 import { cn } from '@/lib/utils';
