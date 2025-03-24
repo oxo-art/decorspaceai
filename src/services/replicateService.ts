@@ -13,8 +13,9 @@ export interface ReplicateResponse {
   error: string | null;
 }
 
-// Using a hardcoded API key (this should be replaced with your actual key)
-const REPLICATE_API_KEY = "r8_YOUR_REPLICATE_API_KEY";
+// This value should be provided by an environment variable in your deployment
+// For local development, you would need to set this in your environment
+const REPLICATE_API_KEY = import.meta.env.VITE_REPLICATE_API_KEY || "";
 
 /**
  * Calls the Replicate API to transform an image based on a prompt
@@ -29,6 +30,11 @@ export const transformImage = async ({
 
   if (!prompt) {
     throw new Error("Prompt is required");
+  }
+
+  if (!REPLICATE_API_KEY) {
+    toast.error("Replicate API key is not configured");
+    throw new Error("Replicate API key is not configured");
   }
 
   try {
