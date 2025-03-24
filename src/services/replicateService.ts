@@ -59,9 +59,15 @@ export const transformImage = async ({
       auth: apiKey,
     });
     
+    console.log("Starting image transformation with model:", model);
+    console.log("Parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
+    
+    // Determine which model to use based on the type
+    let modelVersion = "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38";
+    
     // Run the model
     const output = await replicate.run(
-      "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
+      modelVersion,
       {
         input: {
           image: image,
@@ -73,6 +79,8 @@ export const transformImage = async ({
         }
       }
     );
+    
+    console.log("Replicate API response:", output);
     
     // Return the response in the expected format
     return {
