@@ -62,8 +62,8 @@ export const transformImage = async ({
     console.log("Starting image transformation with model:", model);
     console.log("Parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
     
-    // Determine which model to use based on the type
-    let modelVersion = "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38";
+    // Define model version with proper type format
+    const modelVersion = "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38" as const;
     
     // Run the model
     const output = await replicate.run(
