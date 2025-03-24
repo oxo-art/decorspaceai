@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -21,8 +20,10 @@ export default {
 		extend: {
 			fontFamily: {
 				'jacques-francois-shadow': ['"Jacques Francois Shadow"', 'cursive'],
+				'tinos': ['Tinos', 'serif'],
 			},
 			colors: {
+				'gunmetal': '#122C34',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
