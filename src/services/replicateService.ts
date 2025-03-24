@@ -1,6 +1,5 @@
 
 import { toast } from "sonner";
-import Replicate from "replicate";
 
 export interface ReplicateRequest {
   prompt: string;
@@ -40,62 +39,49 @@ export const transformImage = async ({
   }
 
   try {
-    // Get API key from environment variable
-    const apiKey = import.meta.env.VITE_REPLICATE_API_KEY;
-    
-    if (!apiKey) {
-      // Instead of throwing an error, show a more user-friendly message
-      toast.error("Replicate API key is not configured. Please set the VITE_REPLICATE_API_KEY environment variable.");
-      return {
-        id: "error",
-        status: "error",
-        output: null,
-        error: "API key not configured"
-      };
-    }
-    
-    // Initialize the Replicate client
-    const replicate = new Replicate({
-      auth: apiKey,
-    });
+    // Get the API URL from environment variable or use the default backend proxy URL
+    const apiUrl = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:3000/api/replicate";
     
     console.log("Starting image transformation with model:", model);
     console.log("Parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
     
-    // Define model version with proper type format
-    const modelVersion = "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38" as const;
+    // Send request to backend proxy
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model,
+        prompt,
+        image,
+        guidance_scale,
+        negative_prompt,
+        prompt_strength,
+        num_inference_steps
+      }),
+    });
     
-    // Run the model
-    const output = await replicate.run(
-      modelVersion,
-      {
-        input: {
-          image: image,
-          prompt: prompt,
-          guidance_scale: guidance_scale,
-          negative_prompt: negative_prompt,
-          prompt_strength: prompt_strength,
-          num_inference_steps: num_inference_steps
-        }
-      }
-    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || "Failed to transform image");
+    }
     
-    console.log("Replicate API response:", output);
+    const result = await response.json();
+    console.log("API response:", result);
     
     // Return the response in the expected format
     return {
-      id: "replicate-run",
-      status: "success",
-      output: output && Array.isArray(output) && output.length > 0 ? output[0] : null,
-      error: null
+      id: result.id || "proxy-run",
+      status: result.status || "success",
+      output: result.output || null,
+      error: result.error || null
     };
   } catch (error) {
     console.error("Error transforming image:", error);
     
     // More user-friendly error message
-    const errorMessage = error.message?.includes("API key") 
-      ? "Invalid or missing API key. Please check your API key configuration."
-      : "Failed to transform image. Please try again later.";
+    const errorMessage = error.message || "Failed to transform image. Please try again later.";
     
     toast.error(errorMessage);
     
