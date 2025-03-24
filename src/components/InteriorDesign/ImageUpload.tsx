@@ -94,12 +94,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               alt="Uploaded" 
               className="w-full h-full object-contain rounded-lg"
             />
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50 rounded-lg">
-              <Button variant="secondary" size="sm" className="gap-2">
-                <Upload size={16} />
-                <span>Change Image</span>
-              </Button>
-            </div>
           </div>
         ) : (
           <div className="image-placeholder">
