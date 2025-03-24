@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Download, Eye } from 'lucide-react';
+import { Download, Eye, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Dialog,
@@ -11,10 +11,12 @@ import {
 interface ResultDisplayProps {
   isLoading: boolean;
   output: string | null;
+  onDenoiseClick?: (imageUrl: string) => void;
 }
 
-const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
+const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output, onDenoiseClick }) => {
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
+  const [isDenoisingLoading, setIsDenoisingLoading] = useState(false);
 
   const handleDownload = async () => {
     if (!output) return;
@@ -52,14 +54,26 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
     setIsPreviewDialogOpen(true);
   };
 
+  const handleDenoise = () => {
+    if (!output || !onDenoiseClick) return;
+    
+    setIsDenoisingLoading(true);
+    onDenoiseClick(output);
+  };
+
   return (
     <div>
       <h2 className="text-xl font-medium mb-4">Result</h2>
       
       <div className="h-64 bg-gray-100 rounded-lg overflow-hidden relative">
-        {isLoading ? (
+        {isLoading || isDenoisingLoading ? (
           <div className="w-full h-full flex items-center justify-center">
             <div className="w-16 h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
+            {isDenoisingLoading && (
+              <div className="absolute bottom-2 left-0 right-0 text-center text-sm font-medium text-primary">
+                Denoising image...
+              </div>
+            )}
           </div>
         ) : output ? (
           <img 
@@ -96,6 +110,18 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
               <Eye className="mr-2 h-4 w-4" />
               Preview
             </Button>
+            
+            {onDenoiseClick && (
+              <Button 
+                variant="outline"
+                className="flex-1"
+                onClick={handleDenoise}
+                disabled={isDenoisingLoading}
+              >
+                <Sparkles className="mr-2 h-4 w-4" />
+                Denoise
+              </Button>
+            )}
           </div>
           
           <Dialog open={isPreviewDialogOpen} onOpenChange={setIsPreviewDialogOpen}>
@@ -116,6 +142,16 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
                     <Download className="h-5 w-5" />
                     Download Image
                   </Button>
+                  {onDenoiseClick && (
+                    <Button 
+                      onClick={handleDenoise}
+                      className="flex items-center gap-2"
+                      disabled={isDenoisingLoading}
+                    >
+                      <Sparkles className="h-5 w-5" />
+                      {isDenoisingLoading ? 'Processing...' : 'Denoise Image'}
+                    </Button>
+                  )}
                   <Button 
                     variant="outline"
                     onClick={() => setIsPreviewDialogOpen(false)}

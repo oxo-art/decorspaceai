@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 import InputSection from '@/components/InteriorDesign/InputSection';
 import OutputSection from '@/components/InteriorDesign/OutputSection';
-import { transformImage } from '@/services/replicateService';
+import { transformImage, denoiseImage } from '@/services/replicateService';
 
 const Index = () => {
   const [image, setImage] = useState<string | null>(null);
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isDenoising, setIsDenoising] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [modelType] = useState<"interiorDesign">("interiorDesign");
@@ -58,6 +59,32 @@ const Index = () => {
     }
   };
 
+  const handleDenoise = async (imageUrl: string) => {
+    if (!imageUrl) {
+      toast.error('No image to denoise');
+      return;
+    }
+    
+    setIsDenoising(true);
+    
+    try {
+      const result = await denoiseImage(imageUrl);
+      
+      if (result.output) {
+        // Force a re-render by setting a new state value
+        setOutput(result.output + "?v=" + new Date().getTime());
+        toast.success('Image denoised successfully!');
+      } else {
+        toast.error('Failed to denoise image');
+      }
+    } catch (error) {
+      console.error('Error denoising image:', error);
+      toast.error(error.message || 'An error occurred during denoising');
+    } finally {
+      setIsDenoising(false);
+    }
+  };
+
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-4xl animate-fade-in">
@@ -86,14 +113,15 @@ const Index = () => {
           />
           
           <OutputSection 
-            isLoading={isLoading}
+            isLoading={isLoading || isDenoising}
             output={output}
             inputImage={image}
+            onDenoiseClick={handleDenoise}
           />
         </div>
         
         <p className="text-sm text-muted-foreground text-center mt-8">
-          Powered by AI to transform your interior spaces.
+          Powered by AI to transform and enhance your interior spaces.
         </p>
       </div>
     </div>

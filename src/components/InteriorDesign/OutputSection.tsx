@@ -6,9 +6,15 @@ interface OutputSectionProps {
   isLoading: boolean;
   output: string | null;
   inputImage: string | null;
+  onDenoiseClick?: (imageUrl: string) => void;
 }
 
-const OutputSection: React.FC<OutputSectionProps> = ({ isLoading, output, inputImage }) => {
+const OutputSection: React.FC<OutputSectionProps> = ({ 
+  isLoading, 
+  output, 
+  inputImage,
+  onDenoiseClick 
+}) => {
   // Using a key based on the output value will force a re-render when output changes
   const displayKey = output || 'no-output';
   
@@ -19,7 +25,8 @@ const OutputSection: React.FC<OutputSectionProps> = ({ isLoading, output, inputI
           <ResultDisplay 
             key={displayKey} 
             isLoading={isLoading} 
-            output={output} 
+            output={output}
+            onDenoiseClick={onDenoiseClick}
           />
         </div>
       </Card>
