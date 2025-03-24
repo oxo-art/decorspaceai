@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 import InputSection from '@/components/InteriorDesign/InputSection';
 import OutputSection from '@/components/InteriorDesign/OutputSection';
-import { transformImage } from '@/services/replicateService';
+import { transformImage, upscaleImage } from '@/services/replicateService';
 
 const Index = () => {
   const [image, setImage] = useState<string | null>(null);
+  const [upscaledInputImage, setUpscaledInputImage] = useState<string | null>(null);
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpscalingInput, setIsUpscalingInput] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [modelType] = useState<"interiorDesign">("interiorDesign");
@@ -17,6 +19,32 @@ const Index = () => {
     prompt_strength: 1,
     num_inference_steps: 100
   });
+
+  // Function to upscale the input image when it's uploaded
+  const handleUpscaleInputImage = async (imageUrl: string) => {
+    if (!imageUrl || isUpscalingInput) return;
+    
+    setIsUpscalingInput(true);
+    try {
+      toast.info("Upscaling your input image for better quality...");
+      const result = await upscaleImage(imageUrl);
+      
+      if (result.output) {
+        setUpscaledInputImage(result.output + "?v=" + new Date().getTime());
+        // Use the upscaled image for the transformation
+        return result.output;
+      } else {
+        toast.error("Could not upscale input image, using original quality");
+      }
+    } catch (error) {
+      console.error("Error upscaling input image:", error);
+      toast.error("Error upscaling input image, using original");
+    } finally {
+      setIsUpscalingInput(false);
+    }
+    
+    return imageUrl; // Return original if upscaling fails
+  };
 
   const handleGenerate = async () => {
     if (!image) {
@@ -34,9 +62,13 @@ const Index = () => {
     setIsLoading(true);
     
     try {
+      // First, try to upscale the input image
+      const imageToUse = await handleUpscaleInputImage(image);
+      
+      // Then, use the upscaled (or original if upscaling failed) image for the transformation
       const result = await transformImage({
         prompt,
-        image,
+        image: imageToUse,
         model: modelType,
         guidance_scale: advancedSettings.guidance_scale,
         prompt_strength: advancedSettings.prompt_strength,
@@ -72,7 +104,7 @@ const Index = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <InputSection
-            image={image}
+            image={upscaledInputImage || image}
             setImage={setImage}
             prompt={prompt}
             setPrompt={setPrompt}
@@ -81,13 +113,14 @@ const Index = () => {
             setOutput={setOutput}
             advancedSettings={advancedSettings}
             setAdvancedSettings={setAdvancedSettings}
-            isLoading={isLoading}
+            isLoading={isLoading || isUpscalingInput}
             handleGenerate={handleGenerate}
           />
           
           <OutputSection 
             isLoading={isLoading}
             output={output}
+            inputImage={upscaledInputImage || image}
           />
         </div>
         

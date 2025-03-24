@@ -8,9 +8,10 @@ import { toast } from 'sonner';
 interface OutputSectionProps {
   isLoading: boolean;
   output: string | null;
+  inputImage: string | null;
 }
 
-const OutputSection: React.FC<OutputSectionProps> = ({ isLoading, output }) => {
+const OutputSection: React.FC<OutputSectionProps> = ({ isLoading, output, inputImage }) => {
   const [upscaledOutput, setUpscaledOutput] = useState<string | null>(null);
   const [isUpscaling, setIsUpscaling] = useState<boolean>(false);
   
@@ -32,7 +33,7 @@ const OutputSection: React.FC<OutputSectionProps> = ({ isLoading, output }) => {
     
     setIsUpscaling(true);
     try {
-      toast.info("Upscaling image for better quality...");
+      toast.info("Upscaling generated image for better quality...");
       const result = await upscaleImage(output);
       
       if (result.output) {
