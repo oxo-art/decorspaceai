@@ -4,13 +4,13 @@ import { corsHeaders, waitForPrediction } from "./utils.ts";
 export const handleInteriorDesignModel = async (
   image: string, 
   prompt: string, 
-  guidance_scale = 15, 
-  negative_prompt = "lowresolution, text, missing furniture, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, realistic, broken furniture, noise", 
+  guidance_scale = 15,
+  negative_prompt = "",
   prompt_strength = 0.8, 
   num_inference_steps = 50,
   apiKey: string
 ) => {
-  console.log("Using interior design model with parameters:", { prompt, guidance_scale, negative_prompt, prompt_strength, num_inference_steps });
+  console.log("Using interior design model with parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
   
   // Create prediction with the proper URL format and parameters
   const response = await fetch("https://api.replicate.com/v1/predictions", {
