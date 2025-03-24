@@ -7,6 +7,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { transformImage } from '@/services/replicateService';
 
 const Index = () => {
@@ -15,6 +22,7 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [modelType, setModelType] = useState<"imageToImage" | "interiorDesign">("imageToImage");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = (file: File) => {
@@ -74,7 +82,8 @@ const Index = () => {
     try {
       const result = await transformImage({
         prompt,
-        image
+        image,
+        model: modelType
       });
       
       if (result.output) {
@@ -154,6 +163,25 @@ const Index = () => {
                       </div>
                     </div>
                   )}
+                </div>
+                
+                {/* Model Type Selection */}
+                <div className="space-y-2 mb-4">
+                  <label htmlFor="model-type" className="text-sm font-medium">
+                    Transformation Type
+                  </label>
+                  <Select 
+                    value={modelType} 
+                    onValueChange={(value) => setModelType(value as "imageToImage" | "interiorDesign")}
+                  >
+                    <SelectTrigger id="model-type">
+                      <SelectValue placeholder="Select transformation type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="imageToImage">Standard Image Transform</SelectItem>
+                      <SelectItem value="interiorDesign">Interior Design</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 
                 {/* Prompt Field */}

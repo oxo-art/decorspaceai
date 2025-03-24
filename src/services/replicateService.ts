@@ -1,9 +1,13 @@
-
 import { toast } from "sonner";
 
 export interface ReplicateRequest {
   prompt: string;
   image?: string;
+  model?: "imageToImage" | "interiorDesign";
+  guidance_scale?: number;
+  negative_prompt?: string;
+  prompt_strength?: number;
+  num_inference_steps?: number;
 }
 
 export interface ReplicateResponse {
@@ -22,7 +26,12 @@ const REPLICATE_API_KEY = import.meta.env.VITE_REPLICATE_API_KEY || "";
  */
 export const transformImage = async ({
   prompt, 
-  image
+  image,
+  model = "imageToImage",
+  guidance_scale = 15,
+  negative_prompt = "lowres, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, realistic",
+  prompt_strength = 1,
+  num_inference_steps = 100
 }: ReplicateRequest): Promise<ReplicateResponse> => {
   if (!image) {
     throw new Error("Image is required");
@@ -38,6 +47,36 @@ export const transformImage = async ({
   }
 
   try {
+    // Determine which model to use
+    let modelVersion;
+    let requestBody;
+
+    if (model === "interiorDesign") {
+      // Interior design model
+      modelVersion = "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38";
+      requestBody = {
+        version: modelVersion,
+        input: {
+          image: image,
+          prompt: prompt,
+          guidance_scale,
+          negative_prompt,
+          prompt_strength,
+          num_inference_steps
+        },
+      };
+    } else {
+      // Default image-to-image model
+      modelVersion = "37a94e2ee35c267ee9e1e6435bd867fec5d46dbb7b3528a9f2fd3d53dc5bdc9e";
+      requestBody = {
+        version: modelVersion,
+        input: {
+          image: image,
+          prompt: prompt,
+        },
+      };
+    }
+
     // Create a prediction with Replicate's API
     const response = await fetch("https://api.replicate.com/v1/predictions", {
       method: "POST",
@@ -45,13 +84,7 @@ export const transformImage = async ({
         "Content-Type": "application/json",
         Authorization: `Token ${REPLICATE_API_KEY}`,
       },
-      body: JSON.stringify({
-        version: "37a94e2ee35c267ee9e1e6435bd867fec5d46dbb7b3528a9f2fd3d53dc5bdc9e",
-        input: {
-          image: image,
-          prompt: prompt,
-        },
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
