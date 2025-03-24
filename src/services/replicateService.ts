@@ -1,5 +1,6 @@
 
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface ReplicateRequest {
   prompt: string;
@@ -19,7 +20,7 @@ export interface ReplicateResponse {
 }
 
 /**
- * Calls the Replicate API through a backend server to transform an image based on a prompt
+ * Calls the Replicate API through a Supabase Edge Function to transform an image based on a prompt
  */
 export const transformImage = async ({
   prompt, 
@@ -39,19 +40,12 @@ export const transformImage = async ({
   }
 
   try {
-    // Get the backend API URL from environment variable or use a default value
-    const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "/api/replicate";
-    
     console.log("Starting image transformation with model:", model);
     console.log("Parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
     
-    // Send the request to the backend server
-    const response = await fetch(backendUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    // Call the Supabase Edge Function
+    const { data, error } = await supabase.functions.invoke("replicate-proxy", {
+      body: {
         model,
         prompt,
         image,
@@ -59,23 +53,22 @@ export const transformImage = async ({
         negative_prompt,
         prompt_strength,
         num_inference_steps
-      }),
+      }
     });
     
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.detail || "Failed to transform image");
+    if (error) {
+      console.error("Error calling Edge Function:", error);
+      throw new Error(error.message || "Failed to transform image");
     }
     
-    const result = await response.json();
-    console.log("API response:", result);
+    console.log("Edge Function response:", data);
     
     // Return the response in the expected format
     return {
-      id: result.id || "backend-run",
-      status: result.status || "success",
-      output: result.output || null,
-      error: result.error || null
+      id: data.id || "edge-function-run",
+      status: data.status || "success",
+      output: data.output || null,
+      error: data.error || null
     };
   } catch (error) {
     console.error("Error transforming image:", error);
