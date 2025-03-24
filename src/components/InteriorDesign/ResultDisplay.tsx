@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Eye } from 'lucide-react';
@@ -107,8 +108,8 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
                     className="max-w-[98%] max-h-[98%] object-contain"
                     style={{ 
                       width: '1200px', 
-                      height: '900px',
-                      resolution: '96dpi' // CSS doesn't directly support DPI settings, but we're adding it for reference
+                      height: '900px'
+                      // Removed invalid resolution property
                     }}
                   />
                 </div>

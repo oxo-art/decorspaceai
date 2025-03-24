@@ -3,7 +3,7 @@ import { corsHeaders, waitForPrediction } from "./utils.ts";
 
 export const handleDenoiseModel = async (
   image: string,
-  scale: number = 5, // Updated default to 5x scale
+  scale: number = 4, // Updated default to 4x scale
   apiKey: string
 ) => {
   console.log("Using denoising model with parameters:", { scale });
