@@ -47,19 +47,12 @@ export const transformImage = async ({
   const apiKey = REPLICATE_API_KEY || localStorage.getItem("REPLICATE_API_KEY");
   
   if (!apiKey) {
-    // If no API key is found, show a prompt to enter it
-    const userApiKey = prompt("Please enter your Replicate API key:");
-    
-    if (!userApiKey) {
-      toast.error("Replicate API key is required");
-      throw new Error("Replicate API key is required");
-    }
-    
-    // Save to localStorage for future use
-    localStorage.setItem("REPLICATE_API_KEY", userApiKey);
+    // Instead of using the browser's prompt, we'll throw an error that will be handled in the UI
+    toast.error("Replicate API key is required. Please set it in the application.");
+    throw new Error("REPLICATE_API_KEY_REQUIRED");
   }
 
-  const effectiveApiKey = apiKey || localStorage.getItem("REPLICATE_API_KEY");
+  const effectiveApiKey = apiKey;
 
   try {
     // Determine which model to use

@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { Upload, Image } from 'lucide-react';
+
+import React, { useState, useRef, useEffect } from 'react';
+import { Upload, Image, Key } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,7 +14,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from '@/components/ui/input';
 import { transformImage } from '@/services/replicateService';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 const Index = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -22,7 +32,28 @@ const Index = () => {
   const [output, setOutput] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [modelType, setModelType] = useState<"imageToImage" | "interiorDesign">("imageToImage");
+  const [showApiKeyDialog, setShowApiKeyDialog] = useState(false);
+  const [apiKey, setApiKey] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Check if we need to show the API key dialog on component mount
+  useEffect(() => {
+    const storedApiKey = localStorage.getItem('REPLICATE_API_KEY');
+    if (!import.meta.env.VITE_REPLICATE_API_KEY && !storedApiKey) {
+      setShowApiKeyDialog(true);
+    }
+  }, []);
+
+  const handleApiKeySave = () => {
+    if (!apiKey.trim()) {
+      toast.error('Please enter a valid API key');
+      return;
+    }
+    
+    localStorage.setItem('REPLICATE_API_KEY', apiKey.trim());
+    setShowApiKeyDialog(false);
+    toast.success('API key saved successfully');
+  };
 
   const handleImageUpload = (file: File) => {
     if (!file.type.startsWith('image/')) {
@@ -93,7 +124,13 @@ const Index = () => {
       }
     } catch (error) {
       console.error('Error generating image:', error);
-      toast.error(error.message || 'An error occurred');
+      
+      // Check for the specific error to show the API key dialog
+      if (error.message === 'REPLICATE_API_KEY_REQUIRED') {
+        setShowApiKeyDialog(true);
+      } else {
+        toast.error(error.message || 'An error occurred');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -201,7 +238,17 @@ const Index = () => {
               
               <Separator />
               
-              <div className="p-4 flex justify-end">
+              <div className="p-4 flex justify-between items-center">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="gap-1"
+                  onClick={() => setShowApiKeyDialog(true)}
+                >
+                  <Key size={14} />
+                  <span>Set API Key</span>
+                </Button>
+                
                 <Button 
                   onClick={handleGenerate}
                   disabled={!image || !prompt.trim() || isLoading}
@@ -264,6 +311,42 @@ const Index = () => {
           This app uses AI to transform your images based on your prompts.
         </p>
       </div>
+
+      {/* API Key Dialog */}
+      <Dialog open={showApiKeyDialog} onOpenChange={setShowApiKeyDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Set Replicate API Key</DialogTitle>
+            <DialogDescription>
+              Enter your Replicate API key to use the image transformation functionality.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="apiKey" className="text-sm font-medium">
+                Replicate API Key
+              </label>
+              <Input
+                id="apiKey"
+                type="password"
+                placeholder="r8_..."
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                className="w-full"
+              />
+              <p className="text-xs text-muted-foreground">
+                You can get your API key from <a href="https://replicate.com/account/api-tokens" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">replicate.com/account/api-tokens</a>
+              </p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowApiKeyDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleApiKeySave}>Save API Key</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
