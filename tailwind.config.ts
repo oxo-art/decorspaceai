@@ -20,7 +20,7 @@ export default {
 		extend: {
 			fontFamily: {
 				'jacques-francois-shadow': ['"Jacques Francois Shadow"', 'cursive'],
-				'tinos': ['Tinos', 'serif'],
+				'volkhov': ['Volkhov', 'serif'],
 			},
 			colors: {
 				'gunmetal': '#122C34',
