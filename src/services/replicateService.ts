@@ -44,7 +44,14 @@ export const transformImage = async ({
     const apiKey = import.meta.env.VITE_REPLICATE_API_KEY;
     
     if (!apiKey) {
-      throw new Error("Replicate API key is not configured");
+      // Instead of throwing an error, show a more user-friendly message
+      toast.error("Replicate API key is not configured. Please set the VITE_REPLICATE_API_KEY environment variable.");
+      return {
+        id: "error",
+        status: "error",
+        output: null,
+        error: "API key not configured"
+      };
     }
     
     // Initialize the Replicate client
@@ -76,7 +83,19 @@ export const transformImage = async ({
     };
   } catch (error) {
     console.error("Error transforming image:", error);
-    toast.error(error.message || "Failed to transform image");
-    throw error;
+    
+    // More user-friendly error message
+    const errorMessage = error.message?.includes("API key") 
+      ? "Invalid or missing API key. Please check your API key configuration."
+      : "Failed to transform image. Please try again later.";
+    
+    toast.error(errorMessage);
+    
+    return {
+      id: "error",
+      status: "error",
+      output: null,
+      error: errorMessage
+    };
   }
 };
