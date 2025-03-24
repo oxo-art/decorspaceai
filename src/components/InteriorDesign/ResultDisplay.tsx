@@ -131,16 +131,16 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
           </div>
           
           <Dialog open={isPreviewDialogOpen} onOpenChange={setIsPreviewDialogOpen}>
-            <DialogContent className="max-w-[95vw] w-[95vw] max-h-[95vh] h-[95vh] p-0 border bg-background">
-              <div className="relative bg-background rounded-lg overflow-hidden flex flex-col items-center justify-center h-full">
-                <div className="flex-1 w-full flex items-center justify-center overflow-hidden p-4">
+            <DialogContent className="max-w-[98vw] w-[98vw] max-h-[98vh] h-[98vh] p-0 border bg-background">
+              <div className="relative bg-background rounded-lg flex flex-col items-center justify-center h-full">
+                <div className="flex-1 w-full flex items-center justify-center p-1">
                   <img 
                     src={previewImage}
                     alt="Interior Design Preview" 
-                    className="max-w-full max-h-full object-contain"
+                    className="max-w-[98%] max-h-[98%] object-contain"
                   />
                 </div>
-                <div className="flex gap-4 w-full justify-center p-4 border-t">
+                <div className="flex gap-4 justify-center p-2 border-t w-full">
                   <Button 
                     onClick={handleDownload}
                     className="flex items-center gap-2"
