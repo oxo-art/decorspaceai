@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Eye } from 'lucide-react';
@@ -106,7 +105,11 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
                     src={output}
                     alt="Interior Design Preview" 
                     className="max-w-[98%] max-h-[98%] object-contain"
-                    style={{ width: '1200px', height: '900px' }}
+                    style={{ 
+                      width: '1200px', 
+                      height: '900px',
+                      resolution: '96dpi' // CSS doesn't directly support DPI settings, but we're adding it for reference
+                    }}
                   />
                 </div>
                 <div className="flex gap-4 justify-center p-2 border-t w-full">
