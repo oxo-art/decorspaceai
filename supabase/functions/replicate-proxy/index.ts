@@ -19,7 +19,7 @@ serve(async (req) => {
       return createErrorResponse('API key not configured on server');
     }
 
-    const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps, scale, resample_output } = await req.json()
+    const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps, scale } = await req.json()
     
     try {
       let result;
@@ -43,23 +43,6 @@ serve(async (req) => {
         );
       } else {
         result = await handleDefaultModel(image, prompt, REPLICATE_API_KEY);
-      }
-      
-      // Apply resampling if requested
-      if (resample_output && result.output) {
-        // Process the output through the resampling model
-        console.log("Applying resampling to output image");
-        const outputImage = Array.isArray(result.output) ? result.output[0] : result.output;
-        
-        const resampledResult = await handleDenoiseModel(
-          outputImage,
-          scale || 2,
-          REPLICATE_API_KEY
-        );
-        
-        if (resampledResult.output) {
-          result.output = resampledResult.output;
-        }
       }
       
       return new Response(

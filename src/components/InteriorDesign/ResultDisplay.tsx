@@ -106,7 +106,6 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
                     src={output}
                     alt="Interior Design Preview" 
                     className="max-w-[98%] max-h-[98%] object-contain"
-                    style={{ width: '1200px', height: '900px' }}
                   />
                 </div>
                 <div className="flex gap-4 justify-center p-2 border-t w-full">

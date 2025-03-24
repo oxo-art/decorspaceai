@@ -1,17 +1,14 @@
-
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface ReplicateRequest {
   prompt: string;
   image?: string;
-  model?: "imageToImage" | "interiorDesign" | "denoise";
+  model?: "imageToImage" | "interiorDesign";
   guidance_scale?: number;
   negative_prompt?: string;
   prompt_strength?: number;
   num_inference_steps?: number;
-  scale?: number;
-  resample_output?: boolean;
 }
 
 export interface ReplicateResponse {
@@ -31,21 +28,19 @@ export const transformImage = async ({
   guidance_scale = 15,
   negative_prompt = "lowresolution, text, missing furniture, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, realistic, broken furniture, noise",
   prompt_strength = model === "interiorDesign" ? 0.8 : 1,
-  num_inference_steps = model === "interiorDesign" ? 50 : 100,
-  scale = 2,
-  resample_output = true
+  num_inference_steps = model === "interiorDesign" ? 50 : 100
 }: ReplicateRequest): Promise<ReplicateResponse> => {
   if (!image) {
     throw new Error("Image is required");
   }
 
-  if (!prompt && model !== "denoise") {
+  if (!prompt) {
     throw new Error("Prompt is required");
   }
 
   try {
     console.log("Starting image transformation with model:", model);
-    console.log("Parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps, resample_output });
+    console.log("Parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
     
     const { data, error } = await supabase.functions.invoke("replicate-proxy", {
       body: {
@@ -55,9 +50,7 @@ export const transformImage = async ({
         guidance_scale,
         negative_prompt,
         prompt_strength,
-        num_inference_steps,
-        scale,
-        resample_output
+        num_inference_steps
       }
     });
     
