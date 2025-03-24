@@ -54,12 +54,14 @@ const InputSection: React.FC<InputSectionProps> = ({
             setIsDragging={setIsDragging}
           />
           
-          <PromptInput 
-            prompt={prompt}
-            setPrompt={setPrompt}
-            advancedSettings={advancedSettings}
-            setAdvancedSettings={setAdvancedSettings}
-          />
+          <div className="mt-6">
+            <PromptInput 
+              prompt={prompt}
+              setPrompt={setPrompt}
+              advancedSettings={advancedSettings}
+              setAdvancedSettings={setAdvancedSettings}
+            />
+          </div>
         </div>
         
         <Separator />
