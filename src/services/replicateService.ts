@@ -18,13 +18,8 @@ export interface ReplicateResponse {
   error: string | null;
 }
 
-// This is where we get the API key from the environment variables
-// For local development with Vite, use import.meta.env.VITE_REPLICATE_API_KEY
-// For production, ensure this is set in your hosting environment
-const REPLICATE_API_KEY = import.meta.env.VITE_REPLICATE_API_KEY || "";
-
 /**
- * Calls the Replicate API to transform an image based on a prompt
+ * Calls the Replicate API through our secure proxy to transform an image based on a prompt
  */
 export const transformImage = async ({
   prompt, 
@@ -43,132 +38,38 @@ export const transformImage = async ({
     throw new Error("Prompt is required");
   }
 
-  // Check if API key is available in environment variable
-  if (!REPLICATE_API_KEY) {
-    toast.error("Replicate API key is not configured. Please set the VITE_REPLICATE_API_KEY environment variable.");
-    throw new Error("REPLICATE_API_KEY_NOT_CONFIGURED");
-  }
-
   try {
-    // Determine which model to use
-    let modelVersion;
-    let requestBody;
+    // Create a request body with all the needed parameters
+    const requestBody = {
+      prompt,
+      image,
+      model,
+      guidance_scale,
+      negative_prompt,
+      prompt_strength,
+      num_inference_steps
+    };
 
-    if (model === "interiorDesign") {
-      // Interior design model
-      modelVersion = "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38";
-      requestBody = {
-        version: modelVersion,
-        input: {
-          image: image,
-          prompt: prompt,
-          guidance_scale,
-          negative_prompt,
-          prompt_strength,
-          num_inference_steps
-        },
-      };
-    } else {
-      // Default image-to-image model
-      modelVersion = "37a94e2ee35c267ee9e1e6435bd867fec5d46dbb7b3528a9f2fd3d53dc5bdc9e";
-      requestBody = {
-        version: modelVersion,
-        input: {
-          image: image,
-          prompt: prompt,
-        },
-      };
-    }
-
-    // Create a prediction with Replicate's API
-    const response = await fetch("https://api.replicate.com/v1/predictions", {
+    // Call our proxy endpoint instead of Replicate directly
+    const response = await fetch("/api/replicate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${REPLICATE_API_KEY}`,
       },
       body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.detail || "Error calling Replicate API");
+      throw new Error(error.detail || "Error calling API");
     }
 
-    const prediction = await response.json();
-    
-    // Poll for results
-    const result = await checkPredictionStatus(prediction.id, REPLICATE_API_KEY);
+    // Our proxy will already poll and wait for the result
+    const result = await response.json();
     return result;
   } catch (error) {
     console.error("Error transforming image:", error);
     toast.error(error.message || "Failed to transform image");
     throw error;
   }
-};
-
-/**
- * Polls the Replicate API for a prediction's status until it completes
- */
-const checkPredictionStatus = async (id: string, apiKey: string): Promise<ReplicateResponse> => {
-  const maxAttempts = 30;
-  let attempts = 0;
-
-  return new Promise((resolve, reject) => {
-    const checkStatus = async () => {
-      try {
-        const response = await fetch(
-          `https://api.replicate.com/v1/predictions/${id}`,
-          {
-            headers: {
-              Authorization: `Token ${apiKey}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.detail || "Error checking prediction status");
-        }
-
-        const prediction = await response.json();
-        
-        if (prediction.status === "succeeded") {
-          resolve({
-            id: prediction.id,
-            status: prediction.status,
-            output: prediction.output && prediction.output[0],
-            error: null,
-          });
-        } else if (prediction.status === "failed") {
-          reject({
-            id: prediction.id,
-            status: prediction.status,
-            output: null,
-            error: prediction.error || "Prediction failed",
-          });
-        } else if (attempts < maxAttempts) {
-          attempts++;
-          setTimeout(checkStatus, 1000);
-        } else {
-          reject({
-            id: prediction.id,
-            status: "timeout",
-            output: null,
-            error: "Prediction timed out",
-          });
-        }
-      } catch (error) {
-        reject({
-          id: id,
-          status: "error",
-          output: null,
-          error: error.message || "Error checking prediction",
-        });
-      }
-    };
-
-    checkStatus();
-  });
 };

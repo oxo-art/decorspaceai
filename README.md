@@ -1,69 +1,236 @@
-# Welcome to your Lovable project
 
-## Project info
+# Image Transformer App
 
-**URL**: https://lovable.dev/projects/07c0f0de-e6f1-48d0-b4bf-974022480537
+This application uses AI to transform images based on text prompts.
 
-## How can I edit this code?
+## Secure API Key Setup
 
-There are several ways of editing your application.
+For security reasons, this application requires a backend server to proxy requests to the Replicate API. This prevents exposing your API key in the frontend code.
 
-**Use Lovable**
+### Option 1: Setup with a Backend Framework (Node.js/Express)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/07c0f0de-e6f1-48d0-b4bf-974022480537) and start prompting.
+1. Create a simple Express server with an endpoint that proxies requests to Replicate:
 
-Changes made via Lovable will be committed automatically to this repo.
+```javascript
+// server.js
+const express = require('express');
+const cors = require('cors');
+const fetch = require('node-fetch');
+require('dotenv').config();
 
-**Use your preferred IDE**
+const app = express();
+app.use(express.json({ limit: '50mb' }));
+app.use(cors());
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+// Serve static files from build directory
+app.use(express.static('dist'));
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+// Proxy endpoint for Replicate
+app.post('/api/replicate', async (req, res) => {
+  const REPLICATE_API_KEY = process.env.REPLICATE_API_KEY;
+  
+  if (!REPLICATE_API_KEY) {
+    return res.status(500).json({ detail: 'API key not configured on server' });
+  }
 
-Follow these steps:
+  try {
+    const { model, prompt, image, ...otherParams } = req.body;
+    
+    // Determine which model to use
+    let modelVersion;
+    let requestBody;
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+    if (model === "interiorDesign") {
+      // Interior design model
+      modelVersion = "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38";
+      requestBody = {
+        version: modelVersion,
+        input: {
+          image: image,
+          prompt: prompt,
+          ...otherParams
+        },
+      };
+    } else {
+      // Default image-to-image model
+      modelVersion = "37a94e2ee35c267ee9e1e6435bd867fec5d46dbb7b3528a9f2fd3d53dc5bdc9e";
+      requestBody = {
+        version: modelVersion,
+        input: {
+          image: image,
+          prompt: prompt,
+        },
+      };
+    }
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+    // Create prediction
+    const response = await fetch("https://api.replicate.com/v1/predictions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${REPLICATE_API_KEY}`,
+      },
+      body: JSON.stringify(requestBody),
+    });
 
-# Step 3: Install the necessary dependencies.
-npm i
+    if (!response.ok) {
+      const error = await response.json();
+      return res.status(response.status).json(error);
+    }
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+    const prediction = await response.json();
+    
+    // Poll for results
+    let attempts = 0;
+    const maxAttempts = 30;
+    
+    while (attempts < maxAttempts) {
+      const statusResponse = await fetch(
+        `https://api.replicate.com/v1/predictions/${prediction.id}`,
+        {
+          headers: {
+            Authorization: `Token ${REPLICATE_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      
+      if (!statusResponse.ok) {
+        const error = await statusResponse.json();
+        return res.status(statusResponse.status).json(error);
+      }
+      
+      const status = await statusResponse.json();
+      
+      if (status.status === "succeeded") {
+        return res.json({
+          id: status.id,
+          status: status.status,
+          output: status.output && status.output[0],
+          error: null,
+        });
+      } else if (status.status === "failed") {
+        return res.status(500).json({
+          id: status.id,
+          status: status.status,
+          output: null,
+          error: status.error || "Prediction failed",
+        });
+      }
+      
+      // Wait before checking again
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      attempts++;
+    }
+    
+    return res.status(504).json({
+      id: prediction.id,
+      status: "timeout",
+      output: null,
+      error: "Prediction timed out",
+    });
+    
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ 
+      detail: error.message || 'Internal server error',
+      status: 'error'
+    });
+  }
+});
+
+// Handle SPA routing
+app.get('*', (req, res) => {
+  res.sendFile(__dirname + '/dist/index.html');
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
 ```
 
-**Edit a file directly in GitHub**
+2. Create a `.env` file in your server directory with your API key:
+```
+REPLICATE_API_KEY=your_replicate_api_key_here
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. Install the required dependencies:
+```
+npm install express cors node-fetch dotenv
+```
 
-**Use GitHub Codespaces**
+4. Start the server:
+```
+node server.js
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Option 2: Using a Serverless Function
 
-## What technologies are used for this project?
+If you're deploying to a platform like Vercel, Netlify, or AWS Lambda, you can create a serverless function:
 
-This project is built with .
+#### For Vercel:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Create an `api` directory with a `replicate.js` file:
+```javascript
+// api/replicate.js
+import fetch from 'node-fetch';
 
-## How can I deploy this project?
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ detail: 'Method not allowed' });
+  }
 
-Simply open [Lovable](https://lovable.dev/projects/07c0f0de-e6f1-48d0-b4bf-974022480537) and click on Share -> Publish.
+  const REPLICATE_API_KEY = process.env.REPLICATE_API_KEY;
+  
+  if (!REPLICATE_API_KEY) {
+    return res.status(500).json({ detail: 'API key not configured on server' });
+  }
 
-## I want to use a custom domain - is that possible?
+  try {
+    const { model, prompt, image, ...otherParams } = req.body;
+    
+    // Similar logic as in the Express example...
+    // ...
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ 
+      detail: error.message || 'Internal server error',
+      status: 'error'
+    });
+  }
+}
+```
+
+Then set the `REPLICATE_API_KEY` in your Vercel project settings.
+
+### Option 3: Using Supabase Edge Functions
+
+If you're using Supabase, you can create an edge function to handle the API requests securely.
+
+## Running Locally
+
+To develop with a proxy server:
+
+1. Build the frontend:
+```
+npm run build
+```
+
+2. Start your server (which will serve the built files and handle API requests):
+```
+node server.js
+```
+
+3. Make sure your server has the `REPLICATE_API_KEY` environment variable set.
+
+## Deployment
+
+When deploying to production:
+
+1. Set up your server or serverless function
+2. Configure the environment variable `REPLICATE_API_KEY` in your hosting platform
+3. Deploy both your frontend and backend code
+
+Never expose your API key in the frontend or commit it to your repository.
