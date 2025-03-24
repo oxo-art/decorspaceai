@@ -5,7 +5,7 @@ export const handleInteriorDesignModel = async (
   image: string, 
   prompt: string, 
   guidance_scale = 15, 
-  negative_prompt = "lowres, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, realistic", 
+  negative_prompt = "lowresolution, text, missing furniture, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, realistic, broken furniture, noise", 
   prompt_strength = 0.8, 
   num_inference_steps = 50,
   apiKey: string
