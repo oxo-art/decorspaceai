@@ -4,7 +4,6 @@ import { toast } from "sonner";
 export interface ReplicateRequest {
   prompt: string;
   image?: string;
-  apiKey: string;
 }
 
 export interface ReplicateResponse {
@@ -14,18 +13,16 @@ export interface ReplicateResponse {
   error: string | null;
 }
 
+// Using a hardcoded API key (this should be replaced with your actual key)
+const REPLICATE_API_KEY = "r8_YOUR_REPLICATE_API_KEY";
+
 /**
  * Calls the Replicate API to transform an image based on a prompt
  */
 export const transformImage = async ({
   prompt, 
-  image, 
-  apiKey
+  image
 }: ReplicateRequest): Promise<ReplicateResponse> => {
-  if (!apiKey) {
-    throw new Error("API key is required");
-  }
-
   if (!image) {
     throw new Error("Image is required");
   }
@@ -40,7 +37,7 @@ export const transformImage = async ({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${apiKey}`,
+        Authorization: `Token ${REPLICATE_API_KEY}`,
       },
       body: JSON.stringify({
         version: "37a94e2ee35c267ee9e1e6435bd867fec5d46dbb7b3528a9f2fd3d53dc5bdc9e",
@@ -59,7 +56,7 @@ export const transformImage = async ({
     const prediction = await response.json();
     
     // Poll for results
-    const result = await checkPredictionStatus(prediction.id, apiKey);
+    const result = await checkPredictionStatus(prediction.id);
     return result;
   } catch (error) {
     console.error("Error transforming image:", error);
@@ -71,10 +68,7 @@ export const transformImage = async ({
 /**
  * Polls the Replicate API for a prediction's status until it completes
  */
-const checkPredictionStatus = async (
-  id: string,
-  apiKey: string
-): Promise<ReplicateResponse> => {
+const checkPredictionStatus = async (id: string): Promise<ReplicateResponse> => {
   const maxAttempts = 30;
   let attempts = 0;
 
@@ -85,7 +79,7 @@ const checkPredictionStatus = async (
           `https://api.replicate.com/v1/predictions/${id}`,
           {
             headers: {
-              Authorization: `Token ${apiKey}`,
+              Authorization: `Token ${REPLICATE_API_KEY}`,
               "Content-Type": "application/json",
             },
           }

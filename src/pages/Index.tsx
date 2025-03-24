@@ -1,13 +1,12 @@
 
 import React, { useState, useRef } from 'react';
-import { Upload, Image, KeyRound } from 'lucide-react';
+import { Upload, Image } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Input } from '@/components/ui/input';
 import { transformImage } from '@/services/replicateService';
 
 const Index = () => {
@@ -16,8 +15,6 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [apiKey, setApiKey] = useState('');
-  const [showApiKey, setShowApiKey] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = (file: File) => {
@@ -71,19 +68,13 @@ const Index = () => {
       toast.error('Please enter a prompt');
       return;
     }
-
-    if (!apiKey) {
-      toast.error('Please enter your Replicate API key');
-      return;
-    }
     
     setIsLoading(true);
     
     try {
       const result = await transformImage({
         prompt,
-        image,
-        apiKey
+        image
       });
       
       if (result.output) {
@@ -104,10 +95,6 @@ const Index = () => {
     fileInputRef.current?.click();
   };
 
-  const toggleApiKeyVisibility = () => {
-    setShowApiKey(!showApiKey);
-  };
-
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-4xl animate-fade-in">
@@ -115,47 +102,8 @@ const Index = () => {
           Image <span className="font-semibold">Transformer</span>
         </h1>
         <p className="text-muted-foreground text-center mb-8">
-          Upload an image, enter a prompt, and transform it with Replicate AI
+          Upload an image, enter a prompt, and transform it with AI
         </p>
-
-        {/* API Key Input */}
-        <div className="mb-6 max-w-md mx-auto">
-          <div className="flex items-center gap-2 mb-2">
-            <KeyRound size={16} className="text-muted-foreground" />
-            <label htmlFor="apiKey" className="text-sm font-medium">
-              Replicate API Key
-            </label>
-          </div>
-          <div className="relative">
-            <Input
-              id="apiKey"
-              type={showApiKey ? "text" : "password"}
-              placeholder="Enter your Replicate API key"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              className="pr-24"
-            />
-            <Button
-              variant="ghost"
-              size="sm"
-              className="absolute right-1 top-1/2 -translate-y-1/2"
-              onClick={toggleApiKeyVisibility}
-            >
-              {showApiKey ? "Hide" : "Show"}
-            </Button>
-          </div>
-          <p className="text-xs text-muted-foreground mt-1">
-            Get your API key from{" "}
-            <a
-              href="https://replicate.com/account/api-tokens"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              replicate.com
-            </a>
-          </p>
-        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Input Section */}
@@ -229,7 +177,7 @@ const Index = () => {
               <div className="p-4 flex justify-end">
                 <Button 
                   onClick={handleGenerate}
-                  disabled={!image || !prompt.trim() || !apiKey || isLoading}
+                  disabled={!image || !prompt.trim() || isLoading}
                   className="transition-all-300"
                 >
                   {isLoading ? 'Transforming...' : 'Transform with AI'}
@@ -286,7 +234,7 @@ const Index = () => {
         </div>
         
         <p className="text-sm text-muted-foreground text-center mt-8">
-          This app uses Replicate AI to transform your images. You'll need an API key from replicate.com.
+          This app uses AI to transform your images based on your prompts.
         </p>
       </div>
     </div>
