@@ -32,7 +32,7 @@ export const transformImage = async ({
   negative_prompt = "lowresolution, text, missing furniture, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, realistic, broken furniture, noise",
   prompt_strength = model === "interiorDesign" ? 0.8 : 1,
   num_inference_steps = model === "interiorDesign" ? 50 : 100,
-  scale = 2,
+  scale = 4,
   resample_output = true
 }: ReplicateRequest): Promise<ReplicateResponse> => {
   if (!image) {
@@ -45,7 +45,7 @@ export const transformImage = async ({
 
   try {
     console.log("Starting image transformation with model:", model);
-    console.log("Parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps, resample_output });
+    console.log("Parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps, resample_output, scale });
     
     const { data, error } = await supabase.functions.invoke("replicate-proxy", {
       body: {

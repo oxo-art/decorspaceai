@@ -20,7 +20,7 @@ export const handleInteriorDesignModel = async (
       Authorization: `Token ${apiKey}`,
     },
     body: JSON.stringify({
-      version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
+      version: "854e8727697a057c525cdb45ab037f64ecca770a1769cc52287c2e56472a247b", // Updated interior design model version
       input: {
         image: image,
         prompt: prompt,

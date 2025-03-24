@@ -10,7 +10,7 @@ export const handleDefaultModel = async (image: string, prompt: string, apiKey: 
       Authorization: `Token ${apiKey}`,
     },
     body: JSON.stringify({
-      version: "37a94e2ee35c267ee9e1e6435bd867fec5d46dbb7b3528a9f2fd3d53dc5bdc9e",
+      version: "be04660a5b93ef2aff61e3668dedb4cbeb14941e62a3fd5998364a32d613e35e", // Updated default model version
       input: {
         image: image,
         prompt: prompt,
