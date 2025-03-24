@@ -43,16 +43,11 @@ export const transformImage = async ({
     throw new Error("Prompt is required");
   }
 
-  // Check if API key is available
-  const apiKey = REPLICATE_API_KEY || localStorage.getItem("REPLICATE_API_KEY");
-  
-  if (!apiKey) {
-    // Instead of using the browser's prompt, we'll throw an error that will be handled in the UI
-    toast.error("Replicate API key is required. Please set it in the application.");
-    throw new Error("REPLICATE_API_KEY_REQUIRED");
+  // Check if API key is available in environment variable
+  if (!REPLICATE_API_KEY) {
+    toast.error("Replicate API key is not configured. Please set the VITE_REPLICATE_API_KEY environment variable.");
+    throw new Error("REPLICATE_API_KEY_NOT_CONFIGURED");
   }
-
-  const effectiveApiKey = apiKey;
 
   try {
     // Determine which model to use
@@ -90,7 +85,7 @@ export const transformImage = async ({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${effectiveApiKey}`,
+        Authorization: `Token ${REPLICATE_API_KEY}`,
       },
       body: JSON.stringify(requestBody),
     });
@@ -103,7 +98,7 @@ export const transformImage = async ({
     const prediction = await response.json();
     
     // Poll for results
-    const result = await checkPredictionStatus(prediction.id, effectiveApiKey);
+    const result = await checkPredictionStatus(prediction.id, REPLICATE_API_KEY);
     return result;
   } catch (error) {
     console.error("Error transforming image:", error);
