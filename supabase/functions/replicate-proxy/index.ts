@@ -38,7 +38,7 @@ serve(async (req) => {
       } else if (model === "denoise") {
         result = await handleDenoiseModel(
           image,
-          scale || 2,
+          scale || 4, // Set default to 4x upscaling
           REPLICATE_API_KEY
         );
       } else {
