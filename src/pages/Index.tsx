@@ -14,7 +14,7 @@ const Index = () => {
   const [modelType] = useState<"interiorDesign">("interiorDesign");
   const [advancedSettings, setAdvancedSettings] = useState({
     guidance_scale: 15,
-    prompt_strength: 0.8,
+    prompt_strength: 1,
     num_inference_steps: 100
   });
 

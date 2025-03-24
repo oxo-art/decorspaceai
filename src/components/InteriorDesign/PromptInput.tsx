@@ -25,8 +25,8 @@ const PromptInput: React.FC<PromptInputProps> = ({
 }) => {
   return (
     <div className="space-y-2">
-      <div className="flex justify-between">
-        <label htmlFor="prompt" className="text-sm font-medium">
+      <div className="flex justify-center items-center mb-2">
+        <label htmlFor="prompt" className="text-sm font-medium mr-2">
           Design Prompt
         </label>
         <AdvancedSettings 
