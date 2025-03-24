@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 export interface ReplicateRequest {
   prompt: string;
   image?: string;
-  model?: "imageToImage" | "interiorDesign";
+  model?: "imageToImage" | "interiorDesign" | "upscale";
   guidance_scale?: number;
   negative_prompt?: string;
   prompt_strength?: number;
@@ -35,7 +35,7 @@ export const transformImage = async ({
     throw new Error("Image is required");
   }
 
-  if (!prompt) {
+  if (!prompt && model !== "upscale") {
     throw new Error("Prompt is required");
   }
 
@@ -92,4 +92,19 @@ export const transformImage = async ({
       error: errorMessage
     };
   }
+};
+
+/**
+ * Upscales an image using Replicate's upscaling model
+ * Note: This is a placeholder for future implementation
+ */
+export const upscaleImage = async (imageUrl: string): Promise<ReplicateResponse> => {
+  // This is a placeholder function that currently just returns the original image
+  // In a real implementation, this would call a different Replicate model for upscaling
+  return {
+    id: "upscale-placeholder",
+    status: "success",
+    output: imageUrl,
+    error: null
+  };
 };

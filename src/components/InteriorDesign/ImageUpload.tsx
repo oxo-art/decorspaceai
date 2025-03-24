@@ -1,6 +1,6 @@
 
 import React, { useRef } from 'react';
-import { Upload } from 'lucide-react';
+import { Upload, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -68,46 +68,60 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   };
 
   return (
-    <div 
-      className={cn(
-        "file-drop-area h-64 mb-4",
-        isDragging && "active"
-      )}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      onClick={triggerFileInput}
-    >
-      <input 
-        type="file" 
-        className="hidden" 
-        accept="image/*" 
-        ref={fileInputRef}
-        onChange={handleFileInputChange}
-      />
+    <div className="space-y-4">
+      <div 
+        className={cn(
+          "file-drop-area h-64",
+          isDragging && "active"
+        )}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        onClick={triggerFileInput}
+      >
+        <input 
+          type="file" 
+          className="hidden" 
+          accept="image/*" 
+          ref={fileInputRef}
+          onChange={handleFileInputChange}
+        />
+        
+        {image ? (
+          <div className="relative w-full h-full">
+            <img 
+              src={image} 
+              alt="Uploaded" 
+              className="w-full h-full object-contain rounded-lg"
+            />
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50 rounded-lg">
+              <Button variant="secondary" size="sm" className="gap-2">
+                <Upload size={16} />
+                <span>Change Image</span>
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="image-placeholder">
+            <div className="flex flex-col items-center text-gray-500">
+              <Upload size={32} className="mb-2 text-gray-400" />
+              <p className="text-sm font-medium mb-1">Upload a room photo</p>
+              <p className="text-xs">or click to browse</p>
+            </div>
+          </div>
+        )}
+      </div>
       
-      {image ? (
-        <div className="relative w-full h-full">
-          <img 
-            src={image} 
-            alt="Uploaded" 
-            className="w-full h-full object-contain rounded-lg"
-          />
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50 rounded-lg">
-            <Button variant="secondary" size="sm" className="gap-2">
-              <Upload size={16} />
-              <span>Change Image</span>
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <div className="image-placeholder">
-          <div className="flex flex-col items-center text-gray-500">
-            <Upload size={32} className="mb-2 text-gray-400" />
-            <p className="text-sm font-medium mb-1">Upload a room photo</p>
-            <p className="text-xs">or click to browse</p>
-          </div>
-        </div>
+      {image && (
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="w-full gap-2" 
+          onClick={triggerFileInput}
+        >
+          <ImageIcon size={16} />
+          Change Image
+        </Button>
       )}
     </div>
   );
