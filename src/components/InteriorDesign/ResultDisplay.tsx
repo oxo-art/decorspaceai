@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Download, Eye, Maximize } from 'lucide-react';
+import { Download, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Dialog,
@@ -14,18 +14,14 @@ interface ResultDisplayProps {
 }
 
 const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
-  const [isUpscaling, setIsUpscaling] = useState(false);
-  const [upscaledImage, setUpscaledImage] = useState<string | null>(null);
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
 
   const handleDownload = async () => {
-    if (!output && !upscaledImage) return;
-    
-    const imageUrl = upscaledImage || output;
+    if (!output) return;
     
     try {
       // Fetch the image first to handle potential CORS issues
-      const response = await fetch(imageUrl!);
+      const response = await fetch(output);
       if (!response.ok) {
         throw new Error('Failed to download image');
       }
@@ -51,37 +47,10 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
     }
   };
 
-  const handlePreview = async () => {
-    if (!output || isUpscaling) return;
-    
-    if (!upscaledImage) {
-      setIsUpscaling(true);
-      toast.info('Preparing high-resolution preview...');
-      
-      try {
-        // Simulate upscaling with a delay
-        // In a real implementation, this would call an API to upscale the image
-        setTimeout(() => {
-          setUpscaledImage(output);
-          setIsUpscaling(false);
-          setIsPreviewDialogOpen(true);
-          toast.success('High-resolution preview ready!');
-        }, 2000);
-        
-      } catch (error) {
-        console.error('Preview error:', error);
-        toast.error('Failed to generate preview. Please try again.');
-        setIsUpscaling(false);
-      }
-    } else {
-      // If upscaled image already exists, just open the dialog
-      setIsPreviewDialogOpen(true);
-    }
+  const handlePreview = () => {
+    if (!output) return;
+    setIsPreviewDialogOpen(true);
   };
-
-  // Determine which image to display based on availability
-  const displayImage = output;
-  const previewImage = upscaledImage || output;
 
   return (
     <div>
@@ -92,9 +61,9 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
           <div className="w-full h-full flex items-center justify-center">
             <div className="w-16 h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
           </div>
-        ) : displayImage ? (
+        ) : output ? (
           <img 
-            src={displayImage} 
+            src={output} 
             alt="Output" 
             className="w-full h-full object-contain"
           />
@@ -107,7 +76,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
         )}
       </div>
       
-      {displayImage && (
+      {output && (
         <>
           <div className="mt-4 flex gap-2">
             <Button 
@@ -123,10 +92,9 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
               variant="outline"
               className="flex-1"
               onClick={handlePreview}
-              disabled={isUpscaling}
             >
               <Eye className="mr-2 h-4 w-4" />
-              {isUpscaling ? 'Loading...' : 'Preview HD'}
+              Preview
             </Button>
           </div>
           
@@ -135,7 +103,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
               <div className="relative bg-background rounded-lg flex flex-col items-center justify-center h-full">
                 <div className="flex-1 w-full flex items-center justify-center p-1">
                   <img 
-                    src={previewImage}
+                    src={output}
                     alt="Interior Design Preview" 
                     className="max-w-[98%] max-h-[98%] object-contain"
                   />

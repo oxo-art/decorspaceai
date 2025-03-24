@@ -8,11 +8,14 @@ interface OutputSectionProps {
 }
 
 const OutputSection: React.FC<OutputSectionProps> = ({ isLoading, output }) => {
+  // Using a key based on the output value will force a re-render when output changes
+  const displayKey = output || 'no-output';
+  
   return (
     <div className="space-y-6 animate-scale-in" style={{ animationDelay: '0.2s' }}>
       <Card className="overflow-hidden border border-gray-200 shadow-sm">
         <div className="p-6">
-          <ResultDisplay isLoading={isLoading} output={output} />
+          <ResultDisplay key={displayKey} isLoading={isLoading} output={output} />
         </div>
       </Card>
     </div>

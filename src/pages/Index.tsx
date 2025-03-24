@@ -29,6 +29,8 @@ const Index = () => {
       return;
     }
     
+    // Clear the current output first to ensure UI refresh
+    setOutput(null);
     setIsLoading(true);
     
     try {
@@ -42,7 +44,8 @@ const Index = () => {
       });
       
       if (result.output) {
-        setOutput(result.output);
+        // Force a re-render by setting a new state value
+        setOutput(result.output + "?v=" + new Date().getTime());
         toast.success('Image transformed successfully!');
       } else {
         toast.error('Failed to transform image');
