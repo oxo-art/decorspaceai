@@ -29,11 +29,13 @@ serve(async (req) => {
     let modelVersion
     let requestBody
 
+    // Define a proper model owner, model name, and version format
     if (model === "interiorDesign") {
-      // Interior design model - Fixed the model version string
-      modelVersion = "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38"
+      console.log("Using interior design model with parameters:", { prompt, guidance_scale, negative_prompt, prompt_strength, num_inference_steps })
+      
+      // This is the correct format for Replicate API - using owner/model:version
       requestBody = {
-        version: modelVersion,
+        // Don't use version field directly for this model
         input: {
           image: image,
           prompt: prompt,
@@ -43,108 +45,192 @@ serve(async (req) => {
           num_inference_steps: num_inference_steps || 50
         },
       }
-    } else {
-      // Default image-to-image model
-      modelVersion = "37a94e2ee35c267ee9e1e6435bd867fec5d46dbb7b3528a9f2fd3d53dc5bdc9e"
-      requestBody = {
-        version: modelVersion,
-        input: {
-          image: image,
-          prompt: prompt,
-        },
-      }
-    }
-
-    console.log(`Using Replicate model: ${modelVersion}`)
-    console.log("Request parameters:", { prompt, guidance_scale, negative_prompt, prompt_strength, num_inference_steps })
-
-    // Create prediction
-    const response = await fetch("https://api.replicate.com/v1/predictions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${REPLICATE_API_KEY}`,
-      },
-      body: JSON.stringify(requestBody),
-    })
-
-    if (!response.ok) {
-      const error = await response.json()
-      console.error("Replicate API error:", error)
-      return new Response(
-        JSON.stringify(error),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: response.status }
-      )
-    }
-
-    const prediction = await response.json()
-    console.log("Prediction created:", prediction.id)
-    
-    // Poll for results
-    let attempts = 0
-    const maxAttempts = 30
-    
-    while (attempts < maxAttempts) {
-      const statusResponse = await fetch(
-        `https://api.replicate.com/v1/predictions/${prediction.id}`,
-        {
-          headers: {
-            Authorization: `Token ${REPLICATE_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
       
-      if (!statusResponse.ok) {
-        const error = await statusResponse.json()
-        console.error("Status check error:", error)
+      // Create prediction with the proper URL format
+      const response = await fetch("https://api.replicate.com/v1/predictions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${REPLICATE_API_KEY}`,
+        },
+        body: JSON.stringify({
+          version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
+          input: requestBody.input
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        console.error("Replicate API error:", error)
         return new Response(
           JSON.stringify(error),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: statusResponse.status }
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: response.status }
         )
       }
+
+      const prediction = await response.json()
+      console.log("Prediction created:", prediction.id)
       
-      const status = await statusResponse.json()
-      console.log(`Prediction status: ${status.status}`)
+      // Poll for results
+      let attempts = 0
+      const maxAttempts = 30
       
-      if (status.status === "succeeded") {
-        console.log("Prediction succeeded:", status.output)
-        return new Response(
-          JSON.stringify({
-            id: status.id,
-            status: status.status,
-            output: status.output && status.output[0],
-            error: null,
-          }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      while (attempts < maxAttempts) {
+        const statusResponse = await fetch(
+          `https://api.replicate.com/v1/predictions/${prediction.id}`,
+          {
+            headers: {
+              Authorization: `Token ${REPLICATE_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+          }
         )
-      } else if (status.status === "failed") {
-        console.error("Prediction failed:", status.error)
-        return new Response(
-          JSON.stringify({
-            id: status.id,
-            status: status.status,
-            output: null,
-            error: status.error || "Prediction failed",
-          }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
-        )
+        
+        if (!statusResponse.ok) {
+          const error = await statusResponse.json()
+          console.error("Status check error:", error)
+          return new Response(
+            JSON.stringify(error),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: statusResponse.status }
+          )
+        }
+        
+        const status = await statusResponse.json()
+        console.log(`Prediction status: ${status.status}`)
+        
+        if (status.status === "succeeded") {
+          console.log("Prediction succeeded:", status.output)
+          return new Response(
+            JSON.stringify({
+              id: status.id,
+              status: status.status,
+              output: status.output && status.output[0],
+              error: null,
+            }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          )
+        } else if (status.status === "failed") {
+          console.error("Prediction failed:", status.error)
+          return new Response(
+            JSON.stringify({
+              id: status.id,
+              status: status.status,
+              output: null,
+              error: status.error || "Prediction failed",
+            }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+          )
+        }
+        
+        // Wait before checking again
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        attempts++
       }
       
-      // Wait before checking again
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      attempts++
+      return new Response(
+        JSON.stringify({
+          id: prediction.id,
+          status: "timeout",
+          output: null,
+          error: "Prediction timed out",
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 504 }
+      )
+    } else {
+      // Default image-to-image model
+      const response = await fetch("https://api.replicate.com/v1/predictions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${REPLICATE_API_KEY}`,
+        },
+        body: JSON.stringify({
+          version: "37a94e2ee35c267ee9e1e6435bd867fec5d46dbb7b3528a9f2fd3d53dc5bdc9e",
+          input: {
+            image: image,
+            prompt: prompt,
+          },
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        console.error("Replicate API error:", error)
+        return new Response(
+          JSON.stringify(error),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: response.status }
+        )
+      }
+
+      const prediction = await response.json()
+      console.log("Prediction created:", prediction.id)
+      
+      // Poll for results
+      let attempts = 0
+      const maxAttempts = 30
+      
+      while (attempts < maxAttempts) {
+        const statusResponse = await fetch(
+          `https://api.replicate.com/v1/predictions/${prediction.id}`,
+          {
+            headers: {
+              Authorization: `Token ${REPLICATE_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        
+        if (!statusResponse.ok) {
+          const error = await statusResponse.json()
+          console.error("Status check error:", error)
+          return new Response(
+            JSON.stringify(error),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: statusResponse.status }
+          )
+        }
+        
+        const status = await statusResponse.json()
+        console.log(`Prediction status: ${status.status}`)
+        
+        if (status.status === "succeeded") {
+          console.log("Prediction succeeded:", status.output)
+          return new Response(
+            JSON.stringify({
+              id: status.id,
+              status: status.status,
+              output: status.output && status.output[0],
+              error: null,
+            }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          )
+        } else if (status.status === "failed") {
+          console.error("Prediction failed:", status.error)
+          return new Response(
+            JSON.stringify({
+              id: status.id,
+              status: status.status,
+              output: null,
+              error: status.error || "Prediction failed",
+            }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+          )
+        }
+        
+        // Wait before checking again
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        attempts++
+      }
+      
+      return new Response(
+        JSON.stringify({
+          id: prediction.id,
+          status: "timeout",
+          output: null,
+          error: "Prediction timed out",
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 504 }
+      )
     }
-    
-    return new Response(
-      JSON.stringify({
-        id: prediction.id,
-        status: "timeout",
-        output: null,
-        error: "Prediction timed out",
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 504 }
-    )
     
   } catch (error) {
     console.error('Error:', error)
