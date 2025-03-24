@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { Upload, Image, Sliders } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -171,6 +172,7 @@ const Index = () => {
                       </div>
                     </div>
                   )}
+                </div> {/* This is the missing closing div tag */}
                 
                 {/* Prompt Field */}
                 <div className="space-y-2">
