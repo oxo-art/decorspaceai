@@ -1,5 +1,6 @@
 
 import { toast } from "sonner";
+import Replicate from "replicate";
 
 export interface ReplicateRequest {
   prompt: string;
@@ -19,12 +20,12 @@ export interface ReplicateResponse {
 }
 
 /**
- * Calls the Replicate API through our secure proxy to transform an image based on a prompt
+ * Calls the Replicate API to transform an image based on a prompt
  */
 export const transformImage = async ({
   prompt, 
   image,
-  model = "interiorDesign", // Change default to interiorDesign
+  model = "interiorDesign",
   guidance_scale = 15,
   negative_prompt = "lowres, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, realistic",
   prompt_strength = model === "interiorDesign" ? 0.8 : 1,
@@ -39,57 +40,40 @@ export const transformImage = async ({
   }
 
   try {
-    // Create a request body with all the needed parameters
-    const requestBody = {
-      prompt,
-      image,
-      model,
-      guidance_scale,
-      negative_prompt,
-      prompt_strength,
-      num_inference_steps
-    };
-
-    // Call our proxy endpoint instead of Replicate directly
-    const response = await fetch("/api/replicate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
-
-    if (!response.ok) {
-      // Handle non-200 responses properly
-      const errorText = await response.text();
-      let errorDetail;
-      try {
-        // Try to parse as JSON, but don't fail if it's not valid JSON
-        errorDetail = JSON.parse(errorText);
-      } catch (e) {
-        // If it's not valid JSON, use the raw text
-        errorDetail = { detail: errorText || "Error calling API" };
-      }
-      throw new Error(errorDetail.detail || "Error calling API");
-    }
-
-    // Safely handle response parsing
-    let responseText = await response.text();
-    let result;
+    // Get API key from environment variable
+    const apiKey = import.meta.env.VITE_REPLICATE_API_KEY;
     
-    // Only try to parse if there's actual content
-    if (responseText && responseText.trim()) {
-      try {
-        result = JSON.parse(responseText);
-      } catch (parseError) {
-        console.error("Failed to parse response:", responseText);
-        throw new Error("Invalid response from server");
-      }
-    } else {
-      throw new Error("Empty response from server");
+    if (!apiKey) {
+      throw new Error("Replicate API key is not configured");
     }
-
-    return result;
+    
+    // Initialize the Replicate client
+    const replicate = new Replicate({
+      auth: apiKey,
+    });
+    
+    // Run the model
+    const output = await replicate.run(
+      "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
+      {
+        input: {
+          image: image,
+          prompt: prompt,
+          guidance_scale: guidance_scale,
+          negative_prompt: negative_prompt,
+          prompt_strength: prompt_strength,
+          num_inference_steps: num_inference_steps
+        }
+      }
+    );
+    
+    // Return the response in the expected format
+    return {
+      id: "replicate-run",
+      status: "success",
+      output: output && Array.isArray(output) && output.length > 0 ? output[0] : null,
+      error: null
+    };
   } catch (error) {
     console.error("Error transforming image:", error);
     toast.error(error.message || "Failed to transform image");
