@@ -30,7 +30,7 @@ serve(async (req) => {
     let requestBody
 
     if (model === "interiorDesign") {
-      // Interior design model
+      // Interior design model - Fixed the model version string
       modelVersion = "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38"
       requestBody = {
         version: modelVersion,
