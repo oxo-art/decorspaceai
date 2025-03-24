@@ -22,14 +22,107 @@ serve(async (req) => {
       )
     }
 
-    const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps } = await req.json()
+    const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps, scale, face_enhance } = await req.json()
     
     // Determine which model to use
-    let modelVersion
-    let requestBody
+    if (model === "upscale") {
+      console.log("Using Real-ESRGAN upscaling model")
+      
+      // Create prediction with the Real-ESRGAN model
+      const response = await fetch("https://api.replicate.com/v1/predictions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${REPLICATE_API_KEY}`,
+        },
+        body: JSON.stringify({
+          version: "f94d7ed4a1f7e1ffed0d51e4089e4911609d5eeee5e874ef323d2c7562624bed",
+          input: {
+            image: image,
+            scale: scale || 4,
+            face_enhance: face_enhance || true
+          }
+        }),
+      })
 
-    // Define a proper model owner, model name, and version format
-    if (model === "interiorDesign") {
+      if (!response.ok) {
+        const error = await response.json()
+        console.error("Replicate API error:", error)
+        return new Response(
+          JSON.stringify(error),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: response.status }
+        )
+      }
+
+      const prediction = await response.json()
+      console.log("Upscaling prediction created:", prediction.id)
+      
+      // Poll for results
+      let attempts = 0
+      const maxAttempts = 60 
+      
+      while (attempts < maxAttempts) {
+        const statusResponse = await fetch(
+          `https://api.replicate.com/v1/predictions/${prediction.id}`,
+          {
+            headers: {
+              Authorization: `Token ${REPLICATE_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        
+        if (!statusResponse.ok) {
+          const error = await statusResponse.json()
+          console.error("Status check error:", error)
+          return new Response(
+            JSON.stringify(error),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: statusResponse.status }
+          )
+        }
+        
+        const status = await statusResponse.json()
+        console.log(`Upscaling prediction status: ${status.status}`)
+        
+        if (status.status === "succeeded") {
+          console.log("Upscaling succeeded, output:", status.output)
+          return new Response(
+            JSON.stringify({
+              id: status.id,
+              status: status.status,
+              output: status.output,
+              error: null,
+            }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          )
+        } else if (status.status === "failed") {
+          console.error("Upscaling prediction failed:", status.error)
+          return new Response(
+            JSON.stringify({
+              id: status.id,
+              status: status.status,
+              output: null,
+              error: status.error || "Upscaling prediction failed",
+            }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+          )
+        }
+        
+        // Wait before checking again
+        await new Promise(resolve => setTimeout(resolve, 2000))
+        attempts++
+      }
+      
+      return new Response(
+        JSON.stringify({
+          id: prediction.id,
+          status: "timeout",
+          output: null,
+          error: "Upscaling prediction timed out",
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 504 }
+      )
+    } else if (model === "interiorDesign") {
       console.log("Using interior design model with parameters:", { prompt, guidance_scale, negative_prompt, prompt_strength, num_inference_steps })
       
       // Create prediction with the proper URL format and parameters
