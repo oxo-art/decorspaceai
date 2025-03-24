@@ -19,7 +19,7 @@ export interface ReplicateResponse {
 }
 
 /**
- * Calls the Replicate API to transform an image based on a prompt
+ * Calls the Replicate API through a backend server to transform an image based on a prompt
  */
 export const transformImage = async ({
   prompt, 
@@ -39,38 +39,27 @@ export const transformImage = async ({
   }
 
   try {
-    // Get the API token from environment variable
-    const apiToken = import.meta.env.VITE_REPLICATE_API_TOKEN;
-    
-    if (!apiToken) {
-      throw new Error("Replicate API token is not configured. Please set the VITE_REPLICATE_API_TOKEN environment variable.");
-    }
+    // Get the backend API URL from environment variable or use a default value
+    const backendUrl = import.meta.env.VITE_BACKEND_API_URL || "/api/replicate";
     
     console.log("Starting image transformation with model:", model);
     console.log("Parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
     
-    // Define the request body based on the model type
-    const requestBody = {
-      version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
-      input: {
-        image: image,
-        prompt: prompt,
+    // Send the request to the backend server
+    const response = await fetch(backendUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model,
+        prompt,
+        image,
         guidance_scale,
         negative_prompt,
         prompt_strength,
         num_inference_steps
-      }
-    };
-    
-    // Call the Replicate API directly with the "wait" preference
-    const response = await fetch("https://api.replicate.com/v1/predictions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiToken}`,
-        "Content-Type": "application/json",
-        "Prefer": "wait" // This tells the API to wait for the prediction to complete
-      },
-      body: JSON.stringify(requestBody),
+      }),
     });
     
     if (!response.ok) {
@@ -81,18 +70,12 @@ export const transformImage = async ({
     const result = await response.json();
     console.log("API response:", result);
     
-    // Extract the output from the response
-    let outputUrl = null;
-    if (result.output && Array.isArray(result.output) && result.output.length > 0) {
-      outputUrl = result.output[0];
-    }
-    
     // Return the response in the expected format
     return {
-      id: result.id || "replicate-run",
+      id: result.id || "backend-run",
       status: result.status || "success",
-      output: outputUrl,
-      error: null
+      output: result.output || null,
+      error: result.error || null
     };
   } catch (error) {
     console.error("Error transforming image:", error);
