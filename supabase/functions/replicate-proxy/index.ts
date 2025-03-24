@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1"
 
@@ -33,20 +32,7 @@ serve(async (req) => {
     if (model === "interiorDesign") {
       console.log("Using interior design model with parameters:", { prompt, guidance_scale, negative_prompt, prompt_strength, num_inference_steps })
       
-      // This is the correct format for Replicate API - using owner/model:version
-      requestBody = {
-        // Don't use version field directly for this model
-        input: {
-          image: image,
-          prompt: prompt,
-          guidance_scale: guidance_scale || 15,
-          negative_prompt: negative_prompt || "lowres, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, realistic",
-          prompt_strength: prompt_strength || 0.8,
-          num_inference_steps: num_inference_steps || 50
-        },
-      }
-      
-      // Create prediction with the proper URL format
+      // Create prediction with the proper URL format and parameters
       const response = await fetch("https://api.replicate.com/v1/predictions", {
         method: "POST",
         headers: {
@@ -55,7 +41,14 @@ serve(async (req) => {
         },
         body: JSON.stringify({
           version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
-          input: requestBody.input
+          input: {
+            image: image,
+            prompt: prompt,
+            guidance_scale: guidance_scale || 15,
+            negative_prompt: negative_prompt || "lowres, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, realistic",
+            prompt_strength: prompt_strength || 0.8,
+            num_inference_steps: num_inference_steps || 50
+          }
         }),
       })
 
@@ -73,7 +66,7 @@ serve(async (req) => {
       
       // Poll for results
       let attempts = 0
-      const maxAttempts = 30
+      const maxAttempts = 60 // Increased max attempts for longer generation
       
       while (attempts < maxAttempts) {
         const statusResponse = await fetch(
@@ -99,12 +92,12 @@ serve(async (req) => {
         console.log(`Prediction status: ${status.status}`)
         
         if (status.status === "succeeded") {
-          console.log("Prediction succeeded:", status.output)
+          console.log("Prediction succeeded, output:", status.output)
           return new Response(
             JSON.stringify({
               id: status.id,
               status: status.status,
-              output: status.output && status.output[0],
+              output: status.output,
               error: null,
             }),
             { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -123,7 +116,7 @@ serve(async (req) => {
         }
         
         // Wait before checking again
-        await new Promise(resolve => setTimeout(resolve, 1000))
+        await new Promise(resolve => setTimeout(resolve, 2000)) // Increased wait time
         attempts++
       }
       

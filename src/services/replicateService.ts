@@ -63,11 +63,18 @@ export const transformImage = async ({
     
     console.log("Edge Function response:", data);
     
+    // Extract the output URL from the response
+    // The interior design model returns the output as the first element of the output array
+    let outputUrl = null;
+    if (data.output) {
+      outputUrl = Array.isArray(data.output) ? data.output[0] : data.output;
+    }
+    
     // Return the response in the expected format
     return {
       id: data.id || "edge-function-run",
       status: data.status || "success",
-      output: data.output || null,
+      output: outputUrl,
       error: data.error || null
     };
   } catch (error) {
