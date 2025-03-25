@@ -25,8 +25,8 @@ const ImageProcessor: React.FC<ImageProcessorProps> = ({ inputImageUrl, onProces
     const ctx = canvas.getContext('2d');
     if (!ctx) return imageUrl;
     
-    // Increase upscaling factor from 2x to 7x
-    const scaleFactor = 7;
+    // Change upscaling factor from 7x to 5x
+    const scaleFactor = 5;
     canvas.width = img.width;
     canvas.height = img.height;
     
@@ -95,7 +95,7 @@ const ImageProcessor: React.FC<ImageProcessorProps> = ({ inputImageUrl, onProces
     // Put the denoised image data back
     ctx.putImageData(processedData, 0, 0);
     
-    // Create a new canvas for the 7x upscaled image
+    // Create a new canvas for the 5x upscaled image
     const upscaledCanvas = document.createElement('canvas');
     upscaledCanvas.width = img.width * scaleFactor;
     upscaledCanvas.height = img.height * scaleFactor;
@@ -138,7 +138,7 @@ const ImageProcessor: React.FC<ImageProcessorProps> = ({ inputImageUrl, onProces
     const processImage = async () => {
       if (!inputImageUrl) return;
       try {
-        console.log("Processing image for 7x enhancement and strong denoising");
+        console.log("Processing image for 5x enhancement and strong denoising");
         const enhancedUrl = await enhanceImage(inputImageUrl);
         onProcessed(enhancedUrl);
       } catch (error) {
@@ -155,3 +155,4 @@ const ImageProcessor: React.FC<ImageProcessorProps> = ({ inputImageUrl, onProces
 };
 
 export default ImageProcessor;
+
