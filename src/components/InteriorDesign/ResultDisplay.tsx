@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Eye } from 'lucide-react';
 import { toast } from 'sonner';
@@ -7,7 +7,6 @@ import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog";
-import ImageProcessor from './ImageProcessor';
 
 interface ResultDisplayProps {
   isLoading: boolean;
@@ -16,25 +15,13 @@ interface ResultDisplayProps {
 
 const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
-  const [processedImage, setProcessedImage] = useState<string | null>(null);
-  const [processing, setProcessing] = useState(false);
   
-  useEffect(() => {
-    if (output) {
-      setProcessing(true);
-      setProcessedImage(null); // Reset processed image when new output arrives
-    } else {
-      setProcessedImage(null);
-    }
-  }, [output]);
-
   const handleDownload = async () => {
-    const imageToDownload = processedImage || output;
-    if (!imageToDownload) return;
+    if (!output) return;
     
     try {
       // Fetch the image first to handle potential CORS issues
-      const response = await fetch(imageToDownload);
+      const response = await fetch(output);
       if (!response.ok) {
         throw new Error('Failed to download image');
       }
@@ -61,41 +48,22 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
   };
 
   const handlePreview = () => {
-    const imageToPreview = processedImage || output;
-    if (!imageToPreview) return;
+    if (!output) return;
     setIsPreviewDialogOpen(true);
   };
-
-  const handleProcessed = (enhancedImageUrl: string) => {
-    console.log("Image processing complete");
-    setProcessedImage(enhancedImageUrl);
-    setProcessing(false);
-  };
-
-  // Determine which image to display (processed or original)
-  const displayImage = processedImage || output;
 
   return (
     <div>
       <h2 className="text-xl font-medium mb-4">Result</h2>
       
-      {output && !processedImage && (
-        <ImageProcessor inputImageUrl={output} onProcessed={handleProcessed} />
-      )}
-      
       <div className="h-64 bg-gray-100 rounded-lg overflow-hidden relative">
-        {isLoading || processing ? (
+        {isLoading ? (
           <div className="w-full h-full flex items-center justify-center">
             <div className="w-16 h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
-            {processing && output && (
-              <div className="absolute bottom-4 text-sm text-center w-full">
-                Upscaling and enhancing image...
-              </div>
-            )}
           </div>
-        ) : displayImage ? (
+        ) : output ? (
           <img 
-            src={displayImage} 
+            src={output} 
             alt="Output" 
             className="w-full h-full object-contain"
           />
@@ -108,7 +76,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
         )}
       </div>
       
-      {displayImage && (
+      {output && (
         <>
           <div className="mt-4 flex flex-wrap gap-2">
             <Button 
@@ -135,7 +103,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
               <div className="relative bg-background rounded-lg flex flex-col items-center justify-center h-full">
                 <div className="flex-1 w-full flex items-center justify-center p-1">
                   <img 
-                    src={displayImage}
+                    src={output}
                     alt="Interior Design Preview" 
                     className="max-w-[98%] max-h-[98%] object-contain"
                   />
