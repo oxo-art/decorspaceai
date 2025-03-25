@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 
 interface ImageProcessorProps {
   inputImageUrl: string | null;
@@ -7,9 +7,9 @@ interface ImageProcessorProps {
 }
 
 const ImageProcessor: React.FC<ImageProcessorProps> = ({ inputImageUrl, onProcessed }) => {
-  useEffect(() => {
+  React.useEffect(() => {
     if (inputImageUrl) {
-      // Simply pass through the original image without processing
+      // Simply pass through the original image without any processing
       onProcessed(inputImageUrl);
     }
   }, [inputImageUrl, onProcessed]);
