@@ -14,7 +14,7 @@ const OutputSection: React.FC<OutputSectionProps> = ({
   inputImage 
 }) => {
   // Using a key based on the output value will force a re-render when output changes
-  const displayKey = output || 'no-output';
+  const displayKey = output ? `output-${new Date().getTime()}` : 'no-output';
   
   return (
     <div className="space-y-6 animate-scale-in" style={{ animationDelay: '0.2s' }}>
