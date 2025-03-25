@@ -45,7 +45,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
       // Create an anchor element and trigger download
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'interior-design.png';
+      link.download = 'interior-design-enhanced.png';
       document.body.appendChild(link);
       link.click();
       
@@ -67,7 +67,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
   };
 
   const handleProcessed = (enhancedImageUrl: string) => {
-    console.log("Image processing complete");
+    console.log("7x upscaled and denoised image processing complete");
     setProcessedImage(enhancedImageUrl);
     setProcessing(false);
   };
@@ -89,7 +89,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
             <div className="w-16 h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
             {processing && output && (
               <div className="absolute bottom-4 text-sm text-center w-full">
-                Upscaling and enhancing image...
+                Upscaling (7x) and denoising image...
               </div>
             )}
           </div>
@@ -98,6 +98,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
             src={displayImage} 
             alt="Output" 
             className="w-full h-full object-contain"
+            key={`img-${Date.now()}`} // Force new image element on change
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -109,26 +110,24 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
       </div>
       
       {displayImage && (
-        <>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Button 
-              variant="outline" 
-              className="flex-1"
-              onClick={handleDownload}
-            >
-              <Download className="mr-2 h-4 w-4" />
-              Download
-            </Button>
-            
-            <Button 
-              variant="outline"
-              className="flex-1"
-              onClick={handlePreview}
-            >
-              <Eye className="mr-2 h-4 w-4" />
-              Preview
-            </Button>
-          </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Button 
+            variant="outline" 
+            className="flex-1"
+            onClick={handleDownload}
+          >
+            <Download className="mr-2 h-4 w-4" />
+            Download
+          </Button>
+          
+          <Button 
+            variant="outline"
+            className="flex-1"
+            onClick={handlePreview}
+          >
+            <Eye className="mr-2 h-4 w-4" />
+            Preview
+          </Button>
           
           <Dialog open={isPreviewDialogOpen} onOpenChange={setIsPreviewDialogOpen}>
             <DialogContent className="max-w-[98vw] w-[98vw] max-h-[98vh] h-[98vh] p-0 border bg-background">
@@ -138,6 +137,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
                     src={displayImage}
                     alt="Interior Design Preview" 
                     className="max-w-[98%] max-h-[98%] object-contain"
+                    key={`preview-${Date.now()}`} // Force new image on preview
                   />
                 </div>
                 <div className="flex gap-4 justify-center p-2 border-t w-full">
@@ -146,7 +146,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
                     className="flex items-center gap-2"
                   >
                     <Download className="h-5 w-5" />
-                    Download Image
+                    Download Enhanced Image
                   </Button>
                   <Button 
                     variant="outline"
@@ -158,7 +158,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
               </div>
             </DialogContent>
           </Dialog>
-        </>
+        </div>
       )}
     </div>
   );

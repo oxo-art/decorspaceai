@@ -25,73 +25,120 @@ const ImageProcessor: React.FC<ImageProcessorProps> = ({ inputImageUrl, onProces
     const ctx = canvas.getContext('2d');
     if (!ctx) return imageUrl;
     
-    // Double the resolution
-    const scaleFactor = 2;
-    canvas.width = img.width * scaleFactor;
-    canvas.height = img.height * scaleFactor;
+    // Increase upscaling factor from 2x to 7x
+    const scaleFactor = 7;
+    canvas.width = img.width;
+    canvas.height = img.height;
     
-    // Clear any previous content
+    // Clear canvas completely
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Apply high-quality scaling settings
+    // High quality settings
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
     
-    // Step 1: First draw at original size
+    // Draw original image to canvas
     ctx.drawImage(img, 0, 0, img.width, img.height);
     
-    // Get the image data at original size
+    // Get the original pixel data for denoising
     const originalData = ctx.getImageData(0, 0, img.width, img.height);
+    const pixels = originalData.data;
     
-    // Create a temp canvas for processing
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = img.width;
-    tempCanvas.height = img.height;
-    const tempCtx = tempCanvas.getContext('2d');
-    if (!tempCtx) return canvas.toDataURL('image/jpeg', 0.95);
+    // Apply more aggressive denoising - median filter simulation
+    // Create a copy of the image data for processing
+    const processedData = new ImageData(
+      new Uint8ClampedArray(pixels), 
+      originalData.width, 
+      originalData.height
+    );
+    const processedPixels = processedData.data;
     
-    // Copy the current state to temp canvas
-    tempCtx.putImageData(originalData, 0, 0);
+    // Apply multiple passes of smoothing for stronger denoising
+    for (let pass = 0; pass < 3; pass++) {
+      // Apply a simple box blur for denoising
+      for (let y = 1; y < img.height - 1; y++) {
+        for (let x = 1; x < img.width - 1; x++) {
+          for (let c = 0; c < 3; c++) { // Only process RGB channels, not alpha
+            const idx = (y * img.width + x) * 4 + c;
+            
+            // Get surrounding pixels (3x3 kernel)
+            const neighbors = [
+              pixels[(y-1) * img.width + (x-1) * 4 + c],
+              pixels[(y-1) * img.width + x * 4 + c],
+              pixels[(y-1) * img.width + (x+1) * 4 + c],
+              pixels[y * img.width + (x-1) * 4 + c],
+              pixels[y * img.width + x * 4 + c],
+              pixels[y * img.width + (x+1) * 4 + c],
+              pixels[(y+1) * img.width + (x-1) * 4 + c],
+              pixels[(y+1) * img.width + x * 4 + c],
+              pixels[(y+1) * img.width + (x+1) * 4 + c]
+            ];
+            
+            // Calculate average (could be expanded to median for better results)
+            const sum = neighbors.reduce((a, b) => a + b, 0);
+            processedPixels[idx] = Math.floor(sum / neighbors.length);
+          }
+        }
+      }
+      
+      // Copy processed pixels back to original array for next pass
+      if (pass < 2) {
+        for (let i = 0; i < pixels.length; i++) {
+          pixels[i] = processedPixels[i];
+        }
+      }
+    }
     
-    // Step 2: Apply mild denoising
-    // Clear the main canvas first
+    // Clear canvas again
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Redraw the original image
-    ctx.drawImage(img, 0, 0, img.width, img.height);
+    // Put the denoised image data back
+    ctx.putImageData(processedData, 0, 0);
     
-    // Blend with the temp canvas for subtle smoothing
-    ctx.globalAlpha = 0.5;
-    for(let i = 0; i < 2; i++) {
-      ctx.drawImage(tempCanvas, 0, 0, img.width, img.height);
+    // Create a new canvas for the 7x upscaled image
+    const upscaledCanvas = document.createElement('canvas');
+    upscaledCanvas.width = img.width * scaleFactor;
+    upscaledCanvas.height = img.height * scaleFactor;
+    const upscaledCtx = upscaledCanvas.getContext('2d');
+    
+    if (!upscaledCtx) return canvas.toDataURL('image/jpeg', 0.95);
+    
+    // Apply high quality scaling
+    upscaledCtx.imageSmoothingEnabled = true;
+    upscaledCtx.imageSmoothingQuality = 'high';
+    upscaledCtx.clearRect(0, 0, upscaledCanvas.width, upscaledCanvas.height);
+    
+    // Draw the denoised image with upscaling
+    upscaledCtx.drawImage(
+      canvas, 
+      0, 0, img.width, img.height, 
+      0, 0, upscaledCanvas.width, upscaledCanvas.height
+    );
+    
+    // Apply a final sharpening pass to enhance details after upscaling
+    const sharpened = upscaledCtx.getImageData(0, 0, upscaledCanvas.width, upscaledCanvas.height);
+    const sharpenedData = sharpened.data;
+    
+    // Sharpening is computationally expensive, so we'll use a simpler enhancing approach
+    for (let i = 0; i < sharpenedData.length; i += 4) {
+      // Boost contrast slightly
+      for (let j = 0; j < 3; j++) {
+        const value = sharpenedData[i + j];
+        sharpenedData[i + j] = Math.max(0, Math.min(255, value * 1.1 - 12));
+      }
     }
-    ctx.globalAlpha = 1.0;
     
-    // Step 3: Now upscale the smoothed image to full resolution
-    // Create a final canvas for upscaling
-    const finalCanvas = document.createElement('canvas');
-    finalCanvas.width = img.width * scaleFactor;
-    finalCanvas.height = img.height * scaleFactor;
-    const finalCtx = finalCanvas.getContext('2d');
-    if (!finalCtx) return canvas.toDataURL('image/jpeg', 0.95);
-    
-    // Clear the final canvas
-    finalCtx.clearRect(0, 0, finalCanvas.width, finalCanvas.height);
-    
-    // Draw with upscaling to the final canvas
-    finalCtx.imageSmoothingEnabled = true;
-    finalCtx.imageSmoothingQuality = 'high';
-    finalCtx.drawImage(canvas, 0, 0, img.width, img.height, 0, 0, finalCanvas.width, finalCanvas.height);
+    upscaledCtx.putImageData(sharpened, 0, 0);
     
     // Return as data URL with high quality
-    return finalCanvas.toDataURL('image/jpeg', 0.95);
+    return upscaledCanvas.toDataURL('image/jpeg', 1.0);
   };
   
   useEffect(() => {
     const processImage = async () => {
       if (!inputImageUrl) return;
       try {
-        console.log("Processing image for enhancement and upscaling");
+        console.log("Processing image for 7x enhancement and strong denoising");
         const enhancedUrl = await enhanceImage(inputImageUrl);
         onProcessed(enhancedUrl);
       } catch (error) {
