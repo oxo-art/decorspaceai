@@ -13,7 +13,7 @@ const OutputSection: React.FC<OutputSectionProps> = ({
   output, 
   inputImage 
 }) => {
-  // Using a key with timestamp to force a complete re-render when output changes
+  // Using a key based on the output value will force a re-render when output changes
   const displayKey = output ? `output-${new Date().getTime()}` : 'no-output';
   
   return (
