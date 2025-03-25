@@ -25,54 +25,61 @@ const ImageProcessor: React.FC<ImageProcessorProps> = ({ inputImageUrl, onProces
     const ctx = canvas.getContext('2d');
     if (!ctx) return imageUrl;
     
-    // Create a clean canvas with proper dimensions
-    canvas.width = img.width * 2;  // Double the resolution
-    canvas.height = img.height * 2;
+    // Double the resolution
+    const scaleFactor = 2;
+    canvas.width = img.width * scaleFactor;
+    canvas.height = img.height * scaleFactor;
     
-    // Clear any previous content
+    // Clear any previous content to avoid ghosting
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     // Apply high-quality scaling settings
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
     
-    // Draw the image at the higher resolution
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    // Step 1: First draw at original size
+    ctx.drawImage(img, 0, 0, img.width, img.height);
     
-    // Apply a light denoise effect
-    // This is a simple implementation that slightly blurs the image to reduce noise
+    // Create a temp canvas for processing
     const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = img.width;
+    tempCanvas.height = img.height;
     const tempCtx = tempCanvas.getContext('2d');
     if (!tempCtx) return canvas.toDataURL('image/jpeg', 0.95);
     
-    tempCanvas.width = canvas.width;
-    tempCanvas.height = canvas.height;
+    // Copy the current state to temp canvas
+    tempCtx.drawImage(canvas, 0, 0, img.width, img.height);
     
-    // Copy our current canvas to the temp canvas
-    tempCtx.drawImage(canvas, 0, 0);
-    
-    // Clear the main canvas
+    // Step 2: Mild denoising by blending
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Draw the original image
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    
-    // Blend with slight blur for denoising (less aggressive approach)
-    ctx.globalAlpha = 0.3;
-    ctx.filter = 'blur(0.5px)';
-    ctx.drawImage(tempCanvas, 0, 0);
-    ctx.filter = 'none';
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+    ctx.globalAlpha = 0.5;
+    for(let i = 0; i < 2; i++) {
+      ctx.drawImage(tempCanvas, 0, 0, img.width, img.height);
+    }
     ctx.globalAlpha = 1.0;
     
+    // Step 3: Now upscale the smoothed image to full resolution
+    const finalCanvas = document.createElement('canvas');
+    finalCanvas.width = img.width * scaleFactor;
+    finalCanvas.height = img.height * scaleFactor;
+    const finalCtx = finalCanvas.getContext('2d');
+    if (!finalCtx) return canvas.toDataURL('image/jpeg', 0.95);
+    
+    // Draw with upscaling
+    finalCtx.imageSmoothingEnabled = true;
+    finalCtx.imageSmoothingQuality = 'high';
+    finalCtx.drawImage(canvas, 0, 0, img.width, img.height, 0, 0, finalCanvas.width, finalCanvas.height);
+    
     // Return as data URL with high quality
-    return canvas.toDataURL('image/jpeg', 0.95);
+    return finalCanvas.toDataURL('image/jpeg', 0.95);
   };
   
   useEffect(() => {
     const processImage = async () => {
       if (!inputImageUrl) return;
       try {
-        console.log("Processing image for enhancement");
+        console.log("Processing image for enhancement and upscaling");
         const enhancedUrl = await enhanceImage(inputImageUrl);
         onProcessed(enhancedUrl);
       } catch (error) {

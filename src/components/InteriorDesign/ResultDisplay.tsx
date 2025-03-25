@@ -89,7 +89,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
             <div className="w-16 h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
             {processing && output && (
               <div className="absolute bottom-4 text-sm text-center w-full">
-                Enhancing image quality...
+                Upscaling and enhancing image...
               </div>
             )}
           </div>
