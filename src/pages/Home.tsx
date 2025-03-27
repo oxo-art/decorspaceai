@@ -22,7 +22,7 @@ const Home = () => {
           <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
             <div className="aspect-video bg-gray-100 rounded-md mb-4 flex items-center justify-center">
               <img 
-                src="/lovable-uploads/6f3792db-c16f-42f9-919f-03113887daae.png" 
+                src="/lovable-uploads/bc5aa77c-1bd3-4502-b3eb-f4b4e047546a.png" 
                 alt="Decorspace AI" 
                 className="h-24 object-contain"
               />
