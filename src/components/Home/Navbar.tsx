@@ -9,7 +9,7 @@ const Navbar = () => {
   
   return (
     <div className="bg-white w-full shadow-sm fixed top-0 z-10">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Left side - Hamburger menu */}
         <div className="flex items-center">
           <Button 
@@ -25,9 +25,9 @@ const Navbar = () => {
         {/* Center - Logo */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
           <img 
-            src="/lovable-uploads/33a8770c-a08b-4e70-bea1-af85d43c01e6.png" 
+            src="/lovable-uploads/37d0ffa0-0417-431c-8ecc-ccdd2cf2e2b4.png" 
             alt="DecorspaceAI Logo" 
-            className="h-14 object-contain"
+            className="h-16 md:h-20 object-contain" 
           />
         </div>
         
