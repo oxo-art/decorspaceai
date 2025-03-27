@@ -20,13 +20,13 @@ const Home = () => {
             Upload a photo of your room and get stunning design transformations instantly.
           </p>
           
-          <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl mb-8">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md w-full max-w-4xl mb-8">
             {/* Before/After Image Slider */}
             <div className="mb-6">
               <ImageSlider 
                 beforeImage="/lovable-uploads/acfd0014-3a08-4687-955b-28675e7d4974.png"
                 afterImage="/lovable-uploads/d202f99a-be0d-49aa-969e-8f2fb0ed8042.png"
-                height="450px"
+                height="350px"
               />
             </div>
             
