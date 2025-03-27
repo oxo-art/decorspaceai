@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,9 @@ export default {
 			}
 		},
 		extend: {
+			height: {
+				'16.5': '4rem',
+			},
 			fontFamily: {
 				'jacques-francois-shadow': ['"Jacques Francois Shadow"', 'cursive'],
 				'volkhov': ['Volkhov', 'serif'],
