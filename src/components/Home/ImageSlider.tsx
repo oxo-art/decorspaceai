@@ -63,6 +63,10 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
     };
   }, []);
 
+  // Calculate visibility for the before and after labels based on slider position
+  const beforeLabelOpacity = sliderPosition <= 10 ? 0 : 1;
+  const afterLabelOpacity = sliderPosition >= 90 ? 0 : 1;
+
   return (
     <div 
       className="relative w-full h-full rounded-lg overflow-hidden shadow-md" 
@@ -114,11 +118,17 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
           </div>
         </div>
         
-        {/* Labels */}
-        <div className="absolute top-4 left-4 bg-black bg-opacity-60 text-white px-2 py-1 text-sm rounded-md font-medium">
+        {/* Labels with dynamic visibility */}
+        <div 
+          className="absolute top-4 left-4 bg-black bg-opacity-60 text-white px-2 py-1 text-sm rounded-md font-medium transition-opacity duration-300"
+          style={{ opacity: beforeLabelOpacity }}
+        >
           Before
         </div>
-        <div className="absolute top-4 right-4 bg-black bg-opacity-60 text-white px-2 py-1 text-sm rounded-md font-medium">
+        <div 
+          className="absolute top-4 right-4 bg-black bg-opacity-60 text-white px-2 py-1 text-sm rounded-md font-medium transition-opacity duration-300"
+          style={{ opacity: afterLabelOpacity }}
+        >
           After
         </div>
       </div>
