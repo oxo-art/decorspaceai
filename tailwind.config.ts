@@ -22,6 +22,7 @@ export default {
 			height: {
 				'16.5': '4rem',
 				'20': '5rem',
+				'22': '5.5rem',
 				'24': '6rem',
 			},
 			fontFamily: {
