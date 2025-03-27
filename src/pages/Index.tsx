@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
@@ -66,11 +67,11 @@ const Index = () => {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-4xl animate-fade-in">
-        <div className="mb-4">
+        <div className="mb-6">
           <Button 
             variant="outline" 
             onClick={handleGoBack} 
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 hover:bg-gray-100"
           >
             <ArrowLeft className="h-4 w-4" /> Back to Home
           </Button>

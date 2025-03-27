@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Navbar from '@/components/Home/Navbar';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
@@ -30,12 +31,12 @@ const Home = () => {
             <p className="text-gray-600 mb-4">
               Our AI-powered tool helps you visualize new design possibilities for any room in your home.
             </p>
-            <a 
-              href="/" 
+            <Link 
+              to="/design" 
               className="inline-block w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-3 px-4 rounded-md text-center transition-colors"
             >
               Start Designing Now
-            </a>
+            </Link>
           </div>
         </div>
       </div>

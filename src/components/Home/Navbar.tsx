@@ -34,7 +34,7 @@ const Navbar = () => {
         {/* Right side - Get Started button */}
         <div>
           <Button asChild className="bg-yellow-500 hover:bg-yellow-600 text-black">
-            <Link to="/" className="flex items-center gap-2">
+            <Link to="/design" className="flex items-center gap-2">
               Get Started <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
@@ -51,6 +51,13 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Home
+            </Link>
+            <Link 
+              to="/design" 
+              className="text-gray-700 hover:text-yellow-500 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Design Tool
             </Link>
             <Link 
               to="/about" 
