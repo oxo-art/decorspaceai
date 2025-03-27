@@ -63,9 +63,11 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
     };
   }, []);
 
-  // Calculate visibility for the before and after labels based on slider position
-  const beforeLabelOpacity = sliderPosition >= 90 ? 0 : 1; // Hide "Before" when slider is far right
-  const afterLabelOpacity = sliderPosition <= 10 ? 0 : 1;  // Hide "After" when slider is far left
+  // Updated visibility logic for labels
+  // "Before" label should be visible when slider is on the right side (showing more of the "before" image)
+  // "After" label should be visible when slider is on the left side (showing more of the "after" image)
+  const beforeLabelOpacity = sliderPosition <= 10 ? 0 : 1; // Hide "Before" when slider is far left
+  const afterLabelOpacity = sliderPosition >= 90 ? 0 : 1;  // Hide "After" when slider is far right
 
   return (
     <div 
@@ -118,7 +120,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
           </div>
         </div>
         
-        {/* Labels with dynamic visibility */}
+        {/* Labels with updated visibility logic */}
         <div 
           className="absolute top-4 left-4 bg-black bg-opacity-60 text-white px-2 py-1 text-sm rounded-md font-medium transition-opacity duration-300"
           style={{ opacity: beforeLabelOpacity }}
