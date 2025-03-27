@@ -22,11 +22,12 @@ const Home = () => {
           
           <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md w-full max-w-4xl mb-8">
             {/* Before/After Image Slider */}
-            <div className="mb-6">
+            <div className="aspect-video w-full mb-6">
               <ImageSlider 
                 beforeImage="/lovable-uploads/acfd0014-3a08-4687-955b-28675e7d4974.png"
                 afterImage="/lovable-uploads/d202f99a-be0d-49aa-969e-8f2fb0ed8042.png"
-                height="350px"
+                height="100%"
+                width="100%"
               />
             </div>
             

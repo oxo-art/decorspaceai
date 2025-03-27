@@ -7,12 +7,14 @@ interface ImageSliderProps {
   beforeImage: string;
   afterImage: string;
   height?: string;
+  width?: string;
 }
 
 const ImageSlider: React.FC<ImageSliderProps> = ({ 
   beforeImage, 
   afterImage,
-  height = "400px"
+  height = "400px",
+  width = "100%"
 }) => {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
@@ -63,8 +65,8 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
 
   return (
     <div 
-      className="relative w-full rounded-lg overflow-hidden shadow-md" 
-      style={{ height }}
+      className="relative w-full h-full rounded-lg overflow-hidden shadow-md" 
+      style={{ height, width }}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
       onTouchMove={handleMouseMove}
