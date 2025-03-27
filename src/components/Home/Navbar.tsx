@@ -25,8 +25,8 @@ const Navbar = () => {
         {/* Center - Logo */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
           <img 
-            src="/lovable-uploads/167a336d-2803-4201-820b-9676d50b2bd7.png" 
-            alt="Decorspace AI Logo" 
+            src="/lovable-uploads/1e828da8-53f1-405a-9662-204b50272204.png" 
+            alt="Interior Design Logo" 
             className="h-14"
           />
         </div>

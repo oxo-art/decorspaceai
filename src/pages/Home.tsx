@@ -22,15 +22,11 @@ const Home = () => {
           <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
             <div className="aspect-video bg-gray-100 rounded-md mb-4 flex items-center justify-center">
               <img 
-                src="/lovable-uploads/167a336d-2803-4201-820b-9676d50b2bd7.png" 
-                alt="Decorspace AI" 
+                src="/lovable-uploads/1e828da8-53f1-405a-9662-204b50272204.png" 
+                alt="Interior Design" 
                 className="h-24 object-contain"
               />
             </div>
-            <h2 className="text-xl font-semibold mb-2">Ready to redesign your space?</h2>
-            <p className="text-gray-600 mb-4">
-              Our AI-powered tool helps you visualize new design possibilities for any room in your home.
-            </p>
             <Link 
               to="/design" 
               className="inline-block w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-3 px-4 rounded-md text-center transition-colors"
