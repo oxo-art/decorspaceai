@@ -21,6 +21,8 @@ export default {
 		extend: {
 			height: {
 				'16.5': '4rem',
+				'20': '5rem',
+				'24': '6rem',
 			},
 			fontFamily: {
 				'jacques-francois-shadow': ['"Jacques Francois Shadow"', 'cursive'],
