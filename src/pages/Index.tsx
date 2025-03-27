@@ -1,12 +1,9 @@
 
 import React, { useState } from 'react';
 import { toast } from 'sonner';
-import { ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import InputSection from '@/components/InteriorDesign/InputSection';
 import OutputSection from '@/components/InteriorDesign/OutputSection';
 import { transformImage } from '@/services/replicateService';
-import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const [image, setImage] = useState<string | null>(null);
@@ -64,16 +61,7 @@ const Index = () => {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-4xl animate-fade-in">
-        <div className="bg-yellow-50 p-6 rounded-lg mb-8 shadow-sm border border-yellow-100 relative">
-          <Button
-            asChild
-            variant="ghost"
-            className="absolute left-4 top-4"
-          >
-            <Link to="/" className="flex items-center gap-2">
-              <ArrowLeft className="h-4 w-4" /> Back to Home
-            </Link>
-          </Button>
+        <div className="bg-yellow-50 p-6 rounded-lg mb-8 shadow-sm border border-yellow-100">
           <h1 className="text-3xl md:text-4xl font-volkhov text-gunmetal text-center mb-2 tracking-tight">
             Decorspace <span className="font-semibold">AI</span>
           </h1>
