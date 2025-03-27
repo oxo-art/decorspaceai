@@ -29,7 +29,7 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/37d0ffa0-0417-431c-8ecc-ccdd2cf2e2b4.png" 
             alt="DecorspaceAI Logo" 
-            className="h-16 md:h-20 object-contain" 
+            className="h-18 md:h-22 object-contain" 
           />
         </div>
         
