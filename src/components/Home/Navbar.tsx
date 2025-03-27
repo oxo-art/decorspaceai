@@ -29,7 +29,7 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/37d0ffa0-0417-431c-8ecc-ccdd2cf2e2b4.png" 
             alt="DecorspaceAI Logo" 
-            className="h-20 md:h-24 object-contain" 
+            className="h-16 md:h-20 object-contain" 
           />
         </div>
         
@@ -37,9 +37,9 @@ const Navbar = () => {
         <div>
           <Button 
             asChild 
-            className={`bg-yellow-500 hover:bg-yellow-600 text-black ${isMobile ? 'px-3 py-1 text-sm' : ''}`}
+            className={`bg-yellow-500 hover:bg-yellow-600 text-black ${isMobile ? 'px-2 py-1 text-xs' : 'px-3 py-1.5'}`}
           >
-            <Link to="/design" className="flex items-center gap-2">
+            <Link to="/design" className="flex items-center gap-1">
               Get Started <ArrowRight className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'}`} />
             </Link>
           </Button>
