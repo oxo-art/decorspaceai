@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { Menu, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isMobile = useIsMobile();
   
   return (
     <div className="bg-white w-full shadow-sm fixed top-0 z-10">
@@ -27,15 +29,18 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/37d0ffa0-0417-431c-8ecc-ccdd2cf2e2b4.png" 
             alt="DecorspaceAI Logo" 
-            className="h-16 md:h-20 object-contain" 
+            className="h-20 md:h-24 object-contain" 
           />
         </div>
         
         {/* Right side - Get Started button */}
         <div>
-          <Button asChild className="bg-yellow-500 hover:bg-yellow-600 text-black">
+          <Button 
+            asChild 
+            className={`bg-yellow-500 hover:bg-yellow-600 text-black ${isMobile ? 'px-3 py-1 text-sm' : ''}`}
+          >
             <Link to="/design" className="flex items-center gap-2">
-              Get Started <ArrowRight className="h-4 w-4" />
+              Get Started <ArrowRight className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'}`} />
             </Link>
           </Button>
         </div>
