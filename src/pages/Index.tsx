@@ -1,11 +1,14 @@
-
 import React, { useState } from 'react';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import InputSection from '@/components/InteriorDesign/InputSection';
 import OutputSection from '@/components/InteriorDesign/OutputSection';
 import { transformImage } from '@/services/replicateService';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
+  const navigate = useNavigate();
   const [image, setImage] = useState<string | null>(null);
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +21,10 @@ const Index = () => {
     num_inference_steps: 100
   });
 
+  const handleGoBack = () => {
+    navigate('/');
+  };
+
   const handleGenerate = async () => {
     if (!image) {
       toast.error('Please upload an image first');
@@ -29,7 +36,6 @@ const Index = () => {
       return;
     }
     
-    // Clear the current output first to ensure UI refresh
     setOutput(null);
     setIsLoading(true);
     
@@ -44,7 +50,6 @@ const Index = () => {
       });
       
       if (result.output) {
-        // Set the output directly without any post-processing
         setOutput(result.output);
         toast.success('Image transformed successfully!');
       } else {
@@ -61,6 +66,16 @@ const Index = () => {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 p-4 sm:p-6 md:p-8">
       <div className="w-full max-w-4xl animate-fade-in">
+        <div className="mb-4">
+          <Button 
+            variant="outline" 
+            onClick={handleGoBack} 
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back to Home
+          </Button>
+        </div>
+
         <div className="bg-yellow-50 p-6 rounded-lg mb-8 shadow-sm border border-yellow-100">
           <h1 className="text-3xl md:text-4xl font-volkhov text-gunmetal text-center mb-2 tracking-tight">
             Decorspace <span className="font-semibold">AI</span>
