@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Menu, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -25,7 +24,7 @@ const Navbar = () => {
         </div>
         
         {/* Center - Logo */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 pt-1.5">
+        <div className="absolute left-1/2 transform -translate-x-1/2">
           <img 
             src="/lovable-uploads/37d0ffa0-0417-431c-8ecc-ccdd2cf2e2b4.png" 
             alt="DecorspaceAI Logo" 
