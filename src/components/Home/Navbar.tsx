@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Menu, ArrowRight } from "lucide-react";
+import { Menu, ArrowRight, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -25,14 +25,19 @@ const Navbar = () => {
         {/* Center - Logo */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
           <img 
-            src="/lovable-uploads/6f3792db-c16f-42f9-919f-03113887daae.png" 
+            src="/lovable-uploads/331de363-a3ac-4e9a-b97c-516306902109.png" 
             alt="Decorspace AI Logo" 
-            className="h-14"
+            className="h-14 object-contain"
           />
         </div>
         
-        {/* Right side - Get Started button */}
-        <div>
+        {/* Right side - Get Started and Login buttons */}
+        <div className="flex gap-2">
+          <Button asChild variant="outline" className="border-yellow-500 text-yellow-500 hover:bg-yellow-50">
+            <Link to="/login" className="flex items-center gap-2">
+              <LogIn className="h-4 w-4" /> Login
+            </Link>
+          </Button>
           <Button asChild className="bg-yellow-500 hover:bg-yellow-600 text-black">
             <Link to="/design" className="flex items-center gap-2">
               Get Started <ArrowRight className="h-4 w-4" />
@@ -65,6 +70,13 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               About
+            </Link>
+            <Link 
+              to="/login" 
+              className="text-gray-700 hover:text-yellow-500 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Login
             </Link>
           </nav>
         </div>
