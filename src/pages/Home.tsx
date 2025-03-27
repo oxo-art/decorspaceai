@@ -31,7 +31,7 @@ const Home = () => {
               Our AI-powered tool helps you visualize new design possibilities for any room in your home.
             </p>
             <a 
-              href="/" 
+              href="/design" 
               className="inline-block w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-3 px-4 rounded-md text-center transition-colors"
             >
               Start Designing Now
