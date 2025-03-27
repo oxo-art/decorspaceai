@@ -24,8 +24,8 @@ const Home = () => {
             {/* Before/After Image Slider */}
             <div className="aspect-video w-full mb-6">
               <ImageSlider 
-                beforeImage="/lovable-uploads/6fc60683-eb0b-4727-88c4-240b41938100.png"
-                afterImage="/lovable-uploads/1b84c0df-9209-423d-94c0-cb57a7e8bdfe.png"
+                beforeImage="/lovable-uploads/94c24d1d-67a0-492f-b6f5-2815a0d3f9bb.png"
+                afterImage="/lovable-uploads/331bdecb-56f0-43be-82cd-82f99d7af3e5.png"
                 height="100%"
                 width="100%"
               />
