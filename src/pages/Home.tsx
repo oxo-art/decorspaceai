@@ -2,6 +2,7 @@
 import React from 'react';
 import Navbar from '@/components/Home/Navbar';
 import { Link } from 'react-router-dom';
+import ImageSlider from '@/components/Home/ImageSlider';
 
 const Home = () => {
   return (
@@ -19,14 +20,16 @@ const Home = () => {
             Upload a photo of your room and get stunning design transformations instantly.
           </p>
           
-          <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-            <div className="aspect-video bg-gray-100 rounded-md mb-4 flex items-center justify-center">
-              <img 
-                src="/lovable-uploads/1e828da8-53f1-405a-9662-204b50272204.png" 
-                alt="Interior Design" 
-                className="h-24 object-contain"
+          <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl mb-8">
+            {/* Before/After Image Slider */}
+            <div className="mb-6">
+              <ImageSlider 
+                beforeImage="/lovable-uploads/acfd0014-3a08-4687-955b-28675e7d4974.png"
+                afterImage="/lovable-uploads/d202f99a-be0d-49aa-969e-8f2fb0ed8042.png"
+                height="450px"
               />
             </div>
+            
             <Link 
               to="/design" 
               className="inline-block w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-3 px-4 rounded-md text-center transition-colors"
