@@ -4,9 +4,9 @@ import Navbar from '@/components/Home/Navbar';
 import { Link } from 'react-router-dom';
 import ImageSlider from '@/components/Home/ImageSlider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Home, ImageIcon, Magic } from 'lucide-react';
+import { HomeIcon, ImageIcon, Wand2 } from 'lucide-react';
 
-const Home = () => {
+const HomePage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -50,7 +50,7 @@ const Home = () => {
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <Home className="h-6 w-6 text-yellow-500" />
+                    <HomeIcon className="h-6 w-6 text-yellow-500" />
                     Upload Your Space
                   </CardTitle>
                 </CardHeader>
@@ -78,7 +78,7 @@ const Home = () => {
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <Magic className="h-6 w-6 text-yellow-500" />
+                    <Wand2 className="h-6 w-6 text-yellow-500" />
                     AI Transformation
                   </CardTitle>
                 </CardHeader>
@@ -96,5 +96,4 @@ const Home = () => {
   );
 };
 
-export default Home;
-
+export default HomePage;
