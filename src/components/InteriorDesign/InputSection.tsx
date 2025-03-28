@@ -1,3 +1,4 @@
+
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
@@ -45,7 +46,7 @@ const InputSection: React.FC<InputSectionProps> = ({
       <Card className="overflow-hidden border border-gray-200 shadow-sm">
         <div className="p-6">
           <h2 className="text-xl font-medium mb-4 flex items-center gap-2">
-            <Camera className="h-5 w-5 text-yellow-500" /> Upload 📷
+            <Camera className="h-5 w-5 text-yellow-500" /> Upload
           </h2>
           
           <ImageUpload 

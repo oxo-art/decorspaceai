@@ -19,7 +19,7 @@ const OutputSection: React.FC<OutputSectionProps> = ({
       <Card className="overflow-hidden border border-gray-200 shadow-sm">
         <div className="p-6">
           <h2 className="text-xl font-medium mb-4 flex items-center gap-2">
-            <PartyPopper className="h-5 w-5 text-yellow-500" /> Design 🎉
+            <PartyPopper className="h-5 w-5 text-yellow-500" /> 
           </h2>
           <ResultDisplay 
             isLoading={isLoading} 
