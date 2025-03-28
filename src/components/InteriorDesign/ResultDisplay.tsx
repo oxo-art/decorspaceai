@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Eye } from 'lucide-react';
@@ -54,8 +53,6 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
 
   return (
     <div>
-      <h2 className="text-xl font-medium mb-4">Result</h2>
-      
       <div className="h-64 bg-gray-100 rounded-lg overflow-hidden relative">
         {isLoading ? (
           <div className="w-full h-full flex items-center justify-center">
