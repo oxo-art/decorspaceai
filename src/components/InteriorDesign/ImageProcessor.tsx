@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface ImageProcessorProps {
   inputImageUrl: string | null;
@@ -7,9 +7,9 @@ interface ImageProcessorProps {
 }
 
 const ImageProcessor: React.FC<ImageProcessorProps> = ({ inputImageUrl, onProcessed }) => {
-  React.useEffect(() => {
+  useEffect(() => {
     if (inputImageUrl) {
-      // Simply pass through the original image without any processing
+      // Process the image immediately without delay
       onProcessed(inputImageUrl);
     }
   }, [inputImageUrl, onProcessed]);

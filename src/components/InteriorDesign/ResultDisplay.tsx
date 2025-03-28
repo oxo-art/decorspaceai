@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Eye } from 'lucide-react';
@@ -10,9 +11,10 @@ import {
 interface ResultDisplayProps {
   isLoading: boolean;
   output: string | null;
+  inputImage?: string | null;
 }
 
-const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
+const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output, inputImage }) => {
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
   
   const handleDownload = async () => {

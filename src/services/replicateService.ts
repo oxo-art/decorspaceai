@@ -51,7 +51,13 @@ export const transformImage = async ({
       scale
     });
     
-    const { data, error } = await supabase.functions.invoke("replicate-proxy", {
+    // Set a timeout for the API call to prevent excessive waiting
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error("Request timed out after 60 seconds")), 60000);
+    });
+    
+    // Create the actual API call promise
+    const apiCallPromise = supabase.functions.invoke("replicate-proxy", {
       body: {
         model,
         prompt,
@@ -63,6 +69,9 @@ export const transformImage = async ({
         scale
       }
     });
+    
+    // Race between the timeout and the API call
+    const { data, error } = await Promise.race([apiCallPromise, timeoutPromise]) as any;
     
     if (error) {
       console.error("Error calling Edge Function:", error);

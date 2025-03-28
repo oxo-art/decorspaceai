@@ -12,6 +12,9 @@ export const handleInteriorDesignModel = async (
 ) => {
   console.log("Using interior design model with parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
   
+  // Optimize inference steps - reduce from default 50 to 30 for faster generation
+  const optimizedSteps = Math.min(num_inference_steps, 30);
+  
   // Create prediction with the proper URL format and parameters
   const response = await fetch("https://api.replicate.com/v1/predictions", {
     method: "POST",
@@ -27,7 +30,7 @@ export const handleInteriorDesignModel = async (
         guidance_scale: guidance_scale,
         negative_prompt: negative_prompt,
         prompt_strength: prompt_strength,
-        num_inference_steps: num_inference_steps
+        num_inference_steps: optimizedSteps
       }
     }),
   });
