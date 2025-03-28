@@ -13,7 +13,7 @@ const Home = () => {
       <div className="pt-24 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-5xl font-volkhov text-gunmetal font-bold mb-4">
-            Transform Your Living Spaces
+            Transform Your Living Space
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mb-8">
             Experience the power of AI to reimagine and enhance your interior spaces with just a few clicks.
@@ -24,7 +24,7 @@ const Home = () => {
             {/* Before/After Image Slider */}
             <div className="aspect-video w-full mb-6">
               <ImageSlider 
-                beforeImage="/lovable-uploads/5136968e-e959-4ee7-96ab-e2bdd5a183ad.png"
+                beforeImage="/lovable-uploads/bd34ac83-6bda-4860-a7c1-597175c2e137.png"
                 afterImage="/lovable-uploads/67b8d15c-8ea6-4834-8161-c855e9e18edf.png"
                 height="100%"
                 width="100%"
