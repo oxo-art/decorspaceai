@@ -1,9 +1,9 @@
-
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import ImageUpload from './ImageUpload';
 import PromptInput from './PromptInput';
+import { Camera } from 'lucide-react';
 
 interface InputSectionProps {
   image: string | null;
@@ -44,7 +44,9 @@ const InputSection: React.FC<InputSectionProps> = ({
     <div className="space-y-6 animate-scale-in" style={{ animationDelay: '0.1s' }}>
       <Card className="overflow-hidden border border-gray-200 shadow-sm">
         <div className="p-6">
-          <h2 className="text-xl font-medium mb-4">Input</h2>
+          <h2 className="text-xl font-medium mb-4 flex items-center gap-2">
+            <Camera className="h-5 w-5 text-yellow-500" /> Upload 📷
+          </h2>
           
           <ImageUpload 
             image={image}
