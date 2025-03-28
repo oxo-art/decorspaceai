@@ -3,6 +3,8 @@ import React from 'react';
 import Navbar from '@/components/Home/Navbar';
 import { Link } from 'react-router-dom';
 import ImageSlider from '@/components/Home/ImageSlider';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Home, ImageIcon, Magic } from 'lucide-react';
 
 const Home = () => {
   return (
@@ -13,7 +15,7 @@ const Home = () => {
       <div className="pt-24 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-5xl font-volkhov text-gunmetal font-bold mb-4">
-            Transform Your Living Space
+            Transform Your Living Space with AI
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mb-8">
             Experience the power of AI to reimagine and enhance your interior spaces with just a few clicks.
@@ -38,6 +40,56 @@ const Home = () => {
               Start Designing Now
             </Link>
           </div>
+
+          {/* How It Works Section */}
+          <div className="w-full max-w-4xl mt-12">
+            <h2 className="text-3xl font-volkhov text-gunmetal font-bold mb-8 text-center">
+              How It Works
+            </h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3">
+                    <Home className="h-6 w-6 text-yellow-500" />
+                    Upload Your Space
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">
+                    Take a photo of the room you want to redesign and upload it to our platform.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3">
+                    <ImageIcon className="h-6 w-6 text-yellow-500" />
+                    Select Design Style
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">
+                    Choose from a variety of design styles or describe your dream interior.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3">
+                    <Magic className="h-6 w-6 text-yellow-500" />
+                    AI Transformation
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">
+                    Our AI instantly generates a stunning redesign of your space.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -45,3 +97,4 @@ const Home = () => {
 };
 
 export default Home;
+
