@@ -27,7 +27,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
     <div className="space-y-2">
       <div className="flex justify-between items-center mb-2">
         <label htmlFor="prompt" className="text-sm font-medium">
-          Design Prompt
+          Prompt
         </label>
         <AdvancedSettings 
           advancedSettings={advancedSettings}
@@ -36,11 +36,10 @@ const PromptInput: React.FC<PromptInputProps> = ({
       </div>
       <Textarea
         id="prompt"
-        placeholder="Describe the interior design you want - (e.g., A modern minimalist living room with turquoise sofa set, and green indoor plants.)"
+        placeholder="Describe the interior you want - (e.g., A modern minimalist living room with turquoise sofa set, and green indoor plants.)"
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        className="resize-none"
-        rows={3}
+        className="resize-none min-h-[150px]"
       />
     </div>
   );

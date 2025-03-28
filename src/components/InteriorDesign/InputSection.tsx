@@ -72,7 +72,7 @@ const InputSection: React.FC<InputSectionProps> = ({
             disabled={!image || !prompt.trim() || isLoading}
             className="transition-all-300"
           >
-            {isLoading ? 'Generating...' : 'Generate Design'}
+            {isLoading ? 'Generating...' : 'Generate'}
           </Button>
         </div>
       </Card>
