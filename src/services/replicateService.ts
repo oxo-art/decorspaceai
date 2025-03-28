@@ -30,7 +30,7 @@ export const transformImage = async ({
   guidance_scale = 15,
   negative_prompt = "lowresolution, text, missing furniture, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, realistic, broken furniture, noise",
   prompt_strength = model === "interiorDesign" ? 0.8 : 1,
-  num_inference_steps = model === "interiorDesign" ? 20 : 50, // Reduced from 50 to 20 for interiorDesign
+  num_inference_steps = model === "interiorDesign" ? 50 : 100,
   scale = 4
 }: ReplicateRequest): Promise<ReplicateResponse> => {
   if (!image && model !== "denoise") {
@@ -51,13 +51,7 @@ export const transformImage = async ({
       scale
     });
     
-    // Set a timeout for the API call to prevent excessive waiting - reduced from 60s to 45s
-    const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error("Request timed out after 45 seconds")), 45000);
-    });
-    
-    // Create the actual API call promise
-    const apiCallPromise = supabase.functions.invoke("replicate-proxy", {
+    const { data, error } = await supabase.functions.invoke("replicate-proxy", {
       body: {
         model,
         prompt,
@@ -70,21 +64,12 @@ export const transformImage = async ({
       }
     });
     
-    // Race between the timeout and the API call
-    const { data, error } = await Promise.race([apiCallPromise, timeoutPromise]) as any;
-    
     if (error) {
       console.error("Error calling Edge Function:", error);
-      toast.error(error.message || "Failed to transform image");
       throw new Error(error.message || "Failed to transform image");
     }
     
     console.log("Edge Function response:", data);
-    
-    if (!data) {
-      toast.error("No data received from image transformation");
-      throw new Error("No data received from image transformation");
-    }
     
     let outputUrl = null;
     if (data.output) {

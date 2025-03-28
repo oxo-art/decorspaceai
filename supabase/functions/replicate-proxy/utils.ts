@@ -15,11 +15,8 @@ export const createErrorResponse = (message: string, status = 500) => {
   );
 };
 
-export const waitForPrediction = async (predictionId: string, apiKey: string, maxAttempts = 40, modelType: string) => {
+export const waitForPrediction = async (predictionId: string, apiKey: string, maxAttempts = 60, modelType: string) => {
   let attempts = 0;
-  
-  // Set polling interval to 1.5 seconds instead of 2
-  const pollingInterval = 1500;
   
   while (attempts < maxAttempts) {
     const statusResponse = await fetch(
@@ -54,8 +51,8 @@ export const waitForPrediction = async (predictionId: string, apiKey: string, ma
       throw new Error(status.error || `${modelType} prediction failed`);
     }
     
-    // Wait before checking again with reduced interval
-    await new Promise(resolve => setTimeout(resolve, pollingInterval));
+    // Wait before checking again
+    await new Promise(resolve => setTimeout(resolve, 2000));
     attempts++;
   }
   

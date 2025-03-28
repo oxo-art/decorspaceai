@@ -24,7 +24,6 @@ const OutputSection: React.FC<OutputSectionProps> = ({
           <ResultDisplay 
             isLoading={isLoading} 
             output={output}
-            inputImage={inputImage}
           />
         </div>
       </Card>
