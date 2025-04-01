@@ -62,7 +62,7 @@ const HomePage = () => {
                     />
                   </div>
                   <p className="text-gray-600">
-                    Take a photo of the room you want to redesign and upload it to our platform.
+                    Take a photo of the room you want to design and upload it to our platform.
                   </p>
                 </CardContent>
               </Card>
