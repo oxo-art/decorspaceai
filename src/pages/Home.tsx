@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Home/Navbar';
 import { Link } from 'react-router-dom';
@@ -105,7 +104,7 @@ const HomePage = () => {
                     />
                   </div>
                   <p className="text-gray-600">
-                    Our AI instantly generates a stunning design of your space.
+                    Our AI takes a few seconds and generates a stunning design of your space.
                   </p>
                 </CardContent>
               </Card>
