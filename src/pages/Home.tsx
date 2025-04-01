@@ -97,8 +97,15 @@ const HomePage = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
+                  <div className="mb-4">
+                    <img 
+                      src="/lovable-uploads/768e5239-2338-4f15-b125-86f67c3a977b.png"
+                      alt="AI transformed room" 
+                      className="w-full rounded-lg shadow-sm"
+                    />
+                  </div>
                   <p className="text-gray-600">
-                    Our AI instantly generates a stunning redesign of your space.
+                    Our AI instantly generates a stunning design of your space.
                   </p>
                 </CardContent>
               </Card>
