@@ -55,6 +55,13 @@ const HomePage = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
+                  <div className="mb-4">
+                    <img 
+                      src="/lovable-uploads/6eb8c29f-c0e4-4d6e-9128-d41302fcdf02.png"
+                      alt="Room photo example" 
+                      className="w-full rounded-lg shadow-sm"
+                    />
+                  </div>
                   <p className="text-gray-600">
                     Take a photo of the room you want to redesign and upload it to our platform.
                   </p>
