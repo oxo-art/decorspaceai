@@ -28,7 +28,7 @@ export const transformImage = async ({
   image,
   model = "interiorDesign",
   guidance_scale = 15,
-  negative_prompt = "lowresolution, text, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, duplicate furniture, double furniture, extra items, hallucinations, distorted proportions, unrealistic layout, incorrect perspective, floating objects, overlapping furniture, impossible architecture, additional doors, additional windows, unwanted elements, inconsistent lighting, strange colors, unasked additions, fantasy elements, oversized furniture, undersized furniture, cluttered, crowded",
+  negative_prompt = "lowresolution, text, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, noise, double furniture, extra items, distorted proportions, unrealistic layout, incorrect perspective, overlapping furniture, additional doors, additional windows, unwanted elements, inconsistent lighting, strange colors, unasked additions, fantasy elements, oversized furniture, undersized furniture",
   prompt_strength = model === "interiorDesign" ? 0.8 : 1,
   num_inference_steps = model === "interiorDesign" ? 50 : 100,
   scale = 4
