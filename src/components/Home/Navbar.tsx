@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Menu, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,8 @@ const Navbar = () => {
   const isMobile = useIsMobile();
   
   return (
-    <div className="bg-white w-full shadow-sm fixed top-0 z-10">
+    <div className="bg-white w-full shadow-sm fixed top-0 z-20">
+      {/* Increased z-index from 10 to 20 to ensure navbar stays above slider */}
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Left side - Hamburger menu */}
         <div className="flex items-center">
@@ -47,7 +49,8 @@ const Navbar = () => {
       
       {/* Mobile menu dropdown */}
       {isMenuOpen && (
-        <div className="bg-white shadow-md py-4 px-6 absolute w-full animate-fade-in">
+        <div className="bg-white shadow-md py-4 px-6 absolute w-full animate-fade-in z-20">
+          {/* Increased z-index to match navbar */}
           <nav className="flex flex-col space-y-3">
             <Link 
               to="/" 

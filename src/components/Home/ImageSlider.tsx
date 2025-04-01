@@ -107,10 +107,14 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
           />
         </div>
         
-        {/* Slider Divider Line */}
+        {/* Slider Divider Line - Added a lower z-index to ensure it doesn't overlap fixed elements like navbar */}
         <div 
-          className="absolute top-0 bottom-0 w-1 bg-white shadow-md cursor-ew-resize z-10"
-          style={{ left: `${sliderPosition}%`, marginLeft: "-2px" }}
+          className="absolute top-0 bottom-0 w-1 bg-white shadow-md cursor-ew-resize"
+          style={{ 
+            left: `${sliderPosition}%`, 
+            marginLeft: "-2px",
+            zIndex: 5 // Lower z-index to prevent overlapping with navbar
+          }}
           onMouseDown={handleMouseDown}
           onTouchStart={handleMouseDown}
         >
@@ -143,7 +147,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
           max={100}
           step={1}
           onValueChange={handleSliderChange}
-          className="z-10"
+          className="z-5" // Reduced z-index
         />
       </div>
     </div>
