@@ -4,7 +4,7 @@ import Navbar from '@/components/Home/Navbar';
 import { Link } from 'react-router-dom';
 import ImageSlider from '@/components/Home/ImageSlider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { HomeIcon, ImageIcon, Wand2 } from 'lucide-react';
+import { HomeIcon, Keyboard, Wand2 } from 'lucide-react';
 
 const HomePage = () => {
   return (
@@ -71,13 +71,13 @@ const HomePage = () => {
               <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <ImageIcon className="h-6 w-6 text-yellow-500" />
-                    Select Design Style
+                    <Keyboard className="h-6 w-6 text-yellow-500" />
+                    Describe your dream interior
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600">
-                    Choose from a variety of design styles or describe your dream interior.
+                    Describe the interior design which you want, type it in the prompt field.
                   </p>
                 </CardContent>
               </Card>
