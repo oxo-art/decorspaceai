@@ -84,7 +84,7 @@ const HomePage = () => {
                     />
                   </div>
                   <p className="text-gray-600">
-                    Describe the interior design which you want, type it in the prompt field.
+                    Describe the interior design which you want, type it in the prompt field and click on generate.
                   </p>
                 </CardContent>
               </Card>
