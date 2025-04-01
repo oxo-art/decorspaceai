@@ -76,6 +76,13 @@ const HomePage = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
+                  <div className="mb-4">
+                    <img 
+                      src="/lovable-uploads/579e3acf-8c33-4d0a-b885-e9c28c09e91d.png"
+                      alt="Prompt example" 
+                      className="w-full rounded-lg shadow-sm border border-gray-200"
+                    />
+                  </div>
                   <p className="text-gray-600">
                     Describe the interior design which you want, type it in the prompt field.
                   </p>
