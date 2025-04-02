@@ -7,7 +7,7 @@ export const handleDenoiseModel = async (
   apiKey: string,
   face_enhance: boolean = false
 ) => {
-  console.log("Using denoising model with parameters:", { scale, face_enhance });
+  console.log("Using upscaler model with parameters:", { scale, face_enhance });
   
   // Make sure scale is between 2-4, as higher values might cause errors
   const safeScale = Math.min(Math.max(scale, 2), 4);
@@ -20,7 +20,7 @@ export const handleDenoiseModel = async (
       Authorization: `Token ${apiKey}`,
     },
     body: JSON.stringify({
-      version: "42fed1c4974146d4d2414e2be2c5277c7fcf05fcc3a73abf41610695738c1d7b", // Updated version ID for Real-ESRGAN
+      version: "4f7eb3da655b5182e559d50a0437440f242992d47e5e20bd82829a79dee61ff3", // alexgenovese/upscaler model ID
       input: {
         image: image,
         scale: safeScale,
@@ -31,18 +31,18 @@ export const handleDenoiseModel = async (
 
   if (!response.ok) {
     const error = await response.json();
-    console.error("Replicate API error for denoising:", error);
-    throw new Error(error.detail || "Failed to start denoising process");
+    console.error("Replicate API error for upscaling:", error);
+    throw new Error(error.detail || "Failed to start upscaling process");
   }
 
   const prediction = await response.json();
-  console.log("Denoising prediction created:", prediction.id);
+  console.log("Upscaling prediction created:", prediction.id);
   
   try {
-    const result = await waitForPrediction(prediction.id, apiKey, 60, "Denoising");
+    const result = await waitForPrediction(prediction.id, apiKey, 60, "Upscaling");
     return result;
   } catch (error) {
-    console.error("Error during denoising process:", error);
+    console.error("Error during upscaling process:", error);
     throw error;
   }
 };
