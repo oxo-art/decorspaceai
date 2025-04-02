@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Home/Navbar';
 import { Link } from 'react-router-dom';
@@ -188,31 +187,7 @@ const HomePage = () => {
                     </div>
                   </div>
                   <p className="text-gray-600 italic">
-                    "This tool has revolutionized how I prepare properties for sale. I can show potential sellers how their space could look with proper staging, which helps me win more contracts. The results are incredibly realistic."
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* Testimonial 4 */}
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <Avatar className="h-12 w-12 border-2 border-yellow-200">
-                      <AvatarImage src="/lovable-uploads/33a8770c-a08b-4e70-bea1-af85d43c01e6.png" alt="David Liu" />
-                      <AvatarFallback>DL</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h3 className="font-medium">David Liu</h3>
-                      <p className="text-sm text-muted-foreground">Real Estate Developer</p>
-                    </div>
-                    <div className="ml-auto flex">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-                  </div>
-                  <p className="text-gray-600 italic">
-                    "We use this AI tool for our pre-construction marketing materials. It allows potential buyers to visualize the finished spaces before we've even broken ground. The ROI has been phenomenal."
+                    "This tool has revolutionized how I prepare properties for sale. I can show potential buyers how their space could look with proper staging, which helps me win more contracts. The results are incredibly realistic."
                   </p>
                 </CardContent>
               </Card>
