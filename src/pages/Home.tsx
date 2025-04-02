@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from '@/components/Home/Navbar';
 import { Link } from 'react-router-dom';
@@ -124,7 +125,7 @@ const HomePage = () => {
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
                     <Avatar className="h-12 w-12 border-2 border-yellow-200">
-                      <AvatarImage src="/lovable-uploads/6f3792db-c16f-42f9-919f-03113887daae.png" alt="Sophie Chen" />
+                      <AvatarImage src="/lovable-uploads/ae68b5d0-b4d1-4602-87b2-540dd58e0c80.png" alt="Sophie Chen" />
                       <AvatarFallback>SC</AvatarFallback>
                     </Avatar>
                     <div>
@@ -148,7 +149,7 @@ const HomePage = () => {
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
                     <Avatar className="h-12 w-12 border-2 border-yellow-200">
-                      <AvatarImage src="/lovable-uploads/5136968e-e959-4ee7-96ab-e2bdd5a183ad.png" alt="Marcus Johnson" />
+                      <AvatarImage src="/lovable-uploads/c1da7f79-5457-4663-95f5-025298e8f5a5.png" alt="Marcus Johnson" />
                       <AvatarFallback>MJ</AvatarFallback>
                     </Avatar>
                     <div>
@@ -172,7 +173,7 @@ const HomePage = () => {
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
                     <Avatar className="h-12 w-12 border-2 border-yellow-200">
-                      <AvatarImage src="/lovable-uploads/1b84c0df-9209-423d-94c0-cb57a7e8bdfe.png" alt="Priya Sharma" />
+                      <AvatarImage src="/lovable-uploads/e5cf5be6-d84f-4606-bfbb-f6fcaa3738a7.png" alt="Priya Sharma" />
                       <AvatarFallback>PS</AvatarFallback>
                     </Avatar>
                     <div>
