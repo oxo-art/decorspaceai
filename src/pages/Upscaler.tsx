@@ -14,8 +14,8 @@ const Upscaler = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [scale, setScale] = useState(2);
-  const [faceEnhance, setFaceEnhance] = useState(false);
+  const [scale, setScale] = useState(4);
+  const [faceEnhance, setFaceEnhance] = useState(true);
 
   const handleGoBack = () => {
     navigate('/');
@@ -43,7 +43,7 @@ const Upscaler = () => {
         setOutput(result.output);
         toast.success('Image upscaled successfully!');
       } else {
-        toast.error('Failed to upscale image');
+        toast.error('Failed to upscale image: ' + (result.error || 'Unknown error'));
       }
     } catch (error) {
       console.error('Error upscaling image:', error);

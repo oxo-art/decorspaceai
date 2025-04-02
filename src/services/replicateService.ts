@@ -33,7 +33,7 @@ export const transformImage = async ({
   prompt_strength = model === "interiorDesign" ? 0.8 : 1,
   num_inference_steps = model === "interiorDesign" ? 50 : 100,
   scale = 4,
-  face_enhance = false
+  face_enhance = true
 }: ReplicateRequest): Promise<ReplicateResponse> => {
   if (!image && model !== "denoise") {
     throw new Error("Image is required");

@@ -3,9 +3,9 @@ import { corsHeaders, waitForPrediction } from "./utils.ts";
 
 export const handleDenoiseModel = async (
   image: string,
-  scale: number = 2,
+  scale: number = 4,
   apiKey: string,
-  face_enhance: boolean = false
+  face_enhance: boolean = true
 ) => {
   console.log("Using upscaler model with parameters:", { scale, face_enhance });
   
@@ -24,7 +24,7 @@ export const handleDenoiseModel = async (
       input: {
         image: image,
         scale: safeScale,
-        face_enhance: face_enhance,
+        face_enhance: face_enhance
       }
     }),
   });
