@@ -2,6 +2,8 @@
 import React from 'react';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertTriangle } from 'lucide-react';
 
 interface UpscaleControlsProps {
   scale: number;
@@ -28,14 +30,14 @@ const UpscaleControls: React.FC<UpscaleControlsProps> = ({
         </div>
         <Slider
           value={[scale]}
-          min={1}
+          min={2}
           max={4}
           step={1}
           onValueChange={handleScaleChange}
           className="w-full"
         />
         <div className="flex justify-between mt-1">
-          <span className="text-xs text-gray-500">1x</span>
+          <span className="text-xs text-gray-500">2x</span>
           <span className="text-xs text-gray-500">4x</span>
         </div>
       </div>
@@ -47,6 +49,13 @@ const UpscaleControls: React.FC<UpscaleControlsProps> = ({
           onCheckedChange={setFaceEnhance}
         />
       </div>
+
+      <Alert variant="default" className="bg-yellow-50 border border-yellow-200">
+        <AlertTriangle className="h-4 w-4 text-yellow-500" />
+        <AlertDescription className="text-xs text-yellow-700">
+          Very large images may be automatically resized to prevent processing errors.
+        </AlertDescription>
+      </Alert>
     </div>
   );
 };

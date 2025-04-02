@@ -21,14 +21,26 @@ serve(async (req) => {
 
     const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps, scale, face_enhance } = await req.json()
     
+    // Check for required parameters based on model
+    if (model === "denoise" && !image) {
+      return createErrorResponse('Image is required for upscaling');
+    }
+    
+    if ((model === "interiorDesign" || model === "imageToImage") && (!image || !prompt)) {
+      return createErrorResponse('Both image and prompt are required for this model');
+    }
+    
     try {
       let result;
       let processedImage = image;
       
-      // If we're using the denoise model and there's an image, resize it if needed
-      if (model === "denoise" && image) {
+      // For all models, resize the image to prevent memory issues
+      if (image) {
         try {
-          processedImage = await resizeBase64Image(image, 1024); // Limit to 1024px on the longest side
+          // Limit image size for all models to prevent memory issues
+          const maxSize = model === "denoise" ? 1024 : 768;
+          processedImage = await resizeBase64Image(image, maxSize);
+          console.log(`Image resized for ${model} model, max dimension: ${maxSize}px`);
         } catch (resizeError) {
           console.error("Error resizing image:", resizeError);
           // Continue with the original image if resize fails

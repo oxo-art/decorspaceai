@@ -31,6 +31,8 @@ const Upscaler = () => {
     setIsLoading(true);
     
     try {
+      console.log(`Starting upscaling with scale=${scale}, face_enhance=${faceEnhance}`);
+      
       const result = await transformImage({
         prompt: "",  // Not needed for upscaling
         image: image,
@@ -43,11 +45,12 @@ const Upscaler = () => {
         setOutput(result.output);
         toast.success('Image upscaled successfully!');
       } else {
-        toast.error('Failed to upscale image: ' + (result.error || 'Unknown error'));
+        console.error('Upscaling failed:', result.error);
+        toast.error(`Failed to upscale image: ${result.error || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Error upscaling image:', error);
-      toast.error(error.message || 'An error occurred');
+      toast.error(error.message || 'An error occurred during upscaling');
     } finally {
       setIsLoading(false);
     }
