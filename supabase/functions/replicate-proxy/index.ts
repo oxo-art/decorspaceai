@@ -19,7 +19,7 @@ serve(async (req) => {
       return createErrorResponse('API key not configured on server');
     }
 
-    const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps, scale } = await req.json()
+    const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps, scale, face_enhance } = await req.json()
     
     try {
       let result;
@@ -39,7 +39,8 @@ serve(async (req) => {
         result = await handleDenoiseModel(
           image,
           scale || 4, // Set default to 4x upscaling
-          REPLICATE_API_KEY
+          REPLICATE_API_KEY,
+          face_enhance || false
         );
       } else {
         result = await handleDefaultModel(image, prompt, REPLICATE_API_KEY);

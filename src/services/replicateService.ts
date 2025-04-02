@@ -11,6 +11,7 @@ export interface ReplicateRequest {
   prompt_strength?: number;
   num_inference_steps?: number;
   scale?: number;
+  face_enhance?: boolean;
 }
 
 export interface ReplicateResponse {
@@ -31,7 +32,8 @@ export const transformImage = async ({
   negative_prompt = "lowresolution, text, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, noise, double furniture, extra items, distorted proportions, unrealistic layout, incorrect perspective, overlapping furniture, additional doors, additional windows, unwanted elements, inconsistent lighting, strange colors, unasked additions, fantasy elements, oversized furniture, undersized furniture",
   prompt_strength = model === "interiorDesign" ? 0.8 : 1,
   num_inference_steps = model === "interiorDesign" ? 50 : 100,
-  scale = 4
+  scale = 4,
+  face_enhance = false
 }: ReplicateRequest): Promise<ReplicateResponse> => {
   if (!image && model !== "denoise") {
     throw new Error("Image is required");
@@ -48,7 +50,8 @@ export const transformImage = async ({
       guidance_scale, 
       prompt_strength, 
       num_inference_steps,
-      scale
+      scale,
+      face_enhance
     });
     
     const { data, error } = await supabase.functions.invoke("replicate-proxy", {
@@ -60,7 +63,8 @@ export const transformImage = async ({
         negative_prompt,
         prompt_strength,
         num_inference_steps,
-        scale
+        scale,
+        face_enhance
       }
     });
     

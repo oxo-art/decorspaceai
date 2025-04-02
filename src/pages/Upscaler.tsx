@@ -15,6 +15,7 @@ const Upscaler = () => {
   const [output, setOutput] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [scale, setScale] = useState(2);
+  const [faceEnhance, setFaceEnhance] = useState(false);
 
   const handleGoBack = () => {
     navigate('/');
@@ -34,7 +35,8 @@ const Upscaler = () => {
         prompt: "",  // Not needed for upscaling
         image: image,
         model: "denoise",
-        scale: scale
+        scale: scale,
+        face_enhance: faceEnhance
       });
       
       if (result.output) {
@@ -79,6 +81,8 @@ const Upscaler = () => {
             setImage={setImage}
             scale={scale}
             setScale={setScale}
+            faceEnhance={faceEnhance}
+            setFaceEnhance={setFaceEnhance}
             isDragging={isDragging}
             setIsDragging={setIsDragging}
             isLoading={isLoading}

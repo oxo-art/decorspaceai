@@ -4,9 +4,10 @@ import { corsHeaders, waitForPrediction } from "./utils.ts";
 export const handleDenoiseModel = async (
   image: string,
   scale: number = 2,
-  apiKey: string
+  apiKey: string,
+  face_enhance: boolean = false
 ) => {
-  console.log("Using denoising model with parameters:", { scale });
+  console.log("Using denoising model with parameters:", { scale, face_enhance });
   
   // Make sure scale is between 2-4, as higher values might cause errors
   const safeScale = Math.min(Math.max(scale, 2), 4);
@@ -19,12 +20,11 @@ export const handleDenoiseModel = async (
       Authorization: `Token ${apiKey}`,
     },
     body: JSON.stringify({
-      version: "42fed1c4974146d4d2414e2be2c5277c7fcba946c7871be8f5b6fac3b965195a", // Real-ESRGAN model
+      version: "f121d640bd286e1fdc67f9799164c1d5be36ff74576ee11c803ae5b665dd46aa", // nightmareai/real-esrgan model
       input: {
         image: image,
         scale: safeScale,
-        face_enhance: true,
-        tile: 0, // Auto tile size
+        face_enhance: face_enhance,
       }
     }),
   });

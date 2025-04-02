@@ -1,10 +1,11 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Upload, Image as ImageIcon } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
+import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -13,6 +14,8 @@ interface UpscalerInputProps {
   setImage: (image: string | null) => void;
   scale: number;
   setScale: (scale: number) => void;
+  faceEnhance: boolean;
+  setFaceEnhance: (enhance: boolean) => void;
   isDragging: boolean;
   setIsDragging: (isDragging: boolean) => void;
   isLoading: boolean;
@@ -24,6 +27,8 @@ const UpscalerInput: React.FC<UpscalerInputProps> = ({
   setImage,
   scale,
   setScale,
+  faceEnhance,
+  setFaceEnhance,
   isDragging,
   setIsDragging,
   isLoading,
@@ -155,6 +160,14 @@ const UpscalerInput: React.FC<UpscalerInputProps> = ({
                 <span className="text-xs text-gray-500">1x</span>
                 <span className="text-xs text-gray-500">4x</span>
               </div>
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-medium">Face Enhancement</h3>
+              <Switch 
+                checked={faceEnhance}
+                onCheckedChange={setFaceEnhance}
+              />
             </div>
           </div>
         </div>
