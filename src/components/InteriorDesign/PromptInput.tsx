@@ -1,7 +1,7 @@
 
 import { Textarea } from '@/components/ui/textarea';
 import AdvancedSettings from './AdvancedSettings';
-import { Keyboard } from 'lucide-react';
+import { Prompt } from 'lucide-react';
 
 interface PromptInputProps {
   prompt: string;
@@ -29,7 +29,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
       <div className="flex justify-between items-center mb-2">
         <label htmlFor="prompt" className="text-sm font-medium flex items-center gap-1.5">
           <span>Describe your dream interior</span>
-          <Keyboard className="h-4 w-4 text-muted-foreground" />
+          <Prompt className="h-4 w-4 text-muted-foreground" />
         </label>
         <AdvancedSettings 
           advancedSettings={advancedSettings}
