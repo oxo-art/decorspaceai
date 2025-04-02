@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Menu, ArrowRight, Image } from "lucide-react";
+import { Menu, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -65,13 +65,6 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Design Tool
-            </Link>
-            <Link 
-              to="/upscaler" 
-              className="text-gray-700 hover:text-yellow-500 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Image Upscaler
             </Link>
             <Link 
               to="/about" 

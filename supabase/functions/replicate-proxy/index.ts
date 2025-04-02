@@ -1,7 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1"
-import { corsHeaders, handleCorsPreflightRequest, createErrorResponse, resizeBase64Image } from "./utils.ts"
+import { corsHeaders, handleCorsPreflightRequest, createErrorResponse } from "./utils.ts"
 import { handleInteriorDesignModel } from "./interiorDesignModel.ts"
 import { handleDefaultModel } from "./defaultModel.ts"
 import { handleDenoiseModel } from "./denoiseModel.ts"
@@ -19,38 +19,15 @@ serve(async (req) => {
       return createErrorResponse('API key not configured on server');
     }
 
-    const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps, scale, face_enhance } = await req.json()
-    
-    // Check for required parameters based on model
-    if (model === "denoise" && !image) {
-      return createErrorResponse('Image is required for upscaling');
-    }
-    
-    if ((model === "interiorDesign" || model === "imageToImage") && (!image || !prompt)) {
-      return createErrorResponse('Both image and prompt are required for this model');
-    }
+    const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps, scale } = await req.json()
     
     try {
       let result;
-      let processedImage = image;
-      
-      // For all models, resize the image to prevent memory issues
-      if (image) {
-        try {
-          // Limit image size for all models to prevent memory issues
-          const maxSize = model === "denoise" ? 1024 : 768;
-          processedImage = await resizeBase64Image(image, maxSize);
-          console.log(`Image resized for ${model} model, max dimension: ${maxSize}px`);
-        } catch (resizeError) {
-          console.error("Error resizing image:", resizeError);
-          // Continue with the original image if resize fails
-        }
-      }
       
       // Determine which model to use
       if (model === "interiorDesign") {
         result = await handleInteriorDesignModel(
-          processedImage, 
+          image, 
           prompt, 
           guidance_scale, 
           negative_prompt, 
@@ -60,13 +37,12 @@ serve(async (req) => {
         );
       } else if (model === "denoise") {
         result = await handleDenoiseModel(
-          processedImage,
+          image,
           scale || 4, // Set default to 4x upscaling
-          REPLICATE_API_KEY,
-          face_enhance || false
+          REPLICATE_API_KEY
         );
       } else {
-        result = await handleDefaultModel(processedImage, prompt, REPLICATE_API_KEY);
+        result = await handleDefaultModel(image, prompt, REPLICATE_API_KEY);
       }
       
       return new Response(
