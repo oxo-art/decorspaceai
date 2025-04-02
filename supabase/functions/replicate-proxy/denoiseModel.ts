@@ -20,7 +20,7 @@ export const handleDenoiseModel = async (
       Authorization: `Token ${apiKey}`,
     },
     body: JSON.stringify({
-      version: "f121d640bd286e1fdc67f9799164c1d5be36ff74576ee11c803ae5b665dd46aa", // nightmareai/real-esrgan model
+      version: "42fed1c4974146d4d2414e2be2c5277c7fcf05fcc3a73abf41610695738c1d7b", // Updated version ID for Real-ESRGAN
       input: {
         image: image,
         scale: safeScale,

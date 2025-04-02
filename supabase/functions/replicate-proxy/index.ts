@@ -1,7 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1"
-import { corsHeaders, handleCorsPreflightRequest, createErrorResponse } from "./utils.ts"
+import { corsHeaders, handleCorsPreflightRequest, createErrorResponse, resizeBase64Image } from "./utils.ts"
 import { handleInteriorDesignModel } from "./interiorDesignModel.ts"
 import { handleDefaultModel } from "./defaultModel.ts"
 import { handleDenoiseModel } from "./denoiseModel.ts"
@@ -23,11 +23,22 @@ serve(async (req) => {
     
     try {
       let result;
+      let processedImage = image;
+      
+      // If we're using the denoise model and there's an image, resize it if needed
+      if (model === "denoise" && image) {
+        try {
+          processedImage = await resizeBase64Image(image, 1024); // Limit to 1024px on the longest side
+        } catch (resizeError) {
+          console.error("Error resizing image:", resizeError);
+          // Continue with the original image if resize fails
+        }
+      }
       
       // Determine which model to use
       if (model === "interiorDesign") {
         result = await handleInteriorDesignModel(
-          image, 
+          processedImage, 
           prompt, 
           guidance_scale, 
           negative_prompt, 
@@ -37,13 +48,13 @@ serve(async (req) => {
         );
       } else if (model === "denoise") {
         result = await handleDenoiseModel(
-          image,
+          processedImage,
           scale || 4, // Set default to 4x upscaling
           REPLICATE_API_KEY,
           face_enhance || false
         );
       } else {
-        result = await handleDefaultModel(image, prompt, REPLICATE_API_KEY);
+        result = await handleDefaultModel(processedImage, prompt, REPLICATE_API_KEY);
       }
       
       return new Response(

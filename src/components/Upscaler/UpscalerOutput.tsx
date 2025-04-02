@@ -31,7 +31,7 @@ const UpscalerOutput: React.FC<UpscalerOutputProps> = ({
         <div className="p-6 flex-1 flex flex-col">
           <h2 className="text-xl font-medium mb-4">Result</h2>
 
-          <div className="flex-1 flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden">
+          <div className="flex-1 flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden min-h-[500px]">
             {isLoading ? (
               <div className="flex flex-col items-center justify-center p-8 text-center">
                 <Loader className="animate-spin h-8 w-8 mb-4 text-yellow-500" />
@@ -39,17 +39,17 @@ const UpscalerOutput: React.FC<UpscalerOutputProps> = ({
                 <p className="text-sm text-gray-400 mt-2">This may take a moment</p>
               </div>
             ) : output ? (
-              <div className="relative w-full h-full min-h-[300px] flex flex-col">
-                <div className="flex-1 overflow-hidden">
+              <div className="relative w-full h-full min-h-[500px] flex flex-col">
+                <div className="flex-1 overflow-hidden p-4">
                   <img 
                     src={output} 
                     alt="Upscaled result" 
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain max-h-[600px]"
                   />
                 </div>
                 <button 
                   onClick={handleDownload}
-                  className="mt-4 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-md text-center transition-colors"
+                  className="mx-4 mb-4 px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-medium rounded-md text-center transition-colors"
                 >
                   Download Upscaled Image
                 </button>

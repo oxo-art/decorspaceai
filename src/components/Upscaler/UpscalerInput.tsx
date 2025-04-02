@@ -35,11 +35,19 @@ const UpscalerInput: React.FC<UpscalerInputProps> = ({
   handleUpscale
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [imageName, setImageName] = useState<string>("");
 
   const handleImageUpload = (file: File) => {
     if (!file.type.startsWith('image/')) {
       toast.error('Please upload an image file');
       return;
+    }
+
+    setImageName(file.name);
+    
+    // Check file size
+    if (file.size > 10 * 1024 * 1024) { // 10MB limit
+      toast.warning('Large images may take longer to process or might be automatically resized');
     }
 
     const reader = new FileReader();
@@ -76,6 +84,22 @@ const UpscalerInput: React.FC<UpscalerInputProps> = ({
     }
   };
 
+  const handlePaste = (e: React.ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    
+    if (items) {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const file = items[i].getAsFile();
+          if (file) {
+            handleImageUpload(file);
+            break;
+          }
+        }
+      }
+    }
+  };
+
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
@@ -95,13 +119,15 @@ const UpscalerInput: React.FC<UpscalerInputProps> = ({
           <div className="space-y-4">
             <div 
               className={cn(
-                "file-drop-area h-64",
-                isDragging && "active"
+                "file-drop-area h-64 cursor-pointer border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center relative",
+                isDragging && "border-yellow-500 bg-yellow-50"
               )}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={triggerFileInput}
+              onPaste={handlePaste}
+              tabIndex={0}
             >
               <input 
                 type="file" 
@@ -116,15 +142,20 @@ const UpscalerInput: React.FC<UpscalerInputProps> = ({
                   <img 
                     src={image} 
                     alt="Uploaded" 
-                    className="w-full h-full object-contain rounded-lg"
+                    className="w-full h-full object-contain rounded-lg p-2"
                   />
+                  {imageName && (
+                    <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white text-xs p-1 text-center truncate">
+                      {imageName}
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="image-placeholder">
                   <div className="flex flex-col items-center text-gray-500">
                     <Upload size={32} className="mb-2 text-gray-400" />
                     <p className="text-sm font-medium mb-1">Upload an image</p>
-                    <p className="text-xs">or click to browse</p>
+                    <p className="text-xs">Drag & drop, paste, or click to browse</p>
                   </div>
                 </div>
               )}
