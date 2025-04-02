@@ -1,0 +1,41 @@
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import ImageSlider from '@/components/Home/ImageSlider';
+
+const HeroSection = () => {
+  return (
+    <div className="pt-24 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="flex flex-col items-center text-center">
+        <h1 className="text-4xl md:text-5xl font-volkhov text-gunmetal font-bold mb-4">
+          Transform Your Living Space with AI
+        </h1>
+        <p className="text-lg text-gray-600 max-w-3xl mb-8">
+          Experience the power of AI to reimagine and enhance your interior spaces with just a few clicks.
+          Upload a photo of your room and get stunning design transformations instantly.
+        </p>
+        
+        <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md w-full max-w-4xl mb-8">
+          {/* Before/After Image Slider */}
+          <div className="aspect-video w-full mb-6">
+            <ImageSlider 
+              beforeImage="/lovable-uploads/bd34ac83-6bda-4860-a7c1-597175c2e137.png"
+              afterImage="/lovable-uploads/67b8d15c-8ea6-4834-8161-c855e9e18edf.png"
+              height="100%"
+              width="100%"
+            />
+          </div>
+          
+          <Link 
+            to="/design" 
+            className="inline-block w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-3 px-4 rounded-md text-center transition-colors"
+          >
+            Start Designing Now
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default HeroSection;
