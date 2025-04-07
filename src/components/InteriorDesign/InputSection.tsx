@@ -4,7 +4,9 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import ImageUpload from './ImageUpload';
 import PromptInput from './PromptInput';
-import { Camera } from 'lucide-react';
+import KeywordsToPrompt from './KeywordsToPrompt';
+import { Camera, KeySquare } from 'lucide-react';
+import { useState } from 'react';
 
 interface InputSectionProps {
   image: string | null;
@@ -41,6 +43,8 @@ const InputSection: React.FC<InputSectionProps> = ({
   isLoading,
   handleGenerate
 }) => {
+  const [showKeywords, setShowKeywords] = useState(false);
+
   return (
     <div className="space-y-6 animate-scale-in" style={{ animationDelay: '0.1s' }}>
       <Card className="overflow-hidden border border-gray-200 shadow-sm">
@@ -56,8 +60,29 @@ const InputSection: React.FC<InputSectionProps> = ({
             isDragging={isDragging}
             setIsDragging={setIsDragging}
           />
+        </div>
+      </Card>
+
+      <Card className="overflow-hidden border border-gray-200 shadow-sm">
+        <div className="p-6">
+          <h2 className="text-xl font-medium mb-4 flex items-center gap-2">
+            <KeySquare className="h-5 w-5 text-yellow-500" /> Keywords to Prompt
+          </h2>
           
-          <div className="mt-6">
+          <KeywordsToPrompt 
+            onPromptGenerated={setPrompt}
+            setShowKeywords={setShowKeywords}
+          />
+        </div>
+      </Card>
+      
+      <Card className="overflow-hidden border border-gray-200 shadow-sm">
+        <div className="p-6">
+          <h2 className="text-xl font-medium mb-4 flex items-center gap-2">
+            <span>Prompt</span>
+          </h2>
+          
+          <div>
             <PromptInput 
               prompt={prompt}
               setPrompt={setPrompt}

@@ -27,12 +27,11 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
     setIsLoading(true);
     try {
       const response = await getAIDesignSuggestion({
-        prompt: `Create a concise interior design description using only these keywords: ${keywords}`
+        prompt: `Create a detailed interior design description using these keywords: ${keywords}`
       });
       
       if (response.result) {
         onPromptGenerated(response.result);
-        setShowKeywords(false);
         toast.success('Prompt generated');
       }
     } catch (error) {
@@ -57,11 +56,11 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
         />
       </div>
 
-      <div className="flex gap-2">
+      <div>
         <Button
           onClick={handleGeneratePrompt}
           disabled={isLoading}
-          className="flex-1"
+          className="w-full"
         >
           {isLoading ? (
             <>
@@ -71,13 +70,6 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
           ) : (
             'Generate Prompt'
           )}
-        </Button>
-        <Button
-          variant="outline"
-          onClick={() => setShowKeywords(false)}
-          className="flex-1"
-        >
-          Cancel
         </Button>
       </div>
     </div>
