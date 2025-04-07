@@ -46,14 +46,14 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "You are a helpful assistant that creates interior design prompts. Transform the provided keywords into a clear, descriptive interior design prompt consisting of 4-5 well-formed sentences. Focus only on the interior design elements mentioned in the keywords. Ensure the description is detailed, coherent and practical for an AI image generation system."
+            content: "You are a helpful assistant that creates interior design prompts. Transform the provided keywords into 3 to 4 concise, constructive sentences that describe an interior design. Focus only on the interior design elements mentioned in the keywords. Avoid using formatting like headings or asterisks."
           },
           {
             role: "user",
             content: prompt
           }
         ],
-        max_tokens: 300,
+        max_tokens: 200,
         temperature: 0.7
       })
     });

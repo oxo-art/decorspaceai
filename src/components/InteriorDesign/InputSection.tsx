@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import ImageUpload from './ImageUpload';
 import PromptInput from './PromptInput';
 import KeywordsToPrompt from './KeywordsToPrompt';
-import { Camera, KeySquare } from 'lucide-react';
+import { Camera, KeySquare, Pencil } from 'lucide-react';
 import { useState } from 'react';
 
 interface InputSectionProps {
@@ -43,7 +43,7 @@ const InputSection: React.FC<InputSectionProps> = ({
   isLoading,
   handleGenerate
 }) => {
-  const [showKeywords, setShowKeywords] = useState(false);
+  const [showKeywords] = useState(true);
 
   return (
     <div className="space-y-6 animate-scale-in" style={{ animationDelay: '0.1s' }}>
@@ -64,14 +64,14 @@ const InputSection: React.FC<InputSectionProps> = ({
       </Card>
 
       <Card className="overflow-hidden border border-gray-200 shadow-sm">
-        <div className="p-6">
-          <h2 className="text-xl font-medium mb-4 flex items-center gap-2">
-            <KeySquare className="h-5 w-5 text-yellow-500" /> Keywords to Prompt
+        <div className="p-4">
+          <h2 className="text-lg font-medium mb-3 flex items-center gap-2">
+            <KeySquare className="h-4 w-4 text-yellow-500" /> Keywords to Prompt
           </h2>
           
           <KeywordsToPrompt 
             onPromptGenerated={setPrompt}
-            setShowKeywords={setShowKeywords}
+            setShowKeywords={() => {}}
           />
         </div>
       </Card>
@@ -79,7 +79,7 @@ const InputSection: React.FC<InputSectionProps> = ({
       <Card className="overflow-hidden border border-gray-200 shadow-sm">
         <div className="p-6">
           <h2 className="text-xl font-medium mb-4 flex items-center gap-2">
-            <span>Prompt</span>
+            <Pencil className="h-5 w-5 text-yellow-500" /> Prompt
           </h2>
           
           <div>

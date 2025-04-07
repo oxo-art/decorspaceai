@@ -43,35 +43,28 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
   };
 
   return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <label className="text-sm text-muted-foreground">
-          Enter keywords separated by commas (e.g., modern, blue walls, wooden floor)
-        </label>
-        <Input
-          value={keywords}
-          onChange={(e) => setKeywords(e.target.value)}
-          placeholder="Enter keywords..."
-          className="w-full"
-        />
-      </div>
-
-      <div>
-        <Button
-          onClick={handleGeneratePrompt}
-          disabled={isLoading}
-          className="w-full"
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              Generating...
-            </>
-          ) : (
-            'Generate Prompt'
-          )}
-        </Button>
-      </div>
+    <div className="flex items-center gap-2">
+      <Input
+        value={keywords}
+        onChange={(e) => setKeywords(e.target.value)}
+        placeholder="Enter keywords separated by commas"
+        className="flex-1"
+      />
+      <Button
+        onClick={handleGeneratePrompt}
+        disabled={isLoading}
+        className="whitespace-nowrap"
+        size="sm"
+      >
+        {isLoading ? (
+          <>
+            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            <span className="hidden sm:inline">Generating...</span>
+          </>
+        ) : (
+          <span>Generate</span>
+        )}
+      </Button>
     </div>
   );
 };
