@@ -27,13 +27,13 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
     setIsLoading(true);
     try {
       const response = await getAIDesignSuggestion({
-        prompt: `Convert these interior design keywords into a detailed design prompt. Focus only on the listed elements and don't add unrelated items: ${keywords}`
+        prompt: `Create a concise interior design description using only these keywords: ${keywords}`
       });
       
       if (response.result) {
         onPromptGenerated(response.result);
         setShowKeywords(false);
-        toast.success('Prompt generated successfully');
+        toast.success('Prompt generated');
       }
     } catch (error) {
       console.error("Error generating prompt:", error);

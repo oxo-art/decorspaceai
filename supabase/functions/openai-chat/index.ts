@@ -46,14 +46,14 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "You are an expert interior designer assistant. Provide detailed, creative and practical interior design suggestions."
+            content: "You are a helpful assistant that creates interior design prompts. Convert keywords into a simple, concise interior design description. Keep it short (2-3 sentences maximum), avoid headings, bullet points, or formatting symbols like asterisks. Focus only on describing the interior design elements mentioned in the keywords."
           },
           {
             role: "user",
             content: prompt
           }
         ],
-        max_tokens: 1000,
+        max_tokens: 150,
         temperature: 0.7
       })
     });
