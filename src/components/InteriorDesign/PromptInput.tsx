@@ -1,8 +1,10 @@
 
+import { useState } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import AdvancedSettings from './AdvancedSettings';
-import { PenLine } from 'lucide-react';
-import AIPromptHelper from './AIPromptHelper';
+import { PenLine, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import KeywordsToPrompt from './KeywordsToPrompt';
 
 interface PromptInputProps {
   prompt: string;
@@ -25,6 +27,8 @@ const PromptInput: React.FC<PromptInputProps> = ({
   advancedSettings,
   setAdvancedSettings
 }) => {
+  const [showKeywordsInput, setShowKeywordsInput] = useState(false);
+
   return (
     <div className="space-y-2">
       <div className="flex justify-between items-center mb-2">
@@ -33,20 +37,32 @@ const PromptInput: React.FC<PromptInputProps> = ({
             <span>Prompt</span>
             <PenLine className="h-4 w-4 text-muted-foreground" />
           </label>
-          <AIPromptHelper onSuggestionSelect={setPrompt} />
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="h-8 w-8 p-0 text-yellow-500 hover:text-yellow-600 hover:bg-yellow-50"
+            onClick={() => setShowKeywordsInput(!showKeywordsInput)}
+          >
+            <Sparkles className="h-4 w-4" />
+          </Button>
         </div>
         <AdvancedSettings 
           advancedSettings={advancedSettings}
           setAdvancedSettings={setAdvancedSettings}
         />
       </div>
-      <Textarea
-        id="prompt"
-        placeholder="Describe the interior you want - (e.g - A living room with turquoise sofa set, a television set, green indoor plants.)"
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        className="resize-none min-h-[150px]"
-      />
+      
+      {showKeywordsInput ? (
+        <KeywordsToPrompt onPromptGenerated={setPrompt} setShowKeywords={setShowKeywordsInput} />
+      ) : (
+        <Textarea
+          id="prompt"
+          placeholder="Describe the interior you want - (e.g - A living room with turquoise sofa set, a television set, green indoor plants.)"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          className="resize-none min-h-[150px]"
+        />
+      )}
     </div>
   );
 };
