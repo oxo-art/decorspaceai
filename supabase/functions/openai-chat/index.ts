@@ -1,3 +1,4 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
@@ -45,7 +46,7 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "You are a professional interior designer. Create a precise, constructive 3-sentence interior design description focusing directly on the key elements. Use clear, actionable language that vividly describes the space's design, functionality, and aesthetic."
+            content: "You are an expert interior designer creating image generation prompts. Using the keywords provided, create exactly 3 clear, specific, and detailed sentences describing an interior space. Use concrete descriptive language focusing on colors, materials, furniture placement, lighting, and spatial relationships. Avoid vague terms. Use specific design terminology that will help an AI image generator create a realistic and cohesive interior scene."
           },
           {
             role: "user",
