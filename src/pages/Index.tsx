@@ -1,16 +1,12 @@
 
 import React, { useState } from 'react';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
 import InputSection from '@/components/InteriorDesign/InputSection';
 import OutputSection from '@/components/InteriorDesign/OutputSection';
 import { transformImage } from '@/services/replicateService';
-import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Home/Navbar';
 
 const Index = () => {
-  const navigate = useNavigate();
   const [image, setImage] = useState<string | null>(null);
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -20,12 +16,8 @@ const Index = () => {
   const [advancedSettings, setAdvancedSettings] = useState({
     guidance_scale: 15,
     prompt_strength: 1,
-    num_inference_steps: 100
+    num_inference_steps: 120
   });
-
-  const handleGoBack = () => {
-    navigate('/');
-  };
 
   const handleGenerate = async () => {
     if (!image) {
@@ -70,16 +62,6 @@ const Index = () => {
       <Navbar />
       
       <div className="pt-24 px-4 sm:px-6 md:px-8 w-full max-w-4xl mx-auto flex-grow animate-fade-in">
-        <div className="mb-6">
-          <Button 
-            variant="outline" 
-            onClick={handleGoBack} 
-            className="flex items-center gap-2 hover:bg-gray-100"
-          >
-            <ArrowLeft className="h-4 w-4" /> Back to Home
-          </Button>
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <InputSection
             image={image}

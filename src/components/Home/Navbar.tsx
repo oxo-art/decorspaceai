@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Menu, ArrowRight } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -34,17 +34,8 @@ const Navbar = () => {
           />
         </div>
         
-        {/* Right side - Get Started button */}
-        <div>
-          <Button 
-            asChild 
-            className={`bg-yellow-500 hover:bg-yellow-600 text-black ${isMobile ? 'px-2 py-1 text-xs' : 'px-3 py-1.5'}`}
-          >
-            <Link to="/design" className="flex items-center gap-1">
-              Get Started <ArrowRight className={`${isMobile ? 'h-3 w-3' : 'h-4 w-4'}`} />
-            </Link>
-          </Button>
-        </div>
+        {/* Right side - Empty div for layout balance */}
+        <div className="w-10"></div>
       </div>
       
       {/* Mobile menu dropdown */}

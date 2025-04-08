@@ -7,7 +7,7 @@ export const handleInteriorDesignModel = async (
   guidance_scale = 15,
   negative_prompt = "",
   prompt_strength = 0.8, 
-  num_inference_steps = 50,
+  num_inference_steps = 120,
   apiKey: string
 ) => {
   console.log("Using interior design model with parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
