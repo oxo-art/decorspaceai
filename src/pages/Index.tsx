@@ -16,7 +16,7 @@ const Index = () => {
   const [advancedSettings, setAdvancedSettings] = useState({
     guidance_scale: 15,
     prompt_strength: 1,
-    num_inference_steps: 120
+    num_inference_steps: 100
   });
 
   const handleGenerate = async () => {

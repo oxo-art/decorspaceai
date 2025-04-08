@@ -66,8 +66,8 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
             <Slider 
               value={[advancedSettings.num_inference_steps]} 
               min={10} 
-              max={100} 
-              step={1}
+              max={150} 
+              step={10}
               onValueChange={(value) => setAdvancedSettings({...advancedSettings, num_inference_steps: value[0]})}
             />
           </div>

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Eye } from 'lucide-react';
 import { toast } from 'sonner';
@@ -6,6 +7,7 @@ import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog";
+import ImageSlider from '../Home/ImageSlider';
 
 interface ResultDisplayProps {
   isLoading: boolean;
@@ -14,6 +16,16 @@ interface ResultDisplayProps {
 
 const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
+  const [placeholderImage, setPlaceholderImage] = useState<string | null>(null);
+  
+  // Generate a random placeholder image when component mounts or output changes
+  useEffect(() => {
+    if (!output) {
+      // Create a random value to ensure different placeholder images
+      const random = Math.floor(Math.random() * 1000);
+      setPlaceholderImage(`https://source.unsplash.com/collection/1163637/800x600?random=${random}`);
+    }
+  }, [output]);
   
   const handleDownload = async () => {
     if (!output) return;

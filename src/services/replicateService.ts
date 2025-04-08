@@ -30,7 +30,7 @@ export const transformImage = async ({
   guidance_scale = 15,
   negative_prompt = "lowresolution, text, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, noise, double furniture, extra items, distorted proportions, unrealistic layout, incorrect perspective, overlapping furniture, additional doors, additional windows, unwanted elements, inconsistent lighting, strange colors, unasked additions, fantasy elements, oversized furniture, undersized furniture",
   prompt_strength = model === "interiorDesign" ? 0.8 : 1,
-  num_inference_steps = model === "interiorDesign" ? 50 : 100,
+  num_inference_steps = model === "interiorDesign" ? 100 : 100,
   scale = 4
 }: ReplicateRequest): Promise<ReplicateResponse> => {
   if (!image && model !== "denoise") {
