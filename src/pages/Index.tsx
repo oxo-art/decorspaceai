@@ -7,6 +7,7 @@ import InputSection from '@/components/InteriorDesign/InputSection';
 import OutputSection from '@/components/InteriorDesign/OutputSection';
 import { transformImage } from '@/services/replicateService';
 import { Button } from '@/components/ui/button';
+import Navbar from '@/components/Home/Navbar';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -65,8 +66,10 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 p-4 sm:p-6 md:p-8">
-      <div className="w-full max-w-4xl animate-fade-in">
+    <div className="min-h-screen w-full flex flex-col bg-gradient-to-b from-gray-50 to-gray-100">
+      <Navbar />
+      
+      <div className="pt-24 px-4 sm:px-6 md:px-8 w-full max-w-4xl mx-auto flex-grow animate-fade-in">
         <div className="mb-6">
           <Button 
             variant="outline" 
@@ -75,15 +78,6 @@ const Index = () => {
           >
             <ArrowLeft className="h-4 w-4" /> Back to Home
           </Button>
-        </div>
-
-        <div className="bg-yellow-50 p-6 rounded-lg mb-8 shadow-sm border border-yellow-100">
-          <h1 className="text-3xl md:text-4xl font-volkhov text-gunmetal text-center mb-2 tracking-tight">
-            Decorspace <span className="font-semibold">AI</span>
-          </h1>
-          <p className="text-muted-foreground text-center">
-            Transform your interior spaces with AI-powered design suggestions
-          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -107,10 +101,6 @@ const Index = () => {
             inputImage={image}
           />
         </div>
-        
-        <p className="text-sm text-muted-foreground text-center mt-8">
-          Powered by AI to transform and enhance your interior spaces.
-        </p>
       </div>
     </div>
   );

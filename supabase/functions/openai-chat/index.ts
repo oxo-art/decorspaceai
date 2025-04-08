@@ -46,14 +46,14 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "You are an expert interior designer creating image generation prompts. Using the keywords provided, create exactly 3 clear, specific, and detailed sentences describing an interior space. Use concrete descriptive language focusing on colors, materials, furniture placement, lighting, and spatial relationships. Avoid vague terms. Use specific design terminology that will help an AI image generator create a realistic and cohesive interior scene."
+            content: "You are an interior design expert. Using the keywords provided, create 2-3 short, simple, and constructive sentences describing an interior space. Focus on specific colors, materials, and design elements that will help generate a realistic interior image."
           },
           {
             role: "user",
             content: prompt
           }
         ],
-        max_tokens: 150,
+        max_tokens: 100,
         temperature: 0.7
       })
     });
