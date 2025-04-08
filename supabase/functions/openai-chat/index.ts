@@ -1,7 +1,6 @@
-
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-// Define corsHeaders directly in this file instead of importing
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -46,14 +45,14 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "You are a helpful assistant that creates interior design prompts. Transform the provided keywords into 3 to 4 concise, constructive sentences that describe an interior design. Focus only on the interior design elements mentioned in the keywords. Avoid using formatting like headings or asterisks."
+            content: "You are a professional interior designer. Create a precise, constructive 3-sentence interior design description focusing directly on the key elements. Use clear, actionable language that vividly describes the space's design, functionality, and aesthetic."
           },
           {
             role: "user",
             content: prompt
           }
         ],
-        max_tokens: 200,
+        max_tokens: 150,
         temperature: 0.7
       })
     });
