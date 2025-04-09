@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 interface OpenAIRequest {
   prompt: string;
   model?: string;
+  isVariation?: boolean;
 }
 
 interface OpenAIResponse {
@@ -18,7 +19,8 @@ interface OpenAIResponse {
  */
 export const getAIDesignSuggestion = async ({
   prompt,
-  model = "gpt-4o-mini"
+  model = "gpt-4o-mini",
+  isVariation = false
 }: OpenAIRequest): Promise<OpenAIResponse> => {
   try {
     console.log("Requesting AI design suggestion");
@@ -26,7 +28,8 @@ export const getAIDesignSuggestion = async ({
     const { data, error } = await supabase.functions.invoke("openai-chat", {
       body: {
         prompt,
-        model
+        model,
+        isVariation
       }
     });
     
