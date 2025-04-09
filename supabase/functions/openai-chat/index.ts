@@ -23,7 +23,7 @@ serve(async (req) => {
       );
     }
 
-    const { prompt, model = "gpt-4o-mini" } = await req.json();
+    const { prompt, model = "gpt-4o-mini", isVariation = false } = await req.json();
 
     if (!prompt) {
       return new Response(
@@ -33,6 +33,16 @@ serve(async (req) => {
     }
 
     console.log(`Processing prompt with model ${model}: ${prompt.substring(0, 50)}...`);
+    
+    // Add a timestamp to encourage variation in responses
+    const timestamp = new Date().toISOString();
+    
+    // Choose different system prompts based on whether it's a variation
+    let systemPrompt = "You are an interior design expert. Create 2-3 SHORT, SIMPLE sentences that describe an interior space using the provided keywords. Focus on specific colors, materials, and design elements. Be concise and straightforward.";
+    
+    if (isVariation) {
+      systemPrompt = "You are an interior design expert. Create 2-3 SHORT, SIMPLE sentences that start with 'Imagine' and describe an interior space using the provided keywords. Make this completely different from previous descriptions. Focus on the keywords and be direct. Use a fresh perspective.";
+    }
 
     // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -46,15 +56,15 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "You are an interior design expert. Using the keywords provided, create 2-3 short, simple, and constructive sentences describing an interior space. Focus on specific colors, materials, and design elements that will help generate a realistic interior image."
+            content: systemPrompt
           },
           {
             role: "user",
-            content: prompt
+            content: `${prompt} (Timestamp: ${timestamp})`
           }
         ],
         max_tokens: 100,
-        temperature: 0.7
+        temperature: 0.9
       })
     });
 
