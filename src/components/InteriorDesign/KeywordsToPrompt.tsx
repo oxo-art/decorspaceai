@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Loader2, RefreshCw } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { getAIDesignSuggestion } from '@/services/openaiService';
 import { toast } from 'sonner';
 
@@ -17,23 +17,17 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
 }) => {
   const [keywords, setKeywords] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [lastKeywords, setLastKeywords] = useState('');
 
   const handleGeneratePrompt = async () => {
-    const keywordsToUse = keywords.trim();
-    
-    if (!keywordsToUse) {
+    if (!keywords.trim()) {
       toast.error('Please enter keywords');
       return;
     }
 
     setIsLoading(true);
     try {
-      // Save current keywords to track when we're generating a new variation
-      setLastKeywords(keywordsToUse);
-      
       const response = await getAIDesignSuggestion({
-        prompt: `Create a detailed interior design description using these keywords: ${keywordsToUse}`
+        prompt: `Create a detailed interior design description using these keywords: ${keywords}`
       });
       
       if (response.result) {
@@ -66,11 +60,6 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
           <>
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
             <span className="hidden sm:inline">Generating...</span>
-          </>
-        ) : lastKeywords === keywords.trim() && keywords.trim() !== '' ? (
-          <>
-            <RefreshCw className="h-4 w-4 mr-2" />
-            <span>New Variation</span>
           </>
         ) : (
           <span>Generate</span>
