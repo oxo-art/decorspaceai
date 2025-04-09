@@ -33,6 +33,9 @@ serve(async (req) => {
     }
 
     console.log(`Processing prompt with model ${model}: ${prompt.substring(0, 50)}...`);
+    
+    // Add a timestamp to encourage variation in responses
+    const timestamp = new Date().toISOString();
 
     // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -46,15 +49,15 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: "You are an interior design expert. Using the keywords provided, create 2-3 short, simple, and constructive sentences describing an interior space. Focus on specific colors, materials, and design elements that will help generate a realistic interior image."
+            content: "You are an interior design expert. Create 2-3 SHORT, SIMPLE sentences that describe an interior space using the provided keywords. Each time you're asked, create something COMPLETELY DIFFERENT even with the same keywords. Focus on specific colors, materials, and design elements. Be concise and straightforward. Don't use flowery language."
           },
           {
             role: "user",
-            content: prompt
+            content: `${prompt} (Generate a new variation - timestamp: ${timestamp})`
           }
         ],
         max_tokens: 100,
-        temperature: 0.7
+        temperature: 0.9
       })
     });
 
