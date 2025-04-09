@@ -37,12 +37,8 @@ serve(async (req) => {
     // Add a timestamp to encourage variation in responses
     const timestamp = new Date().toISOString();
     
-    // Choose different system prompts based on whether it's a variation
-    let systemPrompt = "You are an interior design expert. Create 2-3 SHORT, SIMPLE sentences that describe an interior space using the provided keywords. Focus on specific colors, materials, and design elements. Be concise and straightforward.";
-    
-    if (isVariation) {
-      systemPrompt = "You are an interior design expert. Create 2-3 SHORT, SIMPLE sentences that start with 'Imagine' and describe an interior space using the provided keywords. Make this completely different from previous descriptions. Focus on the keywords and be direct. Use a fresh perspective.";
-    }
+    // System prompt now always starts with "Imagine"
+    const systemPrompt = "You are an interior design expert. Create 2-3 SHORT, SIMPLE sentences that start with 'Imagine' and describe an interior space using the provided keywords. Focus on specific colors, materials, and design elements. Be concise and direct. Use a creative perspective.";
 
     // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -93,3 +89,4 @@ serve(async (req) => {
     );
   }
 });
+
