@@ -1,25 +1,8 @@
 
 import { useState, useEffect } from 'react';
 
-type Theme = 'light' | 'dark';
-
+// Remove dark/light theme functionality, make it just a simple hook with no actual theming
 export const useTheme = () => {
-  const [theme, setTheme] = useState<Theme>(() => {
-    // Check if theme is stored in localStorage
-    const savedTheme = localStorage.getItem('theme');
-    // Check system preference if no stored theme
-    if (!savedTheme) {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    return savedTheme as Theme;
-  });
-
-  useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.remove('light', 'dark');
-    root.classList.add(theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  return { theme, setTheme };
+  // This function doesn't do anything now but is kept to avoid breaking imports
+  return { theme: 'light', setTheme: () => {} };
 };

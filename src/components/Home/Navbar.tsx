@@ -1,15 +1,13 @@
 
 import { Link } from "react-router-dom";
-import { Menu, Moon, Sun } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useTheme } from "@/hooks/use-theme";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile = useIsMobile();
-  const { theme, setTheme } = useTheme();
   
   return (
     <div className="bg-background w-full shadow-sm fixed top-0 z-20">
@@ -35,20 +33,9 @@ const Navbar = () => {
           />
         </div>
         
-        {/* Right side - Theme toggle */}
+        {/* Right side - Removed theme toggle button */}
         <div className="flex items-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-            className="ml-2"
-          >
-            {theme === 'light' ? (
-              <Moon className="h-6 w-6" />
-            ) : (
-              <Sun className="h-6 w-6" />
-            )}
-          </Button>
+          {/* Intentionally left empty to maintain layout */}
         </div>
       </div>
       
