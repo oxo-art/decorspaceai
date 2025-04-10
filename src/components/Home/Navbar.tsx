@@ -1,17 +1,18 @@
 
 import { Link } from "react-router-dom";
-import { Menu } from "lucide-react";
+import { Menu, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useTheme } from "@/hooks/use-theme";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile = useIsMobile();
+  const { theme, setTheme } = useTheme();
   
   return (
-    <div className="bg-white w-full shadow-sm fixed top-0 z-20">
-      {/* Increased z-index from 10 to 20 to ensure navbar stays above slider */}
+    <div className="bg-background w-full shadow-sm fixed top-0 z-20">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Left side - Hamburger menu */}
         <div className="flex items-center">
@@ -34,39 +35,51 @@ const Navbar = () => {
           />
         </div>
         
-        {/* Right side - Empty div for layout balance */}
-        <div className="w-10"></div>
+        {/* Right side - Theme toggle */}
+        <div className="flex items-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+            className="ml-2"
+          >
+            {theme === 'light' ? (
+              <Moon className="h-6 w-6" />
+            ) : (
+              <Sun className="h-6 w-6" />
+            )}
+          </Button>
+        </div>
       </div>
       
       {/* Mobile menu dropdown */}
       {isMenuOpen && (
-        <div className="bg-white shadow-md py-4 px-6 absolute w-full animate-fade-in z-20">
-          {/* Increased z-index to match navbar */}
+        <div className="bg-background shadow-md py-4 px-6 absolute w-full animate-fade-in z-20">
           <nav className="flex flex-col space-y-3">
             <Link 
               to="/" 
-              className="text-gray-700 hover:text-yellow-500 transition-colors"
+              className="text-foreground hover:text-yellow-500 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link 
               to="/design" 
-              className="text-gray-700 hover:text-yellow-500 transition-colors"
+              className="text-foreground hover:text-yellow-500 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Design Tool
             </Link>
             <Link 
               to="/about" 
-              className="text-gray-700 hover:text-yellow-500 transition-colors"
+              className="text-foreground hover:text-yellow-500 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               About
             </Link>
             <Link 
               to="/contact" 
-              className="text-gray-700 hover:text-yellow-500 transition-colors"
+              className="text-foreground hover:text-yellow-500 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
