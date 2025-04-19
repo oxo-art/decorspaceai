@@ -37,8 +37,8 @@ serve(async (req) => {
     // Add a timestamp to encourage variation in responses
     const timestamp = new Date().toISOString();
     
-    // Enhanced system prompt focusing on clean sentences without commas
-    const systemPrompt = "You are a precise and creative interior design expert. Create ONE impactful sentence (30-35 words) that vividly describes an interior space. Focus on atmosphere key design elements and unique features. Avoid using commas. Be specific direct and evocative.";
+    // Enhanced system prompt focusing on keywords and starting with "Imagine"
+    const systemPrompt = "You are a precise and creative interior design expert. Create ONE impactful sentence (30-35 words) that starts with 'Imagine' and vividly describes an interior space. Focus PRIMARILY on the exact keywords provided. Avoid using commas. Be specific direct and ensure every keyword is addressed in the description.";
 
     // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -56,7 +56,7 @@ serve(async (req) => {
           },
           {
             role: "user",
-            content: `${prompt} (Timestamp: ${timestamp})`
+            content: `Create a design description using EXACTLY these keywords: ${prompt} (Timestamp: ${timestamp})`
           }
         ],
         max_tokens: 70,
