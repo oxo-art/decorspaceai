@@ -37,15 +37,15 @@ serve(async (req) => {
     // Add a timestamp to encourage variation in responses
     const timestamp = new Date().toISOString();
     
-    // Enhanced system prompt focusing on keywords and starting with "Imagine"
-    const systemPrompt = "You are a precise and creative interior design expert. Create ONE impactful sentence (40-45 words) that starts with 'Imagine' and vividly describes an interior space. Focus PRIMARILY on the exact keywords provided. Avoid using commas. Be specific and ensure every single keyword is comprehensively addressed in the description.";
+    // System prompt now always starts with "Imagine"
+    const systemPrompt = "You are an interior design expert. Create 2-3 SHORT, SIMPLE sentences that start with 'Imagine' and describe an interior space using the provided keywords. Focus on specific colors, materials, and design elements. Be concise and direct. Use a creative perspective.";
 
     // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${OPENAI_API_KEY}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${OPENAI_API_KEY}`
       },
       body: JSON.stringify({
         model: model,
@@ -56,10 +56,10 @@ serve(async (req) => {
           },
           {
             role: "user",
-            content: `Create a design description using EXACTLY these keywords: ${prompt} (Timestamp: ${timestamp})`
+            content: `${prompt} (Timestamp: ${timestamp})`
           }
         ],
-        max_tokens: 90,
+        max_tokens: 100,
         temperature: 0.9
       })
     });
