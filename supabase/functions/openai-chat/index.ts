@@ -38,7 +38,7 @@ serve(async (req) => {
     const timestamp = new Date().toISOString();
     
     // Enhanced system prompt focusing on keywords and starting with "Imagine"
-    const systemPrompt = "You are a precise and creative interior design expert. Create ONE impactful sentence (30-35 words) that starts with 'Imagine' and vividly describes an interior space. Focus PRIMARILY on the exact keywords provided. Avoid using commas. Be specific direct and ensure every keyword is addressed in the description.";
+    const systemPrompt = "You are a precise and creative interior design expert. Create ONE impactful sentence (40-45 words) that starts with 'Imagine' and vividly describes an interior space. Focus PRIMARILY on the exact keywords provided. Avoid using commas. Be specific and ensure every single keyword is comprehensively addressed in the description.";
 
     // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -59,7 +59,7 @@ serve(async (req) => {
             content: `Create a design description using EXACTLY these keywords: ${prompt} (Timestamp: ${timestamp})`
           }
         ],
-        max_tokens: 70,
+        max_tokens: 90,
         temperature: 0.9
       })
     });
@@ -89,3 +89,4 @@ serve(async (req) => {
     );
   }
 });
+
