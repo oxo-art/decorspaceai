@@ -37,8 +37,8 @@ serve(async (req) => {
     // Add a timestamp to encourage variation in responses
     const timestamp = new Date().toISOString();
     
-    // Enhanced system prompt with clear word limit and focused direction
-    const systemPrompt = "You are a precise and creative interior design expert. Create ONE impactful sentence (maximum 30 words) that vividly describes an interior space. Focus on atmosphere, key design elements, and unique features. Be specific and evocative.";
+    // Enhanced system prompt focusing on clean sentences without commas
+    const systemPrompt = "You are a precise and creative interior design expert. Create ONE impactful sentence (30-35 words) that vividly describes an interior space. Focus on atmosphere key design elements and unique features. Avoid using commas. Be specific direct and evocative.";
 
     // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -59,7 +59,7 @@ serve(async (req) => {
             content: `${prompt} (Timestamp: ${timestamp})`
           }
         ],
-        max_tokens: 60,
+        max_tokens: 70,
         temperature: 0.9
       })
     });
