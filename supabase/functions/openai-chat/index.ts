@@ -37,15 +37,15 @@ serve(async (req) => {
     // Add a timestamp to encourage variation in responses
     const timestamp = new Date().toISOString();
     
-    // System prompt now always starts with "Imagine"
-    const systemPrompt = "You are an interior design expert. Create 2-3 SHORT, SIMPLE sentences that start with 'Imagine' and describe an interior space using the provided keywords. Focus on specific colors, materials, and design elements. Be concise and direct. Use a creative perspective.";
+    // Updated system prompt to generate more concise responses
+    const systemPrompt = "You are a direct and concise interior design expert. Create ONE SHORT sentence that describes an interior space using the provided keywords. Focus only on the most important elements. Be specific but brief. Maximum 20 words.";
 
     // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_API_KEY}`
+        "Authorization": `Bearer ${OPENAI_API_KEY}`,
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         model: model,
@@ -59,8 +59,8 @@ serve(async (req) => {
             content: `${prompt} (Timestamp: ${timestamp})`
           }
         ],
-        max_tokens: 100,
-        temperature: 0.9
+        max_tokens: 50,
+        temperature: 0.7
       })
     });
 
@@ -89,4 +89,3 @@ serve(async (req) => {
     );
   }
 });
-
