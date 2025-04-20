@@ -1,3 +1,4 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
@@ -35,8 +36,8 @@ serve(async (req) => {
     
     const timestamp = new Date().toISOString();
     
-    // Updated system prompt to allow natural punctuation
-    const systemPrompt = "You are a precise and creative interior design expert. Create ONE impactful sentence (40-45 words) that starts with 'Imagine' and vividly describes an interior space. Focus PRIMARILY on the exact keywords provided. Use natural punctuation to enhance readability. Be specific and ensure every single keyword is comprehensively addressed in the description.";
+    // Updated system prompt with emphasis on clear, structured sentences and comma usage
+    const systemPrompt = "You are a precise and creative interior design expert. Create ONE impactful sentence (40-45 words) that starts with 'Imagine' and vividly describes an interior space. Use clear, grammatically correct sentences with appropriate commas. Ensure every keyword is comprehensively addressed. Focus on creating a vivid, coherent description that flows naturally and includes precise details.";
 
     // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -87,3 +88,4 @@ serve(async (req) => {
     );
   }
 });
+
