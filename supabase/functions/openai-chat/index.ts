@@ -1,4 +1,3 @@
-
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
@@ -36,8 +35,8 @@ serve(async (req) => {
     
     const timestamp = new Date().toISOString();
     
-    // Updated system prompt with emphasis on clear, structured sentences and comma usage
-    const systemPrompt = "You are a precise and creative interior design expert. Create ONE impactful sentence (40-45 words) that starts with 'Imagine' and vividly describes an interior space. Use clear, grammatically correct sentences with appropriate commas. Ensure every keyword is comprehensively addressed. Focus on creating a vivid, coherent description that flows naturally and includes precise details.";
+    // Updated system prompt to focus on clear sentences with proper full stops
+    const systemPrompt = "You are a precise and creative interior design expert. Create TWO impactful sentences (40-45 words total) that start with 'Imagine'. Focus on creating clear and direct descriptions with proper full stops between sentences. Ensure every keyword is comprehensively addressed. Maintain precise details without using unnecessary commas.";
 
     // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -88,4 +87,3 @@ serve(async (req) => {
     );
   }
 });
-
