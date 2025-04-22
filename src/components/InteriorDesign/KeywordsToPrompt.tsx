@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -46,8 +45,9 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
       // Save current keywords to track when we're generating a new variation
       setLastKeywords(keywordsToUse);
 
+      // --- STRONGER, MORE STRICT PROMPT  ---
       const response = await getAIDesignSuggestion({
-        prompt: `Create a detailed interior design description using these keywords: ${keywordsToUse}`,
+        prompt: `Using ONLY and EXACTLY these keywords: ${keywordsToUse}, create a design description for an interior image. Do NOT add any extra items, objects, or concepts not listed. Do NOT distort or destroy the original content—just use the provided keywords. Write TWO direct sentences starting with 'Imagine' (total 40-45 words), with proper full stops, and nothing unrelated.`,
         isVariation: isVariation,
       });
 
@@ -107,4 +107,3 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
 };
 
 export default KeywordsToPrompt;
-
