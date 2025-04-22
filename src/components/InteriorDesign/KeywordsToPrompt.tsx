@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -19,7 +18,7 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [lastKeywords, setLastKeywords] = useState('');
   const [variationCount, setVariationCount] = useState(0);
-  const [hasGenerated, setHasGenerated] = useState(false); // To show the info after generation
+  const [hasGenerated, setHasGenerated] = useState(false);
 
   const handleGeneratePrompt = async () => {
     const keywordsToUse = keywords.trim();
@@ -31,19 +30,15 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
 
     setIsLoading(true);
 
-    // Check if this is a variation of the same keywords
     const isVariation = keywordsToUse === lastKeywords;
 
-    // If it's the same keywords, increment the variation count
     if (isVariation) {
       setVariationCount(prev => prev + 1);
     } else {
-      // Reset variation count for new keywords
       setVariationCount(0);
     }
 
     try {
-      // Save current keywords to track when we're generating a new variation
       setLastKeywords(keywordsToUse);
 
       const response = await getAIDesignSuggestion({
@@ -54,7 +49,7 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
       if (response.result) {
         onPromptGenerated(response.result);
         toast.success(isVariation ? 'New variation created' : 'Prompt generated');
-        setHasGenerated(true); // Show the info note
+        setHasGenerated(true);
       }
     } catch (error) {
       console.error("Error generating prompt:", error);
@@ -85,10 +80,10 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
               <span className="hidden sm:inline">Generating...</span>
             </>
           ) : lastKeywords === keywords.trim() && keywords.trim() !== '' ? (
-            <>
-              <RefreshCw className="h-4 w-4 mr-2" />
+            <div className="flex items-center gap-1">
+              <RefreshCw className="h-4 w-4" />
               <span>New Variation</span>
-            </>
+            </div>
           ) : (
             <span>Generate</span>
           )}
@@ -107,4 +102,3 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
 };
 
 export default KeywordsToPrompt;
-
