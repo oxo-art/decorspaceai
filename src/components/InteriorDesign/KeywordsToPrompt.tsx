@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -47,7 +48,7 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
 
       // --- STRONGER, MORE STRICT PROMPT  ---
       const response = await getAIDesignSuggestion({
-        prompt: `Using ONLY and EXACTLY these keywords: ${keywordsToUse}, create a design description for an interior image. Do NOT add any extra items, objects, or concepts not listed. Do NOT distort or destroy the original content—just use the provided keywords. Write TWO direct sentences starting with 'Imagine' (total 40-45 words), with proper full stops, and nothing unrelated.`,
+        prompt: `Using ONLY and EXACTLY these keywords: ${keywordsToUse}, create an interior image description. Imagine a space that strictly adheres to these keywords. Do NOT add any extra items, objects, or concepts not listed. Do NOT distort or destroy the original content—just use the provided keywords. Write TWO direct sentences starting with 'Imagine' (total 40-45 words), with proper full stops, and nothing unrelated.`,
         isVariation: isVariation,
       });
 
