@@ -1,3 +1,4 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
@@ -34,9 +35,13 @@ serve(async (req) => {
     console.log(`Processing prompt with model ${model}: ${prompt.substring(0, 50)}...`);
     
     const timestamp = new Date().toISOString();
-    
-    // Updated system prompt to focus on clear sentences with proper full stops
-    const systemPrompt = "You are a precise and creative interior design expert. Create TWO impactful sentences (40-45 words total) that start with 'Imagine'. Focus on creating clear and direct descriptions with proper full stops between sentences. Ensure every keyword is comprehensively addressed. Maintain precise details without using unnecessary commas.";
+
+    // --- NEW SYSTEM PROMPT for stronger, keyword-only and accurate generation ---
+    const systemPrompt = `
+You are a decisive and expert interior design AI.
+When creating a design description, you must ONLY use the given keywords. Do NOT add any objects or concepts that are not explicitly listed in the keywords. Do NOT include unrelated or extra items. Ensure the original image content is preserved; DO NOT destroy or distort it. 
+Write TWO strong, direct sentences (40-45 words total), each starting with 'Imagine', with proper full stops and without unnecessary commas. Be precise, focused, and compelling. Rigidly adhere to only the specified keywords.
+`;
 
     // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
