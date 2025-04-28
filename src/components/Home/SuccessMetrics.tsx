@@ -1,0 +1,79 @@
+
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import { Users, Clock, Star } from 'lucide-react';
+
+const timeData = [
+  { name: 'Traditional', hours: 48 },
+  { name: 'With AI', hours: 1 },
+];
+
+const SuccessMetrics = () => {
+  return (
+    <div className="w-full max-w-4xl mx-auto mt-16">
+      <h2 className="text-3xl font-volkhov text-gunmetal font-bold mb-8 text-center">
+        Our Impact
+      </h2>
+      <div className="grid md:grid-cols-3 gap-6">
+        {/* Success Rate */}
+        <Card className="hover:shadow-lg transition-shadow">
+          <CardContent className="pt-6">
+            <div className="flex flex-col items-center">
+              <div className="w-32 h-32 mb-4">
+                <CircularProgressbar
+                  value={98}
+                  text={`${98}%`}
+                  styles={buildStyles({
+                    textSize: '1rem',
+                    pathColor: '#EAB308',
+                    textColor: '#122C34',
+                  })}
+                />
+              </div>
+              <h3 className="text-lg font-medium mb-2">Success Rate</h3>
+              <p className="text-sm text-gray-600 text-center">
+                Client satisfaction with AI-generated designs
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Time Savings */}
+        <Card className="hover:shadow-lg transition-shadow">
+          <CardContent className="pt-6">
+            <h3 className="text-lg font-medium mb-4 text-center">Time Savings</h3>
+            <ResponsiveContainer width="100%" height={150}>
+              <BarChart data={timeData}>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="hours" fill="#EAB308" />
+              </BarChart>
+            </ResponsiveContainer>
+            <p className="text-sm text-gray-600 text-center mt-4">
+              Hours saved in design visualization
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Total Transformations */}
+        <Card className="hover:shadow-lg transition-shadow">
+          <CardContent className="pt-6">
+            <div className="flex flex-col items-center">
+              <div className="text-4xl font-bold text-yellow-500 mb-4">50K+</div>
+              <h3 className="text-lg font-medium mb-2">Rooms Transformed</h3>
+              <p className="text-sm text-gray-600 text-center">
+                Successful interior transformations
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default SuccessMetrics;

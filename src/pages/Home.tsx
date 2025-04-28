@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Home/Navbar';
 import { Link } from 'react-router-dom';
@@ -6,6 +5,8 @@ import ImageSlider from '@/components/Home/ImageSlider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { HomeIcon, Keyboard, Wand2, Star } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import SuccessMetrics from '@/components/Home/SuccessMetrics';
+import StyleTrends from '@/components/Home/StyleTrends';
 
 const HomePage = () => {
   return (
@@ -112,6 +113,12 @@ const HomePage = () => {
               </Card>
             </div>
           </div>
+
+          {/* Success Metrics Section */}
+          <SuccessMetrics />
+
+          {/* Style Trends Section */}
+          <StyleTrends />
 
           {/* Testimonials Section */}
           <div className="w-full max-w-4xl mt-16 mb-16">
