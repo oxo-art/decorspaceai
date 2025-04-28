@@ -45,28 +45,28 @@ const Navbar = () => {
           <nav className="flex flex-col space-y-3">
             <Link 
               to="/" 
-              className="text-foreground hover:text-teal-600 transition-colors"
+              className="text-foreground hover:text-yellow-500 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link 
               to="/design" 
-              className="text-foreground hover:text-teal-600 transition-colors"
+              className="text-foreground hover:text-yellow-500 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Design Tool
             </Link>
             <Link 
               to="/about" 
-              className="text-foreground hover:text-teal-600 transition-colors"
+              className="text-foreground hover:text-yellow-500 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               About
             </Link>
             <Link 
               to="/contact" 
-              className="text-foreground hover:text-teal-600 transition-colors"
+              className="text-foreground hover:text-yellow-500 transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
               Contact

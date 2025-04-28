@@ -47,10 +47,10 @@ const InputSection: React.FC<InputSectionProps> = ({
 
   return (
     <div className="space-y-6 animate-scale-in" style={{ animationDelay: '0.1s' }}>
-      <Card className="overflow-hidden border border-gray-200 shadow-sm bg-gradient-to-br from-white via-teal-50 to-blue-50">
+      <Card className="overflow-hidden border border-gray-200 shadow-sm">
         <div className="p-6">
           <h2 className="text-xl font-medium mb-4 flex items-center gap-2">
-            <Camera className="h-5 w-5 text-teal-600" /> Upload
+            <Camera className="h-5 w-5 text-yellow-500" /> Upload
           </h2>
           
           <ImageUpload 
@@ -63,10 +63,10 @@ const InputSection: React.FC<InputSectionProps> = ({
         </div>
       </Card>
 
-      <Card className="overflow-hidden border border-gray-200 shadow-sm bg-gradient-to-br from-white via-teal-50 to-blue-50">
+      <Card className="overflow-hidden border border-gray-200 shadow-sm">
         <div className="p-4">
           <h2 className="text-lg font-medium mb-3 flex items-center gap-2">
-            <KeySquare className="h-4 w-4 text-teal-600" /> Keywords to Prompt
+            <KeySquare className="h-4 w-4 text-yellow-500" /> Keywords to Prompt
           </h2>
           
           <KeywordsToPrompt 
@@ -76,10 +76,10 @@ const InputSection: React.FC<InputSectionProps> = ({
         </div>
       </Card>
       
-      <Card className="overflow-hidden border border-gray-200 shadow-sm bg-gradient-to-br from-white via-teal-50 to-blue-50">
+      <Card className="overflow-hidden border border-gray-200 shadow-sm">
         <div className="p-6">
           <h2 className="text-xl font-medium mb-4 flex items-center gap-2">
-            <Pencil className="h-5 w-5 text-teal-600" /> Prompt
+            <Pencil className="h-5 w-5 text-yellow-500" /> Prompt
           </h2>
           
           <div>
@@ -98,7 +98,7 @@ const InputSection: React.FC<InputSectionProps> = ({
           <Button 
             onClick={handleGenerate}
             disabled={!image || !prompt.trim() || isLoading}
-            className="bg-teal-600 hover:bg-teal-700 text-white transition-all duration-300"
+            className="transition-all-300"
           >
             {isLoading ? 'Generating...' : 'Generate'}
           </Button>
