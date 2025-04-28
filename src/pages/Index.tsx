@@ -57,7 +57,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen w-full flex flex-col bg-gradient-to-b from-yellow-50 to-yellow-100">
       <Navbar />
       
       <div className="pt-24 px-4 sm:px-6 md:px-8 w-full max-w-4xl mx-auto flex-grow animate-fade-in">
