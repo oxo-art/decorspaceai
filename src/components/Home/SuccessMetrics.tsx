@@ -14,15 +14,15 @@ const timeData = [
 const SuccessMetrics = () => {
   return (
     <div className="w-full max-w-4xl mx-auto mt-16">
-      <h2 className="text-3xl font-volkhov text-gunmetal font-bold mb-8 text-center">
+      <h2 className="text-3xl font-volkhov text-gunmetal font-bold mb-8 text-center animate-fade-in">
         Our Impact
       </h2>
       <div className="grid md:grid-cols-3 gap-6">
         {/* Success Rate */}
-        <Card className="hover:shadow-lg transition-shadow">
+        <Card className="hover:shadow-lg transition-shadow transform hover:scale-105 transition-all duration-300 bg-gradient-to-br from-white to-yellow-50">
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
-              <div className="w-32 h-32 mb-4">
+              <div className="w-32 h-32 mb-4 animate-scale-in">
                 <CircularProgressbar
                   value={98}
                   text={`${98}%`}
@@ -30,10 +30,14 @@ const SuccessMetrics = () => {
                     textSize: '1rem',
                     pathColor: '#EAB308',
                     textColor: '#122C34',
+                    pathTransition: 'stroke-dashoffset 0.5s ease 0s',
+                    trailColor: '#F3F4F6',
                   })}
                 />
               </div>
-              <h3 className="text-lg font-medium mb-2">Success Rate</h3>
+              <h3 className="text-lg font-medium mb-2 flex items-center gap-2">
+                <Star className="text-yellow-500" /> Success Rate
+              </h3>
               <p className="text-sm text-gray-600 text-center">
                 Client satisfaction with AI-generated designs
               </p>
@@ -42,15 +46,34 @@ const SuccessMetrics = () => {
         </Card>
 
         {/* Time Savings */}
-        <Card className="hover:shadow-lg transition-shadow">
+        <Card className="hover:shadow-lg transition-shadow transform hover:scale-105 transition-all duration-300 bg-gradient-to-br from-white to-yellow-50">
           <CardContent className="pt-6">
-            <h3 className="text-lg font-medium mb-4 text-center">Time Savings</h3>
+            <h3 className="text-lg font-medium mb-4 text-center flex items-center justify-center gap-2">
+              <Clock className="text-yellow-500" /> Time Savings
+            </h3>
             <ResponsiveContainer width="100%" height={150}>
               <BarChart data={timeData}>
                 <XAxis dataKey="name" />
                 <YAxis />
-                <Tooltip />
-                <Bar dataKey="hours" fill="#EAB308" />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'white',
+                    border: '1px solid #EAB308',
+                    borderRadius: '8px',
+                  }}
+                />
+                <Bar 
+                  dataKey="hours" 
+                  fill="url(#colorGradient)"
+                  className="animate-fade-in"
+                >
+                  <defs>
+                    <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#EAB308" />
+                      <stop offset="100%" stopColor="#FCD34D" />
+                    </linearGradient>
+                  </defs>
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
             <p className="text-sm text-gray-600 text-center mt-4">
@@ -60,10 +83,13 @@ const SuccessMetrics = () => {
         </Card>
 
         {/* Total Transformations */}
-        <Card className="hover:shadow-lg transition-shadow">
+        <Card className="hover:shadow-lg transition-shadow transform hover:scale-105 transition-all duration-300 bg-gradient-to-br from-white to-yellow-50">
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
-              <div className="text-4xl font-bold text-yellow-500 mb-4">50K+</div>
+              <div className="text-4xl font-bold text-yellow-500 mb-4 animate-scale-in flex items-center gap-2">
+                <Users className="text-yellow-500" />
+                50K+
+              </div>
               <h3 className="text-lg font-medium mb-2">Rooms Transformed</h3>
               <p className="text-sm text-gray-600 text-center">
                 Successful interior transformations
