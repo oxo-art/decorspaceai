@@ -19,7 +19,7 @@ const SuccessMetrics = () => {
       </h2>
       <div className="grid md:grid-cols-3 gap-6">
         {/* Success Rate */}
-        <Card className="hover:shadow-lg transition-shadow transform hover:scale-105 transition-all duration-300 bg-gradient-to-br from-white to-yellow-50">
+        <Card className="hover:shadow-lg transition-shadow transform hover:scale-105 transition-all duration-300 bg-gradient-to-br from-white via-teal-50 to-blue-50">
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
               <div className="w-32 h-32 mb-4 animate-scale-in">
@@ -28,7 +28,7 @@ const SuccessMetrics = () => {
                   text={`${98}%`}
                   styles={buildStyles({
                     textSize: '1rem',
-                    pathColor: '#EAB308',
+                    pathColor: '#0D9488',
                     textColor: '#122C34',
                     pathTransition: 'stroke-dashoffset 0.5s ease 0s',
                     trailColor: '#F3F4F6',
@@ -36,7 +36,7 @@ const SuccessMetrics = () => {
                 />
               </div>
               <h3 className="text-lg font-medium mb-2 flex items-center gap-2">
-                <Star className="text-yellow-500" /> Success Rate
+                <Star className="text-teal-600" /> Success Rate
               </h3>
               <p className="text-sm text-gray-600 text-center">
                 Client satisfaction with AI-generated designs
@@ -46,10 +46,10 @@ const SuccessMetrics = () => {
         </Card>
 
         {/* Time Savings */}
-        <Card className="hover:shadow-lg transition-shadow transform hover:scale-105 transition-all duration-300 bg-gradient-to-br from-white to-yellow-50">
+        <Card className="hover:shadow-lg transition-shadow transform hover:scale-105 transition-all duration-300 bg-gradient-to-br from-white via-teal-50 to-blue-50">
           <CardContent className="pt-6">
             <h3 className="text-lg font-medium mb-4 text-center flex items-center justify-center gap-2">
-              <Clock className="text-yellow-500" /> Time Savings
+              <Clock className="text-teal-600" /> Time Savings
             </h3>
             <ResponsiveContainer width="100%" height={150}>
               <BarChart data={timeData}>
@@ -58,19 +58,19 @@ const SuccessMetrics = () => {
                 <Tooltip 
                   contentStyle={{ 
                     backgroundColor: 'white',
-                    border: '1px solid #EAB308',
+                    border: '1px solid #0D9488',
                     borderRadius: '8px',
                   }}
                 />
                 <Bar 
                   dataKey="hours" 
-                  fill="url(#colorGradient)"
+                  fill="url(#timeGradient)"
                   className="animate-fade-in"
                 >
                   <defs>
-                    <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#EAB308" />
-                      <stop offset="100%" stopColor="#FCD34D" />
+                    <linearGradient id="timeGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#0D9488" />
+                      <stop offset="100%" stopColor="#1E40AF" />
                     </linearGradient>
                   </defs>
                 </Bar>
@@ -83,11 +83,11 @@ const SuccessMetrics = () => {
         </Card>
 
         {/* Total Transformations */}
-        <Card className="hover:shadow-lg transition-shadow transform hover:scale-105 transition-all duration-300 bg-gradient-to-br from-white to-yellow-50">
+        <Card className="hover:shadow-lg transition-shadow transform hover:scale-105 transition-all duration-300 bg-gradient-to-br from-white via-teal-50 to-blue-50">
           <CardContent className="pt-6">
             <div className="flex flex-col items-center">
-              <div className="text-4xl font-bold text-yellow-500 mb-4 animate-scale-in flex items-center gap-2">
-                <Users className="text-yellow-500" />
+              <div className="text-4xl font-bold text-teal-600 mb-4 animate-scale-in flex items-center gap-2">
+                <Users className="text-teal-600" />
                 50K+
               </div>
               <h3 className="text-lg font-medium mb-2">Rooms Transformed</h3>

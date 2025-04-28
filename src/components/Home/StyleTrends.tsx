@@ -19,7 +19,7 @@ const roomData = [
   { name: 'Office', value: 10 },
 ];
 
-const COLORS = ['#EAB308', '#F59E0B', '#D97706', '#B45309'];
+const COLORS = ['#0D9488', '#1E40AF', '#F76B8A', '#64748b'];
 
 const StyleTrends = () => {
   return (
@@ -29,10 +29,10 @@ const StyleTrends = () => {
       </h2>
       <div className="grid md:grid-cols-2 gap-6">
         {/* Popular Styles */}
-        <Card className="hover:shadow-lg transition-shadow transform hover:scale-105 transition-all duration-300 bg-gradient-to-br from-white to-yellow-50">
+        <Card className="hover:shadow-lg transition-shadow transform hover:scale-105 transition-all duration-300 bg-gradient-to-br from-white via-teal-50 to-blue-50">
           <CardContent className="pt-6">
             <h3 className="text-lg font-medium mb-4 text-center flex items-center justify-center gap-2">
-              <GridIcon className="text-yellow-500" /> Popular Styles
+              <GridIcon className="text-teal-600" /> Popular Styles
             </h3>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={styleData} layout="vertical">
@@ -41,7 +41,7 @@ const StyleTrends = () => {
                 <Tooltip
                   contentStyle={{
                     backgroundColor: 'white',
-                    border: '1px solid #EAB308',
+                    border: '1px solid #0D9488',
                     borderRadius: '8px',
                   }}
                 />
@@ -52,8 +52,8 @@ const StyleTrends = () => {
                 >
                   <defs>
                     <linearGradient id="barGradient" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#EAB308" />
-                      <stop offset="100%" stopColor="#FCD34D" />
+                      <stop offset="0%" stopColor="#0D9488" />
+                      <stop offset="100%" stopColor="#1E40AF" />
                     </linearGradient>
                   </defs>
                 </Bar>
@@ -63,10 +63,10 @@ const StyleTrends = () => {
         </Card>
 
         {/* Room Distribution */}
-        <Card className="hover:shadow-lg transition-shadow transform hover:scale-105 transition-all duration-300 bg-gradient-to-br from-white to-yellow-50">
+        <Card className="hover:shadow-lg transition-shadow transform hover:scale-105 transition-all duration-300 bg-gradient-to-br from-white via-teal-50 to-blue-50">
           <CardContent className="pt-6">
             <h3 className="text-lg font-medium mb-4 text-center flex items-center justify-center gap-2">
-              <HomeIcon className="text-yellow-500" /> Room Distribution
+              <HomeIcon className="text-teal-600" /> Room Distribution
             </h3>
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
@@ -92,7 +92,7 @@ const StyleTrends = () => {
                 <Tooltip
                   contentStyle={{
                     backgroundColor: 'white',
-                    border: '1px solid #EAB308',
+                    border: '1px solid #0D9488',
                     borderRadius: '8px',
                   }}
                 />
