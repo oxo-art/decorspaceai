@@ -13,7 +13,7 @@ const HomePage = () => {
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      {/* Hero Section - Starts below the navbar */}
+      {/* Hero Section */}
       <div className="pt-24 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-5xl font-volkhov text-gunmetal font-bold mb-4">
@@ -25,7 +25,6 @@ const HomePage = () => {
           </p>
           
           <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md w-full max-w-4xl mb-8">
-            {/* Before/After Image Slider */}
             <div className="aspect-video w-full mb-6">
               <ImageSlider 
                 beforeImage="/lovable-uploads/bd34ac83-6bda-4860-a7c1-597175c2e137.png"
@@ -37,7 +36,7 @@ const HomePage = () => {
             
             <Link 
               to="/design" 
-              className="inline-block w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-3 px-4 rounded-md text-center transition-colors"
+              className="inline-block w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-3 px-4 rounded-md text-center transition-colors"
             >
               Start Designing Now
             </Link>
@@ -49,10 +48,10 @@ const HomePage = () => {
               How It Works
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg transition-shadow bg-gradient-to-br from-white via-teal-50 to-blue-50">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <HomeIcon className="h-6 w-6 text-yellow-500" />
+                    <HomeIcon className="h-6 w-6 text-teal-600" />
                     Upload Your Space
                   </CardTitle>
                 </CardHeader>
@@ -70,10 +69,10 @@ const HomePage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg transition-shadow bg-gradient-to-br from-white via-teal-50 to-blue-50">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <Keyboard className="h-6 w-6 text-yellow-500" />
+                    <Keyboard className="h-6 w-6 text-teal-600" />
                     Describe your dream interior
                   </CardTitle>
                 </CardHeader>
@@ -91,10 +90,10 @@ const HomePage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg transition-shadow bg-gradient-to-br from-white via-teal-50 to-blue-50">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <Wand2 className="h-6 w-6 text-yellow-500" />
+                    <Wand2 className="h-6 w-6 text-teal-600" />
                     AI Transformation
                   </CardTitle>
                 </CardHeader>
@@ -127,11 +126,10 @@ const HomePage = () => {
             </h2>
             
             <div className="grid md:grid-cols-2 gap-8">
-              {/* Testimonial 1 */}
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg transition-shadow bg-gradient-to-br from-white via-teal-50 to-blue-50">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <Avatar className="h-12 w-12 border-2 border-yellow-200">
+                    <Avatar className="h-12 w-12 border-2 border-teal-200">
                       <AvatarImage src="/lovable-uploads/ae68b5d0-b4d1-4602-87b2-540dd58e0c80.png" alt="Sophie Chen" />
                       <AvatarFallback>SC</AvatarFallback>
                     </Avatar>
@@ -141,7 +139,7 @@ const HomePage = () => {
                     </div>
                     <div className="ml-auto flex">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <Star key={i} className="h-4 w-4 fill-teal-400 text-teal-400" />
                       ))}
                     </div>
                   </div>
@@ -151,11 +149,10 @@ const HomePage = () => {
                 </CardContent>
               </Card>
 
-              {/* Testimonial 2 */}
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg transition-shadow bg-gradient-to-br from-white via-teal-50 to-blue-50">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <Avatar className="h-12 w-12 border-2 border-yellow-200">
+                    <Avatar className="h-12 w-12 border-2 border-teal-200">
                       <AvatarImage src="/lovable-uploads/c1da7f79-5457-4663-95f5-025298e8f5a5.png" alt="Marcus Johnson" />
                       <AvatarFallback>MJ</AvatarFallback>
                     </Avatar>
@@ -165,7 +162,7 @@ const HomePage = () => {
                     </div>
                     <div className="ml-auto flex">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <Star key={i} className="h-4 w-4 fill-teal-400 text-teal-400" />
                       ))}
                     </div>
                   </div>
@@ -175,11 +172,10 @@ const HomePage = () => {
                 </CardContent>
               </Card>
 
-              {/* Testimonial 3 */}
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg transition-shadow bg-gradient-to-br from-white via-teal-50 to-blue-50">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <Avatar className="h-12 w-12 border-2 border-yellow-200">
+                    <Avatar className="h-12 w-12 border-2 border-teal-200">
                       <AvatarImage src="/lovable-uploads/e5cf5be6-d84f-4606-bfbb-f6fcaa3738a7.png" alt="Priya Sharma" />
                       <AvatarFallback>PS</AvatarFallback>
                     </Avatar>
@@ -189,7 +185,7 @@ const HomePage = () => {
                     </div>
                     <div className="ml-auto flex">
                       {[...Array(4)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <Star key={i} className="h-4 w-4 fill-teal-400 text-teal-400" />
                       ))}
                       <Star className="h-4 w-4 text-gray-300" />
                     </div>
