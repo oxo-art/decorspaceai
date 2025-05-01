@@ -44,6 +44,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
               min={1} 
               max={20} 
               step={0.1}
+              defaultValue={[15]}
               onValueChange={(value) => setAdvancedSettings({...advancedSettings, guidance_scale: value[0]})}
             />
           </div>
@@ -56,6 +57,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
               min={0} 
               max={1} 
               step={0.1}
+              defaultValue={[1]}
               onValueChange={(value) => setAdvancedSettings({...advancedSettings, prompt_strength: value[0]})}
             />
           </div>
@@ -68,6 +70,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
               min={10} 
               max={100} 
               step={10}
+              defaultValue={[100]}
               onValueChange={(value) => setAdvancedSettings({...advancedSettings, num_inference_steps: value[0]})}
             />
           </div>
@@ -78,4 +81,3 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
 };
 
 export default AdvancedSettings;
-

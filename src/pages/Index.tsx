@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import InputSection from '@/components/InteriorDesign/InputSection';
@@ -89,4 +88,3 @@ const Index = () => {
 };
 
 export default Index;
-

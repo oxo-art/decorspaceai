@@ -6,7 +6,7 @@ export const handleInteriorDesignModel = async (
   prompt: string, 
   guidance_scale = 15,
   negative_prompt = "",
-  prompt_strength = 0.8, 
+  prompt_strength = 1, 
   num_inference_steps = 100,
   apiKey: string
 ) => {
