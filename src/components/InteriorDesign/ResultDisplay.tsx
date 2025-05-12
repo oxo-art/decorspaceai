@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Eye } from 'lucide-react';
@@ -7,7 +6,7 @@ import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog";
-import ImageSlider from '../Home/ImageSlider';
+import LoadingAnimation from './LoadingAnimation';
 
 interface ResultDisplayProps {
   isLoading: boolean;
@@ -67,9 +66,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
     <div>
       <div className="h-64 bg-gray-100 rounded-lg overflow-hidden relative">
         {isLoading ? (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
-          </div>
+          <LoadingAnimation />
         ) : output ? (
           <img 
             src={output} 
