@@ -44,7 +44,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
         placeholder="Describe the interior you want in detail - this prompt will be the primary focus for image generation"
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        className="resize-none min-h-[150px] border-amber-200 focus-visible:ring-amber-400"
+        className="resize-none min-h-[150px] focus-visible:ring-primary"
       />
     </div>
   );

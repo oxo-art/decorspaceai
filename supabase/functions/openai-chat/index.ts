@@ -36,12 +36,17 @@ serve(async (req) => {
     
     const timestamp = new Date().toISOString();
 
-    // Updated system prompt to create a starting point suggestion that users will edit
+    // Updated system prompt to format keywords into proper sentences
     const systemPrompt = `
 You are a creative interior design assistant. 
 Your task is to create a STARTING POINT suggestion based on the keywords provided.
 Keep in mind this is only a suggestion - users will edit and refine this prompt themselves in the main prompt box.
-Write 1-2 sentences (30-40 words total) starting with 'Imagine', with proper punctuation.
+
+FORMAT REQUIREMENTS:
+1. Start with 'Imagine' and create 1-2 complete sentences (30-40 words total).
+2. Convert the comma-separated keywords into a coherent, grammatically correct description.
+3. Use proper punctuation with commas and end with a period.
+4. Make sure your description is specific and focused on the design elements mentioned.
 `;
 
     // Call OpenAI API
