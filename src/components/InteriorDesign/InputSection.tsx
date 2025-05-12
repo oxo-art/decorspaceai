@@ -66,12 +66,8 @@ const InputSection: React.FC<InputSectionProps> = ({
       <Card className="overflow-hidden border border-gray-200 shadow-sm">
         <div className="p-4">
           <h2 className="text-lg font-medium mb-3 flex items-center gap-2">
-            <KeySquare className="h-4 w-4 text-yellow-500" /> Step 1: Start with Keywords
+            <KeySquare className="h-4 w-4 text-yellow-500" /> Keywords to Prompt
           </h2>
-          
-          <p className="text-sm text-muted-foreground mb-3">
-            Enter design elements to quickly generate a basic starting point for your prompt.
-          </p>
           
           <KeywordsToPrompt 
             onPromptGenerated={setPrompt}
@@ -83,12 +79,8 @@ const InputSection: React.FC<InputSectionProps> = ({
       <Card className="overflow-hidden border border-gray-200 shadow-sm">
         <div className="p-6">
           <h2 className="text-xl font-medium mb-4 flex items-center gap-2">
-            <Pencil className="h-5 w-5 text-yellow-500" /> Step 2: Customize Prompt
+            <Pencil className="h-5 w-5 text-yellow-500" /> Prompt
           </h2>
-          
-          <p className="text-sm text-muted-foreground mb-3">
-            Refine and expand your prompt. This will be the primary focus for image generation.
-          </p>
           
           <div>
             <PromptInput 

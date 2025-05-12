@@ -1,7 +1,7 @@
 
 import { Textarea } from '@/components/ui/textarea';
 import AdvancedSettings from './AdvancedSettings';
-import { PenLine, Info } from 'lucide-react';
+import { PenLine } from 'lucide-react';
 
 interface PromptInputProps {
   prompt: string;
@@ -41,18 +41,11 @@ const PromptInput: React.FC<PromptInputProps> = ({
       
       <Textarea
         id="prompt"
-        placeholder="Refine and expand your prompt here. This will be the primary focus of the image generation."
+        placeholder="Describe the interior you want - (e.g - A living room with turquoise sofa set, a television set, green indoor plants.)"
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         className="resize-none min-h-[150px]"
       />
-      
-      <div className="flex items-start gap-2 mt-1 text-xs text-muted-foreground">
-        <Info className="h-4 w-4 mt-0.5 text-blue-500 shrink-0" />
-        <span>
-          The text you enter here will be the <strong>primary focus</strong> of the image generation. Feel free to modify the suggestion from keywords or write your own detailed prompt.
-        </span>
-      </div>
     </div>
   );
 };
