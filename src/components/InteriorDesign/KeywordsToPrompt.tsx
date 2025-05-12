@@ -88,7 +88,7 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
           ) : lastKeywords === keywords.trim() && keywords.trim() !== '' ? (
             <>
               <RefreshCw className="h-4 w-4 mr-2" />
-              <span>New Suggestion</span>
+              <span>New Variation</span>
             </>
           ) : (
             <span>Suggest Prompt</span>
@@ -99,7 +99,7 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
         <div className="flex items-start gap-2 mt-1 text-xs text-muted-foreground">
           <Info className="h-4 w-4 mt-0.5 text-blue-500 shrink-0" />
           <span>
-            <strong>Note:</strong> This is a suggestion only. Edit the prompt in the <span className="font-semibold text-amber-700">Customize Prompt</span> section below for best results.
+            <strong>Note:</strong> If the results appear deformed or unsatisfactory, click new variation to refresh and generate a new prompt.
           </span>
         </div>
       )}
