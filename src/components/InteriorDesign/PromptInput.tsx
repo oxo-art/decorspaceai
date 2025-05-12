@@ -32,7 +32,6 @@ const PromptInput: React.FC<PromptInputProps> = ({
             <span>Customize Prompt</span>
             <PenLine className="h-4 w-4 text-muted-foreground" />
           </label>
-          <span className="text-xs px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded font-medium">Primary</span>
         </div>
         <AdvancedSettings 
           advancedSettings={advancedSettings}
