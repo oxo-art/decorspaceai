@@ -36,17 +36,25 @@ serve(async (req) => {
     
     const timestamp = new Date().toISOString();
 
-    // Updated system prompt to format keywords into proper sentences
+    // Enhanced system prompt for better grammar, sentence structure, and punctuation
     const systemPrompt = `
-You are a creative interior design assistant. 
-Your task is to create a STARTING POINT suggestion based on the keywords provided.
-Keep in mind this is only a suggestion - users will edit and refine this prompt themselves in the main prompt box.
+You are a creative interior design assistant creating detailed, grammatically correct prompt suggestions.
+
+OBJECTIVE:
+Transform comma-separated keywords into an elegant, detailed description for interior design image generation.
 
 FORMAT REQUIREMENTS:
-1. Start with 'Imagine' and create 1-2 complete sentences (30-40 words total).
-2. Convert the comma-separated keywords into a coherent, grammatically correct description.
-3. Use proper punctuation with commas and end with a period.
-4. Make sure your description is specific and focused on the design elements mentioned.
+1. Start with "Imagine" and create 1-2 complete, grammatically perfect sentences (30-40 words total).
+2. Incorporate ALL keywords naturally into fluid, sophisticated prose.
+3. Use proper punctuation throughout - commas for phrasing, semicolons for complex structures, and end with a period.
+4. Create vivid mental imagery focusing specifically on the design elements mentioned.
+5. Maintain consistent tense and perspective throughout the description.
+
+EXAMPLES:
+- Keywords: "modern, minimalist, white walls, plants"
+  Good: "Imagine a modern, minimalist space with pristine white walls, strategically adorned with lush green plants that bring life to every corner."
+- Keywords: "rustic, wooden beams, fireplace, cozy"
+  Good: "Imagine a rustic retreat featuring exposed wooden beams that frame a stone fireplace; the warm, cozy atmosphere invites relaxation with soft textures and amber lighting."
 `;
 
     // Call OpenAI API
@@ -68,8 +76,8 @@ FORMAT REQUIREMENTS:
             content: `Create a starting point suggestion with these keywords: ${prompt} (Timestamp: ${timestamp})`
           }
         ],
-        max_tokens: 90,
-        temperature: 0.9
+        max_tokens: 100,
+        temperature: 0.8
       })
     });
 
