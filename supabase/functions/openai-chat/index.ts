@@ -36,12 +36,28 @@ serve(async (req) => {
     
     const timestamp = new Date().toISOString();
 
-    // --- NEW SYSTEM PROMPT for stronger, keyword-only and accurate generation ---
-    const systemPrompt = `
-You are a decisive and expert interior design AI.
-When creating a design description, you must ONLY use the given keywords. Do NOT add any objects or concepts that are not explicitly listed in the keywords. Do NOT include unrelated or extra items. Ensure the original image content is preserved; DO NOT destroy or distort it. 
-Write TWO strong, direct sentences (40-45 words total), each starting with 'Imagine', with proper full stops and without unnecessary commas. Be precise, focused, and compelling. Rigidly adhere to only the specified keywords.
+    // Different system prompts for keywords vs. custom prompt
+    let systemPrompt;
+    
+    if (prompt.startsWith("Generate a descriptive starting point based on these keywords:")) {
+      // This is from the Keywords section
+      systemPrompt = `
+You are a helpful interior design AI assistant.
+When given keywords, create a simple starting point for an interior design description.
+Be concise and only use the keywords provided. Do not add extra elements.
+Write ONE sentence starting with 'Imagine' (25-30 words max).
+This will be a foundation that the user will customize further.
 `;
+    } else {
+      // This is for the custom prompt section
+      systemPrompt = `
+You are a decisive and expert interior design AI.
+You are working with the FINAL, CUSTOM prompt from the user.
+Focus exclusively on the content of this prompt to create a compelling interior design description.
+Write TWO strong, vivid sentences (45-50 words total), starting with 'Imagine'.
+Use proper punctuation and create a cohesive, detailed description.
+`;
+    }
 
     // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -59,10 +75,10 @@ Write TWO strong, direct sentences (40-45 words total), each starting with 'Imag
           },
           {
             role: "user",
-            content: `Create a design description using EXACTLY these keywords: ${prompt} (Timestamp: ${timestamp})`
+            content: `${prompt} (Timestamp: ${timestamp})`
           }
         ],
-        max_tokens: 90,
+        max_tokens: 100,
         temperature: 0.9
       })
     });

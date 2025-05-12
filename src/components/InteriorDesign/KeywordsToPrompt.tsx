@@ -46,20 +46,19 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
       // Save current keywords to track when we're generating a new variation
       setLastKeywords(keywordsToUse);
 
-      // --- STRONGER, MORE STRICT PROMPT  ---
       const response = await getAIDesignSuggestion({
-        prompt: `Using ONLY and EXACTLY these keywords: ${keywordsToUse}, create an interior image description. Imagine a space that strictly adheres to these keywords. Do NOT add any extra items, objects, or concepts not listed. Do NOT distort or destroy the original content—just use the provided keywords. Write TWO direct sentences starting with 'Imagine' (total 40-45 words), with proper full stops, and nothing unrelated.`,
+        prompt: `Generate a descriptive starting point based on these keywords: ${keywordsToUse}. Create a brief descriptive interior design scene using ONLY these keywords (no extra objects). Write ONE sentence starting with 'Imagine' (25-30 words max). This will be FURTHER REFINED by user input in a separate prompt field, so keep it basic and focused on the keywords only.`,
         isVariation: isVariation,
       });
 
       if (response.result) {
         onPromptGenerated(response.result);
-        toast.success(isVariation ? 'New variation created' : 'Prompt generated');
+        toast.success(isVariation ? 'New keyword variation created' : 'Basic prompt generated from keywords');
         setHasGenerated(true); // Show the info note
       }
     } catch (error) {
       console.error("Error generating prompt:", error);
-      toast.error('Failed to generate prompt');
+      toast.error('Failed to generate prompt from keywords');
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +70,7 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
         <Input
           value={keywords}
           onChange={(e) => setKeywords(e.target.value)}
-          placeholder="Enter keywords separated by commas"
+          placeholder="Enter design elements separated by commas"
           className="flex-1"
         />
         <Button
@@ -99,7 +98,7 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
         <div className="flex items-start gap-2 mt-1 text-xs text-muted-foreground">
           <Info className="h-4 w-4 mt-0.5 text-blue-500 shrink-0" />
           <span>
-            <strong>Note:</strong> if the results appear deformed or unsatisfactory, click "<span className="font-semibold">New Variation</span>" to refresh and generate a new prompt.
+            <strong>Basic prompt created!</strong> Now you can refine and expand it in the "Customize Prompt" section below.
           </span>
         </div>
       )}
