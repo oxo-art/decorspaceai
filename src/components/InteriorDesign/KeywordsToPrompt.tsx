@@ -78,7 +78,7 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
           disabled={isLoading}
           className="whitespace-nowrap"
           size="sm"
-          variant="outline"
+          variant={lastKeywords === keywords.trim() && keywords.trim() !== '' ? "outline" : "default"}
         >
           {isLoading ? (
             <>
