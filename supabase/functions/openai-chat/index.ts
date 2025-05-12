@@ -36,11 +36,12 @@ serve(async (req) => {
     
     const timestamp = new Date().toISOString();
 
-    // --- NEW SYSTEM PROMPT for stronger, keyword-only and accurate generation ---
+    // Updated system prompt to create a starting point suggestion that users will edit
     const systemPrompt = `
-You are a decisive and expert interior design AI.
-When creating a design description, you must ONLY use the given keywords. Do NOT add any objects or concepts that are not explicitly listed in the keywords. Do NOT include unrelated or extra items. Ensure the original image content is preserved; DO NOT destroy or distort it. 
-Write TWO strong, direct sentences (40-45 words total), each starting with 'Imagine', with proper full stops and without unnecessary commas. Be precise, focused, and compelling. Rigidly adhere to only the specified keywords.
+You are a creative interior design assistant. 
+Your task is to create a STARTING POINT suggestion based on the keywords provided.
+Keep in mind this is only a suggestion - users will edit and refine this prompt themselves in the main prompt box.
+Write 1-2 sentences (30-40 words total) starting with 'Imagine', with proper punctuation.
 `;
 
     // Call OpenAI API
@@ -59,7 +60,7 @@ Write TWO strong, direct sentences (40-45 words total), each starting with 'Imag
           },
           {
             role: "user",
-            content: `Create a design description using EXACTLY these keywords: ${prompt} (Timestamp: ${timestamp})`
+            content: `Create a starting point suggestion with these keywords: ${prompt} (Timestamp: ${timestamp})`
           }
         ],
         max_tokens: 90,

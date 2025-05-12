@@ -32,6 +32,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
             <span>Customize Prompt</span>
             <PenLine className="h-4 w-4 text-muted-foreground" />
           </label>
+          <span className="text-xs px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded font-medium">Primary</span>
         </div>
         <AdvancedSettings 
           advancedSettings={advancedSettings}
@@ -41,10 +42,10 @@ const PromptInput: React.FC<PromptInputProps> = ({
       
       <Textarea
         id="prompt"
-        placeholder="Describe the interior you want - (e.g - A living room with turquoise sofa set, a television set, green indoor plants.)"
+        placeholder="Describe the interior you want in detail - this prompt will be the primary focus for image generation"
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        className="resize-none min-h-[150px]"
+        className="resize-none min-h-[150px] border-amber-200 focus-visible:ring-amber-400"
       />
     </div>
   );

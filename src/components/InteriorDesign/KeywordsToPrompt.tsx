@@ -19,7 +19,7 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [lastKeywords, setLastKeywords] = useState('');
   const [variationCount, setVariationCount] = useState(0);
-  const [hasGenerated, setHasGenerated] = useState(false); // To show the info after generation
+  const [hasGenerated, setHasGenerated] = useState(false);
 
   const handleGeneratePrompt = async () => {
     const keywordsToUse = keywords.trim();
@@ -46,16 +46,15 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
       // Save current keywords to track when we're generating a new variation
       setLastKeywords(keywordsToUse);
 
-      // --- STRONGER, MORE STRICT PROMPT  ---
       const response = await getAIDesignSuggestion({
-        prompt: `Using ONLY and EXACTLY these keywords: ${keywordsToUse}, create an interior image description. Imagine a space that strictly adheres to these keywords. Do NOT add any extra items, objects, or concepts not listed. Do NOT distort or destroy the original content—just use the provided keywords. Write TWO direct sentences starting with 'Imagine' (total 40-45 words), with proper full stops, and nothing unrelated.`,
+        prompt: keywordsToUse,
         isVariation: isVariation,
       });
 
       if (response.result) {
         onPromptGenerated(response.result);
-        toast.success(isVariation ? 'New variation created' : 'Prompt generated');
-        setHasGenerated(true); // Show the info note
+        toast.success('Prompt suggestion created');
+        setHasGenerated(true);
       }
     } catch (error) {
       console.error("Error generating prompt:", error);
@@ -79,6 +78,7 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
           disabled={isLoading}
           className="whitespace-nowrap"
           size="sm"
+          variant="outline"
         >
           {isLoading ? (
             <>
@@ -88,10 +88,10 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
           ) : lastKeywords === keywords.trim() && keywords.trim() !== '' ? (
             <>
               <RefreshCw className="h-4 w-4 mr-2" />
-              <span>New Variation</span>
+              <span>New Suggestion</span>
             </>
           ) : (
-            <span>Generate</span>
+            <span>Suggest Prompt</span>
           )}
         </Button>
       </div>
@@ -99,7 +99,7 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
         <div className="flex items-start gap-2 mt-1 text-xs text-muted-foreground">
           <Info className="h-4 w-4 mt-0.5 text-blue-500 shrink-0" />
           <span>
-            <strong>Note:</strong> if the results appear deformed or unsatisfactory, click "<span className="font-semibold">New Variation</span>" to refresh and generate a new prompt.
+            <strong>Note:</strong> This is a suggestion only. Edit the prompt in the <span className="font-semibold text-amber-700">Customize Prompt</span> section below for best results.
           </span>
         </div>
       )}

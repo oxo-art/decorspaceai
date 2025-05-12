@@ -12,6 +12,9 @@ export const handleInteriorDesignModel = async (
 ) => {
   console.log("Using interior design model with parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
   
+  // Enhance the prompt to ensure focus on the user's input
+  const enhancedPrompt = `HIGH PRIORITY DESIGN REQUEST: ${prompt}. Focus exclusively on this description. Keep the core structure but transform according to this prompt.`;
+  
   // Create prediction with the proper URL format and parameters
   const response = await fetch("https://api.replicate.com/v1/predictions", {
     method: "POST",
@@ -23,7 +26,7 @@ export const handleInteriorDesignModel = async (
       version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
       input: {
         image: image,
-        prompt: prompt,
+        prompt: enhancedPrompt,
         guidance_scale: guidance_scale,
         negative_prompt: negative_prompt,
         prompt_strength: prompt_strength,
