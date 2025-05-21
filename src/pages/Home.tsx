@@ -192,6 +192,30 @@ const HomePage = () => {
                   </p>
                 </CardContent>
               </Card>
+              
+              {/* New Testimonial 4 */}
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <Avatar className="h-12 w-12 border-2 border-yellow-200">
+                      <AvatarImage src="/lovable-uploads/be650492-5527-4cbb-9b07-03f33138eef3.png" alt="Emma Reynolds" />
+                      <AvatarFallback>ER</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h3 className="font-medium">Emma Reynolds</h3>
+                      <p className="text-sm text-muted-foreground">Real Estate Agent</p>
+                    </div>
+                    <div className="ml-auto flex">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-600 italic">
+                    "This AI design tool has completely transformed my real estate business. Now I can show clients the potential of any property by visualizing different design styles before they even make an offer. My listings sell faster and for higher prices thanks to these realistic visualizations."
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
