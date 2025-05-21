@@ -1,40 +1,12 @@
-
 import React from 'react';
 import Navbar from '@/components/Home/Navbar';
 import { Link } from 'react-router-dom';
 import ImageSlider from '@/components/Home/ImageSlider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { HomeIcon, Keyboard, Wand2, Star, Mail, MapPin, Phone } from 'lucide-react';
+import { HomeIcon, Keyboard, Wand2, Star, Mail } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
 
 const HomePage = () => {
-  const { toast } = useToast();
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [message, setMessage] = React.useState('');
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      toast({
-        title: "Message sent",
-        description: "Thank you for contacting us. We'll get back to you soon.",
-      });
-      setName('');
-      setEmail('');
-      setMessage('');
-      setIsSubmitting(false);
-    }, 1000);
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -246,7 +218,7 @@ const HomePage = () => {
             </div>
           </div>
           
-          {/* Contact Us Section - Added below testimonials */}
+          {/* Contact Us Section - Simplified version */}
           <div id="contact" className="w-full max-w-4xl mt-8 mb-16">
             <h2 className="text-4xl font-volkhov text-gunmetal font-bold mb-4 text-center">
               Contact Us
@@ -255,8 +227,8 @@ const HomePage = () => {
               Have questions about our AI design services? Reach out to our team and we'll be happy to help.
             </p>
             
-            <div className="w-full grid md:grid-cols-3 gap-8 mb-12">
-              <Card className="hover:shadow-lg transition-shadow">
+            <div className="w-full flex justify-center mb-8">
+              <Card className="max-w-md w-full hover:shadow-lg transition-shadow">
                 <CardHeader className="text-center">
                   <CardTitle className="flex flex-col items-center gap-3">
                     <div className="bg-yellow-100 p-3 rounded-full">
@@ -273,94 +245,7 @@ const HomePage = () => {
                   </p>
                 </CardContent>
               </Card>
-
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardHeader className="text-center">
-                  <CardTitle className="flex flex-col items-center gap-3">
-                    <div className="bg-yellow-100 p-3 rounded-full">
-                      <Phone className="h-6 w-6 text-yellow-500" />
-                    </div>
-                    Phone
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-gray-600">
-                    (800) 123-4567
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Mon-Fri, 9am-5pm EST
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardHeader className="text-center">
-                  <CardTitle className="flex flex-col items-center gap-3">
-                    <div className="bg-yellow-100 p-3 rounded-full">
-                      <MapPin className="h-6 w-6 text-yellow-500" />
-                    </div>
-                    Address
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-gray-600">
-                    123 Design Avenue<br />
-                    San Francisco, CA 94103
-                  </p>
-                </CardContent>
-              </Card>
             </div>
-            
-            <Card className="w-full max-w-3xl mx-auto shadow-md">
-              <CardHeader>
-                <CardTitle className="text-center">Send Us a Message</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label htmlFor="name" className="text-sm font-medium">Your Name</label>
-                      <Input 
-                        id="name" 
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="John Doe" 
-                        required 
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label htmlFor="email" className="text-sm font-medium">Email Address</label>
-                      <Input 
-                        id="email" 
-                        type="email" 
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="john@example.com" 
-                        required 
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="text-sm font-medium">Your Message</label>
-                    <Textarea 
-                      id="message" 
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      placeholder="How can we help you?" 
-                      rows={5} 
-                      required 
-                    />
-                  </div>
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-yellow-500 hover:bg-yellow-600 text-black"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? "Sending..." : "Send Message"}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </div>
