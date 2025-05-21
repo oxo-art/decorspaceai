@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/Home/Navbar';
 import { Link } from 'react-router-dom';
@@ -212,7 +211,7 @@ const HomePage = () => {
                     </div>
                   </div>
                   <p className="text-gray-600 italic">
-                    "This AI design tool has completely transformed my real estate business. Now I can show clients the potential of any property by visualizing different design styles before they even make an offer. My listings sell faster and for higher prices thanks to these realistic visualizations."
+                    "This AI design tool has completely transformed my real estate business. Now I can show clients the potential of any property by visualizing different design styles before they even make an offer. My listings sell faster thanks to these realistic visualizations."
                   </p>
                 </CardContent>
               </Card>
