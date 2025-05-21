@@ -9,6 +9,14 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile = useIsMobile();
   
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMenuOpen(false);
+  };
+  
   return (
     <div className="bg-background w-full shadow-sm fixed top-0 z-20">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
@@ -64,13 +72,12 @@ const Navbar = () => {
             >
               About
             </Link>
-            <Link 
-              to="/contact" 
-              className="text-foreground hover:text-yellow-500 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
+            <button 
+              className="text-left text-foreground hover:text-yellow-500 transition-colors"
+              onClick={scrollToContact}
             >
               Contact
-            </Link>
+            </button>
           </nav>
         </div>
       )}
