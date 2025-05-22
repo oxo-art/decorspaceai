@@ -2,15 +2,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/Home';
 import NotFoundPage from './pages/NotFound';
-
-// You might have other imports here
+import Index from './pages/Index'; // Import the design page component
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        {/* You might have other routes here */}
+        <Route path="/design" element={<Index />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>

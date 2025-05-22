@@ -218,7 +218,7 @@ const HomePage = () => {
             </div>
           </div>
           
-          {/* Contact Us Section - Simplified version */}
+          {/* Contact Us Section */}
           <div id="contact" className="w-full max-w-4xl mt-8 mb-16">
             <h2 className="text-4xl font-volkhov text-gunmetal font-bold mb-4 text-center">
               Contact Us
