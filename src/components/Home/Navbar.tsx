@@ -30,6 +30,11 @@ const Navbar = () => {
         <div className="flex justify-between items-center py-4 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <Link to="/" className="flex items-center">
+              <img 
+                src="/lovable-uploads/bd34ac83-6bda-4860-a7c1-597175c2e137.png" 
+                alt="DecorSpaceAI Logo" 
+                className="h-10 w-auto" 
+              />
               <span className="ml-2 text-xl font-bold text-gray-900">DecorSpaceAI</span>
             </Link>
           </div>
@@ -77,7 +82,11 @@ const Navbar = () => {
             <div className="pt-5 pb-6 px-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-xl font-bold">DecorSpaceAI</span>
+                  <img 
+                    src="/lovable-uploads/bd34ac83-6bda-4860-a7c1-597175c2e137.png" 
+                    alt="DecorSpaceAI Logo" 
+                    className="h-8 w-auto" 
+                  />
                 </div>
                 <div className="-mr-2">
                   <Button
