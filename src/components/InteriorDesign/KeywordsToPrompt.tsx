@@ -65,25 +65,25 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-1 w-full">
-      <div className="flex items-center gap-2 w-full">
+    <div className="flex flex-col gap-2 w-full">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full">
         <Input
           value={keywords}
           onChange={(e) => setKeywords(e.target.value)}
           placeholder="Enter keywords separated by commas"
-          className="flex-1"
+          className="flex-1 min-h-[44px]"
         />
         <Button
           onClick={handleGeneratePrompt}
           disabled={isLoading}
-          className="whitespace-nowrap"
-          size="sm"
+          className="whitespace-nowrap min-h-[44px] w-full sm:w-auto"
+          size="default"
           variant={lastKeywords === keywords.trim() && keywords.trim() !== '' ? "outline" : "default"}
         >
           {isLoading ? (
             <>
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-              <span className="hidden sm:inline">Generating...</span>
+              <span>Generating...</span>
             </>
           ) : lastKeywords === keywords.trim() && keywords.trim() !== '' ? (
             <>

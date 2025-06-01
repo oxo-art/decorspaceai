@@ -64,10 +64,10 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
 
   return (
     <div>
-      <div className="h-64 bg-gray-100 rounded-lg overflow-hidden relative">
+      <div className="h-48 md:h-64 bg-gray-100 rounded-lg overflow-hidden relative">
         {isLoading ? (
           <div className="w-full h-full flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
+            <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
           </div>
         ) : output ? (
           <img 
@@ -76,8 +76,8 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
             className="w-full h-full object-contain"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <p className="text-muted-foreground text-sm">
+          <div className="w-full h-full flex items-center justify-center p-4">
+            <p className="text-muted-foreground text-xs md:text-sm text-center">
               Your AI-generated design will appear here
             </p>
           </div>
@@ -86,10 +86,10 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
       
       {output && (
         <>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-3 md:mt-4 flex flex-col sm:flex-row gap-2">
             <Button 
               variant="outline" 
-              className="flex-1"
+              className="flex-1 min-h-[44px] text-sm md:text-base"
               onClick={handleDownload}
             >
               <Download className="mr-2 h-4 w-4" />
@@ -98,7 +98,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
             
             <Button 
               variant="outline"
-              className="flex-1"
+              className="flex-1 min-h-[44px] text-sm md:text-base"
               onClick={handlePreview}
             >
               <Eye className="mr-2 h-4 w-4" />
@@ -107,7 +107,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
           </div>
           
           <Dialog open={isPreviewDialogOpen} onOpenChange={setIsPreviewDialogOpen}>
-            <DialogContent className="max-w-[98vw] w-[98vw] max-h-[98vh] h-[98vh] p-0 border bg-background">
+            <DialogContent className="max-w-[95vw] w-[95vw] max-h-[95vh] h-[95vh] p-0 border bg-background">
               <div className="relative bg-background rounded-lg flex flex-col items-center justify-center h-full">
                 <div className="flex-1 w-full flex items-center justify-center p-1">
                   <img 
@@ -116,17 +116,18 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
                     className="max-w-[98%] max-h-[98%] object-contain"
                   />
                 </div>
-                <div className="flex gap-4 justify-center p-2 border-t w-full">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center p-3 border-t w-full">
                   <Button 
                     onClick={handleDownload}
-                    className="flex items-center gap-2"
+                    className="flex items-center justify-center gap-2 min-h-[44px] w-full sm:w-auto"
                   >
-                    <Download className="h-5 w-5" />
+                    <Download className="h-4 w-4" />
                     Download Image
                   </Button>
                   <Button 
                     variant="outline"
                     onClick={() => setIsPreviewDialogOpen(false)}
+                    className="min-h-[44px] w-full sm:w-auto"
                   >
                     Close
                   </Button>
