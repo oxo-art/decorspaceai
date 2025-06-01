@@ -64,7 +64,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
 
   return (
     <div>
-      <div className="h-48 md:h-64 bg-gray-100 rounded-lg overflow-hidden relative">
+      <div className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden relative max-w-md mx-auto">
         {isLoading ? (
           <div className="w-full h-full flex items-center justify-center">
             <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
@@ -72,8 +72,8 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
         ) : output ? (
           <img 
             src={output} 
-            alt="Output" 
-            className="w-full h-full object-contain"
+            alt="Generated Interior Design" 
+            className="w-full h-full object-cover"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center p-4">
@@ -86,7 +86,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
       
       {output && (
         <>
-          <div className="mt-3 md:mt-4 flex flex-col sm:flex-row gap-2">
+          <div className="mt-3 md:mt-4 flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
             <Button 
               variant="outline" 
               className="flex-1 min-h-[44px] text-sm md:text-base"

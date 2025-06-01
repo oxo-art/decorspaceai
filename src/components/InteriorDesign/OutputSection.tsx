@@ -17,7 +17,7 @@ const OutputSection: React.FC<OutputSectionProps> = ({
   return (
     <div className="space-y-4 md:space-y-6 animate-scale-in" style={{ animationDelay: '0.2s' }}>
       <Card className="overflow-hidden border border-gray-200 shadow-sm">
-        <div className="p-4 md:p-6">
+        <div className="p-3 md:p-4">
           <h2 className="text-lg md:text-xl font-medium mb-3 md:mb-4 flex items-center gap-2">
             <PartyPopper className="h-4 w-4 md:h-5 md:w-5 text-yellow-500" /> Design
           </h2>
