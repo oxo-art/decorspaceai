@@ -6,33 +6,13 @@ interface OpenAIRequest {
   prompt: string;
   model?: string;
   isVariation?: boolean;
-  isImageGeneration?: boolean;
-  inputImages?: string[];
 }
 
 interface OpenAIResponse {
   result: string;
   model: string;
-  type?: string;
   error?: string;
 }
-
-/**
- * Converts image file to base64 string
- */
-const convertImageToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result as string;
-      // Remove the data URL prefix to get just the base64 string
-      const base64 = result.split(',')[1];
-      resolve(base64);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-};
 
 /**
  * Calls the OpenAI API through a Supabase Edge Function
@@ -40,41 +20,35 @@ const convertImageToBase64 = (file: File): Promise<string> => {
 export const getAIDesignSuggestion = async ({
   prompt,
   model = "gpt-4o-mini",
-  isVariation = false,
-  isImageGeneration = false,
-  inputImages = []
+  isVariation = false
 }: OpenAIRequest): Promise<OpenAIResponse> => {
   try {
-    console.log("Requesting AI design suggestion", { isImageGeneration });
+    console.log("Requesting AI design suggestion");
     
     const { data, error } = await supabase.functions.invoke("openai-chat", {
       body: {
         prompt,
         model,
-        isVariation,
-        isImageGeneration,
-        inputImages
+        isVariation
       }
     });
     
     if (error) {
       console.error("Error calling Edge Function:", error);
-      const errorMessage = isImageGeneration ? "Failed to generate image" : "Failed to get AI suggestions";
-      toast.error(errorMessage);
-      throw new Error(error.message || errorMessage);
+      toast.error("Failed to get AI suggestions");
+      throw new Error(error.message || "Failed to get AI suggestions");
     }
     
     console.log("AI response received:", data);
     
     return {
       result: data.result,
-      model: data.model,
-      type: data.type
+      model: data.model
     };
   } catch (error) {
     console.error("Error getting AI design suggestion:", error);
     
-    const errorMessage = error.message || (isImageGeneration ? "Failed to generate image. Please try again later." : "Failed to get AI design suggestions. Please try again later.");
+    const errorMessage = error.message || "Failed to get AI design suggestions. Please try again later.";
     
     toast.error(errorMessage);
     
@@ -85,16 +59,3 @@ export const getAIDesignSuggestion = async ({
     };
   }
 };
-
-/**
- * Generate an image using OpenAI's new image generation API with optional input images
- */
-export const generateImageWithOpenAI = async (prompt: string, inputImages?: string[]): Promise<OpenAIResponse> => {
-  return getAIDesignSuggestion({
-    prompt,
-    isImageGeneration: true,
-    inputImages
-  });
-};
-
-export { convertImageToBase64 };

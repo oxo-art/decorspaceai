@@ -16,15 +16,13 @@ interface PromptInputProps {
     prompt_strength: number;
     num_inference_steps: number;
   }>>;
-  showAdvanced?: boolean;
 }
 
 const PromptInput: React.FC<PromptInputProps> = ({
   prompt,
   setPrompt,
   advancedSettings,
-  setAdvancedSettings,
-  showAdvanced = true
+  setAdvancedSettings
 }) => {
   return (
     <div className="space-y-2">
@@ -35,12 +33,10 @@ const PromptInput: React.FC<PromptInputProps> = ({
             <PenLine className="h-4 w-4 text-muted-foreground" />
           </label>
         </div>
-        {showAdvanced && (
-          <AdvancedSettings 
-            advancedSettings={advancedSettings}
-            setAdvancedSettings={setAdvancedSettings}
-          />
-        )}
+        <AdvancedSettings 
+          advancedSettings={advancedSettings}
+          setAdvancedSettings={setAdvancedSettings}
+        />
       </div>
       
       <Textarea

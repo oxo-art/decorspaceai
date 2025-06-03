@@ -23,7 +23,7 @@ serve(async (req) => {
       );
     }
 
-    const { prompt, model = "gpt-4o-mini", isVariation = false, isImageGeneration = false, inputImages = [] } = await req.json();
+    const { prompt, model = "gpt-4o-mini", isVariation = false } = await req.json();
 
     if (!prompt) {
       return new Response(
@@ -32,129 +32,8 @@ serve(async (req) => {
       );
     }
 
-    console.log(`Processing request with model ${model}: ${prompt.substring(0, 50)}...`);
+    console.log(`Processing prompt with model ${model}: ${prompt.substring(0, 50)}...`);
     
-    // Handle image generation requests using the new OpenAI responses API
-    if (isImageGeneration) {
-      try {
-        // Prepare the content array with text and images
-        const content = [
-          { type: "input_text", text: prompt }
-        ];
-
-        // Add input images if provided
-        if (inputImages && inputImages.length > 0) {
-          inputImages.forEach((imageBase64) => {
-            content.push({
-              type: "input_image",
-              image_url: `data:image/jpeg;base64,${imageBase64}`
-            });
-          });
-        }
-
-        console.log("Making request to OpenAI responses API...");
-        const response = await fetch("https://api.openai.com/v1/responses", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${OPENAI_API_KEY}`
-          },
-          body: JSON.stringify({
-            model: "gpt-4o-mini",
-            input: [
-              {
-                role: "user",
-                content: content
-              }
-            ],
-            tools: [{ type: "image_generation" }]
-          })
-        });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error("OpenAI API error response:", errorText);
-          
-          // Fallback to DALL-E 3 if responses API fails
-          console.log("Falling back to DALL-E 3...");
-          const dalleResponse = await fetch("https://api.openai.com/v1/images/generations", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${OPENAI_API_KEY}`
-            },
-            body: JSON.stringify({
-              model: "dall-e-3",
-              prompt: prompt,
-              n: 1,
-              size: "1024x1024",
-              quality: "standard"
-            })
-          });
-
-          if (!dalleResponse.ok) {
-            const dalleErrorText = await dalleResponse.text();
-            console.error("DALL-E API error:", dalleErrorText);
-            return new Response(
-              JSON.stringify({ error: "Failed to generate image with both APIs" }),
-              { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
-            );
-          }
-
-          const dalleData = await dalleResponse.json();
-          if (dalleData.data && dalleData.data.length > 0) {
-            const imageUrl = dalleData.data[0].url;
-            return new Response(
-              JSON.stringify({
-                result: imageUrl,
-                model: "dall-e-3",
-                type: "image"
-              }),
-              { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-            );
-          } else {
-            return new Response(
-              JSON.stringify({ error: "No image generated" }),
-              { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
-            );
-          }
-        }
-
-        const data = await response.json();
-        console.log("OpenAI responses API response:", JSON.stringify(data, null, 2));
-
-        // Extract image generation results from the new API response format
-        const imageGenerationCalls = data.output?.filter(
-          (output) => output.type === "image_generation_call"
-        ) || [];
-
-        if (imageGenerationCalls.length > 0) {
-          const imageBase64 = imageGenerationCalls[0].result;
-          return new Response(
-            JSON.stringify({
-              result: `data:image/png;base64,${imageBase64}`,
-              model: "gpt-4o-mini",
-              type: "image"
-            }),
-            { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-          );
-        } else {
-          console.log("No image generation calls found in response");
-          return new Response(
-            JSON.stringify({ error: "No image generated from responses API" }),
-            { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
-          );
-        }
-      } catch (imageError) {
-        console.error("Image generation error:", imageError);
-        return new Response(
-          JSON.stringify({ error: "Image generation failed", details: imageError.message }),
-          { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
-        );
-      }
-    }
-
-    // Handle text generation requests (existing functionality)
     const timestamp = new Date().toISOString();
 
     // Enhanced system prompt for better grammar, sentence structure, and punctuation
@@ -178,7 +57,7 @@ EXAMPLES:
   Good: "Imagine a rustic retreat featuring exposed wooden beams that frame a stone fireplace; the warm, cozy atmosphere invites relaxation with soft textures and amber lighting."
 `;
 
-    // Call OpenAI API for text completion
+    // Call OpenAI API
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -215,8 +94,7 @@ EXAMPLES:
     return new Response(
       JSON.stringify({
         result: data.choices[0].message.content,
-        model: model,
-        type: "text"
+        model: model
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
