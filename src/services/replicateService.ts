@@ -20,6 +20,27 @@ export interface ReplicateResponse {
   error: string | null;
 }
 
+const processImageForAPI = (imageDataUrl: string): string => {
+  try {
+    // Ensure we have a valid data URL
+    if (!imageDataUrl || !imageDataUrl.startsWith('data:')) {
+      throw new Error('Invalid image data URL');
+    }
+    
+    // Extract the base64 part and validate it
+    const base64Data = imageDataUrl.split(',')[1];
+    if (!base64Data || base64Data.length < 100) {
+      throw new Error('Invalid base64 image data');
+    }
+    
+    console.log('Processed image data length:', base64Data.length);
+    return imageDataUrl;
+  } catch (error) {
+    console.error('Error processing image:', error);
+    throw new Error('Failed to process image data');
+  }
+};
+
 /**
  * Calls the Replicate API through a Supabase Edge Function to transform an image based on a prompt
  */
@@ -43,19 +64,28 @@ export const transformImage = async ({
 
   try {
     console.log("Starting image transformation with model:", model);
+    
+    // Process and validate image data
+    let processedImage = null;
+    if (image) {
+      processedImage = processImageForAPI(image);
+      console.log("Image processed successfully");
+    }
+    
     console.log("Parameters:", { 
-      prompt, 
+      prompt: prompt.substring(0, 50) + "...", 
       guidance_scale, 
       prompt_strength, 
       num_inference_steps,
-      scale
+      scale,
+      hasImage: !!processedImage
     });
     
     const { data, error } = await supabase.functions.invoke("replicate-proxy", {
       body: {
         model,
         prompt,
-        image,
+        image: processedImage,
         guidance_scale,
         negative_prompt,
         prompt_strength,

@@ -22,20 +22,54 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageUpload = (file: File) => {
+  const convertImageToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          // Ensure we have a proper base64 string
+          const base64String = reader.result as string;
+          console.log('Image converted to base64, size:', base64String.length);
+          resolve(base64String);
+        } else {
+          reject(new Error('Failed to read file'));
+        }
+      };
+      reader.onerror = () => reject(new Error('Error reading file'));
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageUpload = async (file: File) => {
     if (!file.type.startsWith('image/')) {
       toast.error('Please upload an image file');
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      if (e.target?.result) {
-        setImage(e.target.result as string);
-        setOutput(null);
+    // Check file size (limit to 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('Image size should be less than 10MB');
+      return;
+    }
+
+    try {
+      console.log('Processing image file:', file.name, 'Size:', file.size);
+      
+      // Convert to base64
+      const base64Image = await convertImageToBase64(file);
+      
+      // Validate base64 string
+      if (!base64Image || base64Image.length < 100) {
+        throw new Error('Invalid image data');
       }
-    };
-    reader.readAsDataURL(file);
+      
+      setImage(base64Image);
+      setOutput(null);
+      toast.success('Image uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast.error('Failed to upload image. Please try again.');
+    }
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,7 +126,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             <img 
               src={image} 
               alt="Uploaded" 
-              className="w-full h-full object-contain rounded-lg"
+              className="w-full h-full object-cover rounded-lg"
+              style={{ maxWidth: '100%', maxHeight: '100%' }}
+              onLoad={() => console.log('Image loaded successfully')}
+              onError={() => {
+                console.error('Error loading image');
+                toast.error('Error displaying image');
+              }}
             />
           </div>
         ) : (
