@@ -23,7 +23,7 @@ export const getAIDesignSuggestion = async ({
   isVariation = false
 }: OpenAIRequest): Promise<OpenAIResponse> => {
   try {
-    console.log("Requesting AI design suggestion");
+    console.log("Requesting AI design suggestion with prompt:", prompt);
     
     const { data, error } = await supabase.functions.invoke("openai-chat", {
       body: {
@@ -35,20 +35,36 @@ export const getAIDesignSuggestion = async ({
     
     if (error) {
       console.error("Error calling Edge Function:", error);
-      toast.error("Failed to get AI suggestions");
-      throw new Error(error.message || "Failed to get AI suggestions");
+      const errorMessage = error.message || "Failed to get AI suggestions";
+      toast.error(errorMessage);
+      return {
+        result: "",
+        model: "",
+        error: errorMessage
+      };
     }
     
     console.log("AI response received:", data);
     
+    if (!data || !data.result) {
+      const errorMessage = "No result received from AI service";
+      console.error(errorMessage);
+      toast.error(errorMessage);
+      return {
+        result: "",
+        model: "",
+        error: errorMessage
+      };
+    }
+    
     return {
       result: data.result,
-      model: data.model
+      model: data.model || model
     };
   } catch (error) {
     console.error("Error getting AI design suggestion:", error);
     
-    const errorMessage = error.message || "Failed to get AI design suggestions. Please try again later.";
+    const errorMessage = error instanceof Error ? error.message : "Failed to get AI design suggestions. Please try again later.";
     
     toast.error(errorMessage);
     

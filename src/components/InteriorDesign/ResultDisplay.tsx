@@ -15,16 +15,7 @@ interface ResultDisplayProps {
 
 const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
   const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
-  const [placeholderImage, setPlaceholderImage] = useState<string | null>(null);
-  
-  // Generate a random placeholder image when component mounts or output changes
-  useEffect(() => {
-    if (!output) {
-      // Create a random value to ensure different placeholder images
-      const random = Math.floor(Math.random() * 1000);
-      setPlaceholderImage(`https://source.unsplash.com/collection/1163637/800x600?random=${random}`);
-    }
-  }, [output]);
+  const [imageError, setImageError] = useState(false);
   
   const handleDownload = async () => {
     if (!output) return;
@@ -42,7 +33,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
       // Create an anchor element and trigger download
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'interior-design.png';
+      link.download = `interior-design-${Date.now()}.png`;
       document.body.appendChild(link);
       link.click();
       
@@ -62,6 +53,15 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
     setIsPreviewDialogOpen(true);
   };
 
+  const handleImageError = () => {
+    setImageError(true);
+    toast.error('Failed to load the generated image');
+  };
+
+  const handleImageLoad = () => {
+    setImageError(false);
+  };
+
   return (
     <div>
       <div className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden relative max-w-md mx-auto">
@@ -69,12 +69,20 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
           <div className="w-full h-full flex items-center justify-center">
             <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
           </div>
-        ) : output ? (
+        ) : output && !imageError ? (
           <img 
             src={output} 
             alt="Generated Interior Design" 
             className="w-full h-full object-cover"
+            onError={handleImageError}
+            onLoad={handleImageLoad}
           />
+        ) : imageError ? (
+          <div className="w-full h-full flex items-center justify-center p-4">
+            <p className="text-red-500 text-xs md:text-sm text-center">
+              Failed to load image. Please try generating again.
+            </p>
+          </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center p-4">
             <p className="text-muted-foreground text-xs md:text-sm text-center">
@@ -84,7 +92,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
         )}
       </div>
       
-      {output && (
+      {output && !imageError && (
         <>
           <div className="mt-3 md:mt-4 flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
             <Button 
@@ -114,6 +122,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
                     src={output}
                     alt="Interior Design Preview" 
                     className="max-w-[98%] max-h-[98%] object-contain"
+                    onError={handleImageError}
                   />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center p-3 border-t w-full">

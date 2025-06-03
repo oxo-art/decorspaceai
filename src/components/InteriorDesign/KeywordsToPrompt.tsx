@@ -31,18 +31,18 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
 
     setIsLoading(true);
 
-    // Check if this is a variation of the same keywords
-    const isVariation = keywordsToUse === lastKeywords;
-
-    // If it's the same keywords, increment the variation count
-    if (isVariation) {
-      setVariationCount(prev => prev + 1);
-    } else {
-      // Reset variation count for new keywords
-      setVariationCount(0);
-    }
-
     try {
+      // Check if this is a variation of the same keywords
+      const isVariation = keywordsToUse === lastKeywords;
+
+      // If it's the same keywords, increment the variation count
+      if (isVariation) {
+        setVariationCount(prev => prev + 1);
+      } else {
+        // Reset variation count for new keywords
+        setVariationCount(0);
+      }
+
       // Save current keywords to track when we're generating a new variation
       setLastKeywords(keywordsToUse);
 
@@ -51,14 +51,18 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
         isVariation: isVariation,
       });
 
-      if (response.result) {
+      if (response && response.result) {
         onPromptGenerated(response.result);
         toast.success('Prompt suggestion created');
         setHasGenerated(true);
+      } else if (response && response.error) {
+        toast.error(response.error);
+      } else {
+        toast.error('Failed to generate prompt - no response received');
       }
     } catch (error) {
       console.error("Error generating prompt:", error);
-      toast.error('Failed to generate prompt');
+      toast.error('Failed to generate prompt. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -72,10 +76,15 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
           onChange={(e) => setKeywords(e.target.value)}
           placeholder="Enter keywords separated by commas"
           className="flex-1 min-h-[44px]"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !isLoading) {
+              handleGeneratePrompt();
+            }
+          }}
         />
         <Button
           onClick={handleGeneratePrompt}
-          disabled={isLoading}
+          disabled={isLoading || !keywords.trim()}
           className="whitespace-nowrap min-h-[44px] w-full sm:w-auto"
           size="default"
           variant={lastKeywords === keywords.trim() && keywords.trim() !== '' ? "outline" : "default"}
