@@ -2,10 +2,12 @@
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import ImageUpload from './ImageUpload';
 import PromptInput from './PromptInput';
 import KeywordsToPrompt from './KeywordsToPrompt';
-import { Camera, KeySquare, Pencil } from 'lucide-react';
+import { Camera, KeySquare, Pencil, Zap } from 'lucide-react';
 import { useState } from 'react';
 
 interface InputSectionProps {
@@ -28,6 +30,8 @@ interface InputSectionProps {
   }>>;
   isLoading: boolean;
   handleGenerate: () => void;
+  useOpenAI?: boolean;
+  setUseOpenAI?: (useOpenAI: boolean) => void;
 }
 
 const InputSection: React.FC<InputSectionProps> = ({
@@ -41,9 +45,14 @@ const InputSection: React.FC<InputSectionProps> = ({
   advancedSettings,
   setAdvancedSettings,
   isLoading,
-  handleGenerate
+  handleGenerate,
+  useOpenAI = false,
+  setUseOpenAI
 }) => {
   const [showKeywords] = useState(true);
+
+  const shouldUseOpenAI = useOpenAI || !image;
+  const buttonText = isLoading ? 'Generating...' : shouldUseOpenAI ? 'Generate with AI' : 'Transform Image';
 
   return (
     <div className="space-y-4 md:space-y-6 animate-scale-in" style={{ animationDelay: '0.1s' }}>
@@ -60,6 +69,26 @@ const InputSection: React.FC<InputSectionProps> = ({
             isDragging={isDragging}
             setIsDragging={setIsDragging}
           />
+          
+          {setUseOpenAI && (
+            <div className="mt-4 flex items-center space-x-2">
+              <Switch
+                id="use-openai"
+                checked={useOpenAI}
+                onCheckedChange={setUseOpenAI}
+              />
+              <Label htmlFor="use-openai" className="text-sm flex items-center gap-1">
+                <Zap className="h-4 w-4 text-yellow-500" />
+                Use OpenAI (new model)
+              </Label>
+            </div>
+          )}
+          
+          {!image && !useOpenAI && (
+            <p className="text-xs text-muted-foreground mt-2">
+              No image uploaded - will use OpenAI generation automatically
+            </p>
+          )}
         </div>
       </Card>
 
@@ -88,6 +117,7 @@ const InputSection: React.FC<InputSectionProps> = ({
               setPrompt={setPrompt}
               advancedSettings={advancedSettings}
               setAdvancedSettings={setAdvancedSettings}
+              showAdvanced={image && !useOpenAI}
             />
           </div>
         </div>
@@ -97,11 +127,11 @@ const InputSection: React.FC<InputSectionProps> = ({
         <div className="p-3 md:p-4 flex justify-center md:justify-end items-center">
           <Button 
             onClick={handleGenerate}
-            disabled={!image || !prompt.trim() || isLoading}
+            disabled={!prompt.trim() || isLoading}
             className="w-full md:w-auto transition-all-300 min-h-[44px] text-base font-medium"
             size="lg"
           >
-            {isLoading ? 'Generating...' : 'Generate'}
+            {buttonText}
           </Button>
         </div>
       </Card>

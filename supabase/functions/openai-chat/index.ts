@@ -23,7 +23,7 @@ serve(async (req) => {
       );
     }
 
-    const { prompt, model = "gpt-4o-mini", isVariation = false } = await req.json();
+    const { prompt, model = "gpt-4o-mini", isVariation = false, isImageGeneration = false } = await req.json();
 
     if (!prompt) {
       return new Response(
@@ -32,8 +32,57 @@ serve(async (req) => {
       );
     }
 
-    console.log(`Processing prompt with model ${model}: ${prompt.substring(0, 50)}...`);
+    console.log(`Processing request with model ${model}: ${prompt.substring(0, 50)}...`);
     
+    // Handle image generation requests using the new OpenAI API
+    if (isImageGeneration) {
+      const response = await fetch("https://api.openai.com/v1/responses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          input: prompt,
+          tools: [{ type: "image_generation" }]
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        console.error("OpenAI API error:", data.error);
+        return new Response(
+          JSON.stringify({ error: data.error.message || "Error calling OpenAI API" }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
+        );
+      }
+
+      // Extract image generation results
+      const imageGenerationCalls = data.output?.filter(
+        (output) => output.type === "image_generation_call"
+      ) || [];
+
+      if (imageGenerationCalls.length > 0) {
+        const imageBase64 = imageGenerationCalls[0].result;
+        return new Response(
+          JSON.stringify({
+            result: `data:image/png;base64,${imageBase64}`,
+            model: "gpt-4o-mini",
+            type: "image"
+          }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      } else {
+        return new Response(
+          JSON.stringify({ error: "No image generated" }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
+        );
+      }
+    }
+
+    // Handle text generation requests (existing functionality)
     const timestamp = new Date().toISOString();
 
     // Enhanced system prompt for better grammar, sentence structure, and punctuation
@@ -57,7 +106,7 @@ EXAMPLES:
   Good: "Imagine a rustic retreat featuring exposed wooden beams that frame a stone fireplace; the warm, cozy atmosphere invites relaxation with soft textures and amber lighting."
 `;
 
-    // Call OpenAI API
+    // Call OpenAI API for text completion
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -94,7 +143,8 @@ EXAMPLES:
     return new Response(
       JSON.stringify({
         result: data.choices[0].message.content,
-        model: model
+        model: model,
+        type: "text"
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );

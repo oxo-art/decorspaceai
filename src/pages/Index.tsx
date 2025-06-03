@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import InputSection from '@/components/InteriorDesign/InputSection';
 import OutputSection from '@/components/InteriorDesign/OutputSection';
 import { transformImage } from '@/services/replicateService';
+import { generateImageWithOpenAI } from '@/services/openaiService';
 import Navbar from '@/components/Home/Navbar';
 
 const Index = () => {
@@ -13,6 +14,7 @@ const Index = () => {
   const [output, setOutput] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [modelType] = useState<"interiorDesign">("interiorDesign");
+  const [useOpenAI, setUseOpenAI] = useState(false); // Toggle between OpenAI and Replicate
   const [advancedSettings, setAdvancedSettings] = useState({
     guidance_scale: 15,
     prompt_strength: 1,
@@ -20,11 +22,6 @@ const Index = () => {
   });
 
   const handleGenerate = async () => {
-    if (!image) {
-      toast.error('Please upload an image first');
-      return;
-    }
-    
     if (!prompt.trim()) {
       toast.error('Please enter a prompt');
       return;
@@ -34,20 +31,35 @@ const Index = () => {
     setIsLoading(true);
     
     try {
-      const result = await transformImage({
-        prompt,
-        image: image,
-        model: modelType,
-        guidance_scale: advancedSettings.guidance_scale,
-        prompt_strength: advancedSettings.prompt_strength,
-        num_inference_steps: advancedSettings.num_inference_steps
-      });
+      let result;
       
-      if (result.output) {
-        setOutput(result.output);
-        toast.success('Image transformed successfully!');
+      if (useOpenAI || !image) {
+        // Use OpenAI's new image generation when no image is uploaded or OpenAI is selected
+        result = await generateImageWithOpenAI(prompt);
+        
+        if (result.result && result.type === 'image') {
+          setOutput(result.result);
+          toast.success('Image generated successfully!');
+        } else {
+          toast.error('Failed to generate image');
+        }
       } else {
-        toast.error('Failed to transform image');
+        // Use existing Replicate service when image is uploaded
+        result = await transformImage({
+          prompt,
+          image: image,
+          model: modelType,
+          guidance_scale: advancedSettings.guidance_scale,
+          prompt_strength: advancedSettings.prompt_strength,
+          num_inference_steps: advancedSettings.num_inference_steps
+        });
+        
+        if (result.output) {
+          setOutput(result.output);
+          toast.success('Image transformed successfully!');
+        } else {
+          toast.error('Failed to transform image');
+        }
       }
     } catch (error) {
       console.error('Error generating image:', error);
@@ -75,6 +87,8 @@ const Index = () => {
             setAdvancedSettings={setAdvancedSettings}
             isLoading={isLoading}
             handleGenerate={handleGenerate}
+            useOpenAI={useOpenAI}
+            setUseOpenAI={setUseOpenAI}
           />
           
           <OutputSection 
