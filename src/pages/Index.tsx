@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import InputSection from '@/components/InteriorDesign/InputSection';
 import OutputSection from '@/components/InteriorDesign/OutputSection';
 import { transformImage } from '@/services/replicateService';
-import { generateImageWithOpenAI } from '@/services/openaiService';
+import { generateImageWithOpenAI, convertImageToBase64 } from '@/services/openaiService';
 import Navbar from '@/components/Home/Navbar';
 
 const Index = () => {
@@ -35,13 +35,28 @@ const Index = () => {
       
       if (useOpenAI || !image) {
         // Use OpenAI's new image generation when no image is uploaded or OpenAI is selected
-        result = await generateImageWithOpenAI(prompt);
+        let inputImages: string[] = [];
+        
+        // Convert uploaded image to base64 if available
+        if (image && useOpenAI) {
+          try {
+            // Extract base64 from data URL
+            const base64Data = image.split(',')[1];
+            if (base64Data) {
+              inputImages = [base64Data];
+            }
+          } catch (error) {
+            console.error('Error processing input image:', error);
+          }
+        }
+        
+        result = await generateImageWithOpenAI(prompt, inputImages);
         
         if (result.result && result.type === 'image') {
           setOutput(result.result);
           toast.success('Image generated successfully!');
         } else {
-          toast.error('Failed to generate image');
+          toast.error(result.error || 'Failed to generate image');
         }
       } else {
         // Use existing Replicate service when image is uploaded
