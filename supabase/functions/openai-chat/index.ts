@@ -23,7 +23,7 @@ serve(async (req) => {
       );
     }
 
-    const { prompt, model = "gpt-4o-mini", isVariation = false, isImageGeneration = false } = await req.json();
+    const { prompt, model = "gpt-4o-mini", isVariation = false, isImageGeneration = false, inputImages = [] } = await req.json();
 
     if (!prompt) {
       return new Response(
@@ -34,20 +34,38 @@ serve(async (req) => {
 
     console.log(`Processing request with model ${model}: ${prompt.substring(0, 50)}...`);
     
-    // Handle image generation requests using DALL-E 3
+    // Handle image generation requests using the new OpenAI responses API
     if (isImageGeneration) {
-      const response = await fetch("https://api.openai.com/v1/images/generations", {
+      // Prepare the content array with text and images
+      const content = [
+        { type: "input_text", text: prompt }
+      ];
+
+      // Add input images if provided
+      if (inputImages && inputImages.length > 0) {
+        inputImages.forEach((imageBase64) => {
+          content.push({
+            type: "input_image",
+            image_url: `data:image/jpeg;base64,${imageBase64}`
+          });
+        });
+      }
+
+      const response = await fetch("https://api.openai.com/v1/responses", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${OPENAI_API_KEY}`
         },
         body: JSON.stringify({
-          model: "dall-e-3",
-          prompt: prompt,
-          n: 1,
-          size: "1024x1024",
-          quality: "standard"
+          model: "gpt-4.1",
+          input: [
+            {
+              role: "user",
+              content: content
+            }
+          ],
+          tools: [{ type: "image_generation" }]
         })
       });
 
@@ -61,13 +79,17 @@ serve(async (req) => {
         );
       }
 
-      // Extract the image URL from the response
-      if (data.data && data.data.length > 0) {
-        const imageUrl = data.data[0].url;
+      // Extract image generation results from the new API response format
+      const imageGenerationCalls = data.output?.filter(
+        (output) => output.type === "image_generation_call"
+      ) || [];
+
+      if (imageGenerationCalls.length > 0) {
+        const imageBase64 = imageGenerationCalls[0].result;
         return new Response(
           JSON.stringify({
-            result: imageUrl,
-            model: "dall-e-3",
+            result: `data:image/png;base64,${imageBase64}`,
+            model: "gpt-4.1",
             type: "image"
           }),
           { headers: { ...corsHeaders, "Content-Type": "application/json" } }

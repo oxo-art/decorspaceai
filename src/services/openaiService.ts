@@ -7,6 +7,7 @@ interface OpenAIRequest {
   model?: string;
   isVariation?: boolean;
   isImageGeneration?: boolean;
+  inputImages?: string[];
 }
 
 interface OpenAIResponse {
@@ -17,13 +18,31 @@ interface OpenAIResponse {
 }
 
 /**
+ * Converts image file to base64 string
+ */
+const convertImageToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      // Remove the data URL prefix to get just the base64 string
+      const base64 = result.split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
+/**
  * Calls the OpenAI API through a Supabase Edge Function
  */
 export const getAIDesignSuggestion = async ({
   prompt,
   model = "gpt-4o-mini",
   isVariation = false,
-  isImageGeneration = false
+  isImageGeneration = false,
+  inputImages = []
 }: OpenAIRequest): Promise<OpenAIResponse> => {
   try {
     console.log("Requesting AI design suggestion", { isImageGeneration });
@@ -33,7 +52,8 @@ export const getAIDesignSuggestion = async ({
         prompt,
         model,
         isVariation,
-        isImageGeneration
+        isImageGeneration,
+        inputImages
       }
     });
     
@@ -67,11 +87,14 @@ export const getAIDesignSuggestion = async ({
 };
 
 /**
- * Generate an image using OpenAI's new image generation API
+ * Generate an image using OpenAI's new image generation API with optional input images
  */
-export const generateImageWithOpenAI = async (prompt: string): Promise<OpenAIResponse> => {
+export const generateImageWithOpenAI = async (prompt: string, inputImages?: string[]): Promise<OpenAIResponse> => {
   return getAIDesignSuggestion({
     prompt,
-    isImageGeneration: true
+    isImageGeneration: true,
+    inputImages
   });
 };
+
+export { convertImageToBase64 };
