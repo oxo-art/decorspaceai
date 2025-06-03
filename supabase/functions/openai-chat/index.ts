@@ -34,18 +34,20 @@ serve(async (req) => {
 
     console.log(`Processing request with model ${model}: ${prompt.substring(0, 50)}...`);
     
-    // Handle image generation requests using the new OpenAI API
+    // Handle image generation requests using DALL-E 3
     if (isImageGeneration) {
-      const response = await fetch("https://api.openai.com/v1/responses", {
+      const response = await fetch("https://api.openai.com/v1/images/generations", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${OPENAI_API_KEY}`
         },
         body: JSON.stringify({
-          model: "gpt-4o-mini",
-          input: prompt,
-          tools: [{ type: "image_generation" }]
+          model: "dall-e-3",
+          prompt: prompt,
+          n: 1,
+          size: "1024x1024",
+          quality: "standard"
         })
       });
 
@@ -59,17 +61,13 @@ serve(async (req) => {
         );
       }
 
-      // Extract image generation results
-      const imageGenerationCalls = data.output?.filter(
-        (output) => output.type === "image_generation_call"
-      ) || [];
-
-      if (imageGenerationCalls.length > 0) {
-        const imageBase64 = imageGenerationCalls[0].result;
+      // Extract the image URL from the response
+      if (data.data && data.data.length > 0) {
+        const imageUrl = data.data[0].url;
         return new Response(
           JSON.stringify({
-            result: `data:image/png;base64,${imageBase64}`,
-            model: "gpt-4o-mini",
+            result: imageUrl,
+            model: "dall-e-3",
             type: "image"
           }),
           { headers: { ...corsHeaders, "Content-Type": "application/json" } }
