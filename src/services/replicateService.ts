@@ -51,9 +51,9 @@ const fallbackToOpenAI = async (prompt: string): Promise<ReplicateResponse> => {
     const { data, error } = await supabase.functions.invoke("openai-image-generation", {
       body: {
         prompt: `Interior design: ${prompt}`,
-        model: "gpt-image-1",
+        model: "dall-e-3",
         size: "1024x1024",
-        quality: "high"
+        quality: "standard"
       }
     });
     

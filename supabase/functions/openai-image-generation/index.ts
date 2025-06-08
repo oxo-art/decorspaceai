@@ -23,7 +23,7 @@ serve(async (req) => {
       );
     }
 
-    const { prompt, model = "gpt-image-1", size = "1024x1024", quality = "high" } = await req.json();
+    const { prompt, model = "dall-e-3", size = "1024x1024", quality = "standard" } = await req.json();
 
     if (!prompt) {
       return new Response(
@@ -46,8 +46,7 @@ serve(async (req) => {
         prompt: prompt,
         n: 1,
         size: size,
-        quality: quality,
-        response_format: "b64_json"
+        quality: quality
       })
     });
 
@@ -68,9 +67,8 @@ serve(async (req) => {
       );
     }
 
-    // Return the base64 image data
-    const imageData = data.data[0].b64_json;
-    const imageUrl = `data:image/png;base64,${imageData}`;
+    // Return the image URL
+    const imageUrl = data.data[0].url;
 
     return new Response(
       JSON.stringify({
