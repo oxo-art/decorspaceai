@@ -42,6 +42,40 @@ const processImageForAPI = (imageDataUrl: string): string => {
 };
 
 /**
+ * Fallback to OpenAI image generation when Replicate fails
+ */
+const fallbackToOpenAI = async (prompt: string): Promise<ReplicateResponse> => {
+  try {
+    console.log("Falling back to OpenAI image generation");
+    
+    const { data, error } = await supabase.functions.invoke("openai-image-generation", {
+      body: {
+        prompt: `Interior design: ${prompt}`,
+        model: "gpt-image-1",
+        size: "1024x1024",
+        quality: "high"
+      }
+    });
+    
+    if (error) {
+      throw new Error(error.message || "OpenAI fallback failed");
+    }
+    
+    console.log("OpenAI fallback successful");
+    
+    return {
+      id: data.id || "openai-fallback",
+      status: "success",
+      output: data.output || data.image,
+      error: null
+    };
+  } catch (error) {
+    console.error("OpenAI fallback error:", error);
+    throw error;
+  }
+};
+
+/**
  * Calls the Replicate API through a Supabase Edge Function to transform an image based on a prompt
  */
 export const transformImage = async ({
@@ -94,9 +128,24 @@ export const transformImage = async ({
       }
     });
     
+    // Check for specific Replicate API errors that indicate spend limit
+    if (error && (
+      error.message?.includes("spend limit") || 
+      error.message?.includes("Monthly spend limit") ||
+      error.message?.includes("402") ||
+      data?.error?.includes("spend limit")
+    )) {
+      console.log("Replicate spend limit reached, trying OpenAI fallback");
+      toast.info("Using alternative AI service for image generation...");
+      return await fallbackToOpenAI(prompt);
+    }
+    
     if (error) {
       console.error("Error calling Edge Function:", error);
-      throw new Error(error.message || "Failed to transform image");
+      // Try OpenAI fallback for any Replicate error
+      console.log("Replicate failed, trying OpenAI fallback");
+      toast.info("Primary service unavailable, using backup AI service...");
+      return await fallbackToOpenAI(prompt);
     }
     
     console.log("Edge Function response:", data);
@@ -115,8 +164,27 @@ export const transformImage = async ({
   } catch (error) {
     console.error("Error transforming image:", error);
     
-    const errorMessage = error.message || "Failed to transform image. Please try again later.";
+    // If primary service fails, try OpenAI fallback
+    if (!error.message?.includes("OpenAI")) {
+      try {
+        console.log("Primary service failed, trying OpenAI fallback");
+        toast.info("Switching to backup AI service...");
+        return await fallbackToOpenAI(prompt);
+      } catch (fallbackError) {
+        console.error("All services failed:", fallbackError);
+        const errorMessage = "All AI services are currently unavailable. Please try again later.";
+        toast.error(errorMessage);
+        
+        return {
+          id: "error",
+          status: "error",
+          output: null,
+          error: errorMessage
+        };
+      }
+    }
     
+    const errorMessage = error.message || "Failed to transform image. Please try again later.";
     toast.error(errorMessage);
     
     return {
