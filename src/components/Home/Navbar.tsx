@@ -7,6 +7,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [logoError, setLogoError] = useState(false);
   const isMobile = useIsMobile();
   
   const scrollToContact = () => {
@@ -15,6 +16,10 @@ const Navbar = () => {
       contactSection.scrollIntoView({ behavior: 'smooth' });
     }
     setIsMenuOpen(false);
+  };
+
+  const handleLogoError = () => {
+    setLogoError(true);
   };
   
   return (
@@ -34,11 +39,18 @@ const Navbar = () => {
         
         {/* Center - Logo */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <img 
-            src="/lovable-uploads/37d0ffa0-0417-431c-8ecc-ccdd2cf2e2b4.png" 
-            alt="DecorspaceAI Logo" 
-            className="h-20 object-contain" 
-          />
+          {!logoError ? (
+            <img 
+              src="/lovable-uploads/37d0ffa0-0417-431c-8ecc-ccdd2cf2e2b4.png" 
+              alt="DecorspaceAI Logo" 
+              className="h-20 object-contain" 
+              onError={handleLogoError}
+            />
+          ) : (
+            <div className="h-20 flex items-center justify-center">
+              <span className="text-2xl font-bold text-foreground">DecorspaceAI</span>
+            </div>
+          )}
         </div>
         
         {/* Right side - Removed theme toggle button */}
