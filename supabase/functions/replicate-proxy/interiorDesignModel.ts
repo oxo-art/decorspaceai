@@ -13,7 +13,7 @@ export const handleInteriorDesignModel = async (
   console.log("Using adirik/interior-design model with parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
   
   // Enhanced prompt formatting to ensure absolute focus on the user's description
-  const enhancedPrompt = `TOP PRIORITY DESIGN INSTRUCTION: ${prompt}. Transform this interior space according to these exact specifications while preserving the basic structure. Follow these requirements precisely and exclusively.`;
+  const enhancedPrompt = `Transform this interior space: ${prompt}. Maintain the basic room structure and layout while applying the requested design changes. Focus on realistic interior design elements and lighting.`;
   
   // Create prediction with the adirik/interior-design model
   const response = await fetch("https://api.replicate.com/v1/predictions", {
@@ -23,7 +23,7 @@ export const handleInteriorDesignModel = async (
       Authorization: `Token ${apiKey}`,
     },
     body: JSON.stringify({
-      version: "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
+      version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
       input: {
         image: image,
         prompt: enhancedPrompt,
@@ -38,7 +38,7 @@ export const handleInteriorDesignModel = async (
   if (!response.ok) {
     const error = await response.json();
     console.error("Replicate API error for adirik/interior-design model:", error);
-    throw new Error(error.detail || "Failed to start adirik/interior-design transformation");
+    throw new Error(error.detail || `API error: ${response.status} ${response.statusText}`);
   }
 
   const prediction = await response.json();
