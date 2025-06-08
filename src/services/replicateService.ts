@@ -1,3 +1,4 @@
+
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -41,39 +42,7 @@ const processImageForAPI = (imageDataUrl: string): string => {
 };
 
 /**
- * Fallback to Adirik interior design model when primary Replicate fails
- */
-const fallbackToAdirik = async (prompt: string, image: string): Promise<ReplicateResponse> => {
-  try {
-    console.log("Falling back to Adirik interior design model");
-    
-    const { data, error } = await supabase.functions.invoke("openai-image-generation", {
-      body: {
-        prompt: prompt,
-        image: image
-      }
-    });
-    
-    if (error) {
-      throw new Error(error.message || "Adirik fallback failed");
-    }
-    
-    console.log("Adirik fallback successful");
-    
-    return {
-      id: data.id || "adirik-fallback",
-      status: "success",
-      output: data.output || data.image,
-      error: null
-    };
-  } catch (error) {
-    console.error("Adirik fallback error:", error);
-    throw error;
-  }
-};
-
-/**
- * Calls the Replicate API through a Supabase Edge Function to transform an image based on a prompt
+ * Calls the Replicate API through a Supabase Edge Function to transform an image using adirik/interior-design model
  */
 export const transformImage = async ({
   prompt, 
@@ -94,7 +63,7 @@ export const transformImage = async ({
   }
 
   try {
-    console.log("Starting image transformation with model:", model);
+    console.log("Starting image transformation with adirik/interior-design model");
     
     // Process and validate image data
     let processedImage = null;
@@ -125,27 +94,12 @@ export const transformImage = async ({
       }
     });
     
-    // Check for specific Replicate API errors that indicate spend limit
-    if (error && (
-      error.message?.includes("spend limit") || 
-      error.message?.includes("Monthly spend limit") ||
-      error.message?.includes("402") ||
-      data?.error?.includes("spend limit")
-    )) {
-      console.log("Replicate spend limit reached, trying Adirik fallback");
-      toast.info("Using alternative AI service for image generation...");
-      return await fallbackToAdirik(prompt, processedImage);
-    }
-    
     if (error) {
-      console.error("Error calling Edge Function:", error);
-      // Try Adirik fallback for any Replicate error
-      console.log("Replicate failed, trying Adirik fallback");
-      toast.info("Primary service unavailable, using backup AI service...");
-      return await fallbackToAdirik(prompt, processedImage);
+      console.error("Error calling Replicate Edge Function:", error);
+      throw new Error(error.message || "Failed to transform image with adirik/interior-design model");
     }
     
-    console.log("Edge Function response:", data);
+    console.log("Replicate Edge Function response:", data);
     
     let outputUrl = null;
     if (data.output) {
@@ -153,35 +107,15 @@ export const transformImage = async ({
     }
     
     return {
-      id: data.id || "edge-function-run",
+      id: data.id || "replicate-run",
       status: data.status || "success",
       output: outputUrl,
       error: data.error || null
     };
   } catch (error) {
-    console.error("Error transforming image:", error);
+    console.error("Error transforming image with adirik model:", error);
     
-    // If primary service fails, try Adirik fallback
-    if (!error.message?.includes("Adirik")) {
-      try {
-        console.log("Primary service failed, trying Adirik fallback");
-        toast.info("Switching to backup AI service...");
-        return await fallbackToAdirik(prompt, image);
-      } catch (fallbackError) {
-        console.error("All services failed:", fallbackError);
-        const errorMessage = "All AI services are currently unavailable. Please try again later.";
-        toast.error(errorMessage);
-        
-        return {
-          id: "error",
-          status: "error",
-          output: null,
-          error: errorMessage
-        };
-      }
-    }
-    
-    const errorMessage = error.message || "Failed to transform image. Please try again later.";
+    const errorMessage = error.message || "Failed to transform image with adirik/interior-design model. Please try again later.";
     toast.error(errorMessage);
     
     return {

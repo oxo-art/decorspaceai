@@ -10,12 +10,12 @@ export const handleInteriorDesignModel = async (
   num_inference_steps = 100,
   apiKey: string
 ) => {
-  console.log("Using interior design model with parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
+  console.log("Using adirik/interior-design model with parameters:", { prompt, guidance_scale, prompt_strength, num_inference_steps });
   
   // Enhanced prompt formatting to ensure absolute focus on the user's description
   const enhancedPrompt = `TOP PRIORITY DESIGN INSTRUCTION: ${prompt}. Transform this interior space according to these exact specifications while preserving the basic structure. Follow these requirements precisely and exclusively.`;
   
-  // Create prediction with the proper URL format and parameters
+  // Create prediction with the adirik/interior-design model
   const response = await fetch("https://api.replicate.com/v1/predictions", {
     method: "POST",
     headers: {
@@ -23,7 +23,7 @@ export const handleInteriorDesignModel = async (
       Authorization: `Token ${apiKey}`,
     },
     body: JSON.stringify({
-      version: "76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
+      version: "adirik/interior-design:76604baddc85b1b4616e1c6475eca080da339c8875bd4996705440484a6eac38",
       input: {
         image: image,
         prompt: enhancedPrompt,
@@ -37,18 +37,18 @@ export const handleInteriorDesignModel = async (
 
   if (!response.ok) {
     const error = await response.json();
-    console.error("Replicate API error for interior design:", error);
-    throw new Error(error.detail || "Failed to start interior design transformation");
+    console.error("Replicate API error for adirik/interior-design model:", error);
+    throw new Error(error.detail || "Failed to start adirik/interior-design transformation");
   }
 
   const prediction = await response.json();
-  console.log("Interior design prediction created:", prediction.id);
+  console.log("Adirik/interior-design prediction created:", prediction.id);
   
   try {
-    const result = await waitForPrediction(prediction.id, apiKey, 60, "Interior design");
+    const result = await waitForPrediction(prediction.id, apiKey, 60, "Adirik interior design");
     return result;
   } catch (error) {
-    console.error("Error during interior design transformation:", error);
+    console.error("Error during adirik/interior-design transformation:", error);
     throw error;
   }
 };
