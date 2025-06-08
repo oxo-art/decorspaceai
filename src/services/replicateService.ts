@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -42,35 +41,33 @@ const processImageForAPI = (imageDataUrl: string): string => {
 };
 
 /**
- * Fallback to OpenAI image generation when Replicate fails
+ * Fallback to Adirik interior design model when primary Replicate fails
  */
-const fallbackToOpenAI = async (prompt: string): Promise<ReplicateResponse> => {
+const fallbackToAdirik = async (prompt: string, image: string): Promise<ReplicateResponse> => {
   try {
-    console.log("Falling back to OpenAI image generation");
+    console.log("Falling back to Adirik interior design model");
     
     const { data, error } = await supabase.functions.invoke("openai-image-generation", {
       body: {
-        prompt: `Interior design: ${prompt}`,
-        model: "dall-e-3",
-        size: "1024x1024",
-        quality: "standard"
+        prompt: prompt,
+        image: image
       }
     });
     
     if (error) {
-      throw new Error(error.message || "OpenAI fallback failed");
+      throw new Error(error.message || "Adirik fallback failed");
     }
     
-    console.log("OpenAI fallback successful");
+    console.log("Adirik fallback successful");
     
     return {
-      id: data.id || "openai-fallback",
+      id: data.id || "adirik-fallback",
       status: "success",
       output: data.output || data.image,
       error: null
     };
   } catch (error) {
-    console.error("OpenAI fallback error:", error);
+    console.error("Adirik fallback error:", error);
     throw error;
   }
 };
@@ -135,17 +132,17 @@ export const transformImage = async ({
       error.message?.includes("402") ||
       data?.error?.includes("spend limit")
     )) {
-      console.log("Replicate spend limit reached, trying OpenAI fallback");
+      console.log("Replicate spend limit reached, trying Adirik fallback");
       toast.info("Using alternative AI service for image generation...");
-      return await fallbackToOpenAI(prompt);
+      return await fallbackToAdirik(prompt, processedImage);
     }
     
     if (error) {
       console.error("Error calling Edge Function:", error);
-      // Try OpenAI fallback for any Replicate error
-      console.log("Replicate failed, trying OpenAI fallback");
+      // Try Adirik fallback for any Replicate error
+      console.log("Replicate failed, trying Adirik fallback");
       toast.info("Primary service unavailable, using backup AI service...");
-      return await fallbackToOpenAI(prompt);
+      return await fallbackToAdirik(prompt, processedImage);
     }
     
     console.log("Edge Function response:", data);
@@ -164,12 +161,12 @@ export const transformImage = async ({
   } catch (error) {
     console.error("Error transforming image:", error);
     
-    // If primary service fails, try OpenAI fallback
-    if (!error.message?.includes("OpenAI")) {
+    // If primary service fails, try Adirik fallback
+    if (!error.message?.includes("Adirik")) {
       try {
-        console.log("Primary service failed, trying OpenAI fallback");
+        console.log("Primary service failed, trying Adirik fallback");
         toast.info("Switching to backup AI service...");
-        return await fallbackToOpenAI(prompt);
+        return await fallbackToAdirik(prompt, image);
       } catch (fallbackError) {
         console.error("All services failed:", fallbackError);
         const errorMessage = "All AI services are currently unavailable. Please try again later.";
