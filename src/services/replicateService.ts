@@ -5,12 +5,11 @@ import { supabase } from "@/integrations/supabase/client";
 export interface ReplicateRequest {
   prompt: string;
   image?: string;
-  model?: "imageToImage" | "interiorDesign" | "denoise";
+  model?: "interiorDesign";
   guidance_scale?: number;
   negative_prompt?: string;
   prompt_strength?: number;
   num_inference_steps?: number;
-  scale?: number;
 }
 
 export interface ReplicateResponse {
@@ -51,14 +50,13 @@ export const transformImage = async ({
   guidance_scale = 15,
   negative_prompt = "lowresolution, text, watermark, banner, logo, watermark, contactinfo, text, deformed, blurry, blur, out of focus, out of frame, surreal, extra, ugly, upholstered walls, fabric walls, plush walls, mirror, mirrored, functional, noise, double furniture, extra items, distorted proportions, unrealistic layout, incorrect perspective, overlapping furniture, additional doors, additional windows, unwanted elements, inconsistent lighting, strange colors, unasked additions, fantasy elements, oversized furniture, undersized furniture, ignoring prompt instructions",
   prompt_strength = 1,
-  num_inference_steps = 100,
-  scale = 4
+  num_inference_steps = 100
 }: ReplicateRequest): Promise<ReplicateResponse> => {
-  if (!image && model !== "denoise") {
+  if (!image) {
     throw new Error("Image is required");
   }
 
-  if (!prompt && model !== "denoise") {
+  if (!prompt) {
     throw new Error("Prompt is required");
   }
 
@@ -66,31 +64,26 @@ export const transformImage = async ({
     console.log("Starting image transformation with adirik/interior-design model");
     
     // Process and validate image data
-    let processedImage = null;
-    if (image) {
-      processedImage = processImageForAPI(image);
-      console.log("Image processed successfully");
-    }
+    const processedImage = processImageForAPI(image);
+    console.log("Image processed successfully");
     
     console.log("Parameters:", { 
       prompt: prompt.substring(0, 50) + "...", 
       guidance_scale, 
       prompt_strength, 
       num_inference_steps,
-      scale,
       hasImage: !!processedImage
     });
     
     const { data, error } = await supabase.functions.invoke("replicate-proxy", {
       body: {
-        model,
+        model: "interiorDesign",
         prompt,
         image: processedImage,
         guidance_scale,
         negative_prompt,
         prompt_strength,
-        num_inference_steps,
-        scale
+        num_inference_steps
       }
     });
     

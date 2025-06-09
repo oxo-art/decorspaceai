@@ -3,8 +3,6 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1"
 import { corsHeaders, handleCorsPreflightRequest, createErrorResponse } from "./utils.ts"
 import { handleInteriorDesignModel } from "./interiorDesignModel.ts"
-import { handleDefaultModel } from "./defaultModel.ts"
-import { handleDenoiseModel } from "./denoiseModel.ts"
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -19,31 +17,19 @@ serve(async (req) => {
       return createErrorResponse('API key not configured on server');
     }
 
-    const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps, scale } = await req.json()
+    const { model, prompt, image, guidance_scale, negative_prompt, prompt_strength, num_inference_steps } = await req.json()
     
     try {
-      let result;
-      
-      // Determine which model to use
-      if (model === "interiorDesign") {
-        result = await handleInteriorDesignModel(
-          image, 
-          prompt, 
-          guidance_scale, 
-          negative_prompt, 
-          prompt_strength, 
-          num_inference_steps, 
-          REPLICATE_API_KEY
-        );
-      } else if (model === "denoise") {
-        result = await handleDenoiseModel(
-          image,
-          scale || 4, // Set default to 4x upscaling
-          REPLICATE_API_KEY
-        );
-      } else {
-        result = await handleDefaultModel(image, prompt, REPLICATE_API_KEY);
-      }
+      // Only use the adirik/interior-design model
+      const result = await handleInteriorDesignModel(
+        image, 
+        prompt, 
+        guidance_scale, 
+        negative_prompt, 
+        prompt_strength, 
+        num_inference_steps, 
+        REPLICATE_API_KEY
+      );
       
       return new Response(
         JSON.stringify(result),
@@ -56,7 +42,7 @@ serve(async (req) => {
           id: "error",
           status: "error",
           output: null,
-          error: error.message || "Model processing failed",
+          error: error.message || "adirik/interior-design model processing failed",
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
       );

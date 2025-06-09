@@ -12,11 +12,10 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [modelType] = useState<"interiorDesign">("interiorDesign");
   const [advancedSettings, setAdvancedSettings] = useState({
     guidance_scale: 15,
     prompt_strength: 1,
-    num_inference_steps: 100  // Explicitly set to 100 as default
+    num_inference_steps: 100
   });
 
   const handleGenerate = async () => {
@@ -37,7 +36,7 @@ const Index = () => {
       const result = await transformImage({
         prompt,
         image: image,
-        model: modelType,
+        model: "interiorDesign",
         guidance_scale: advancedSettings.guidance_scale,
         prompt_strength: advancedSettings.prompt_strength,
         num_inference_steps: advancedSettings.num_inference_steps
@@ -45,7 +44,7 @@ const Index = () => {
       
       if (result.output) {
         setOutput(result.output);
-        toast.success('Image transformed successfully!');
+        toast.success('Interior design transformation completed successfully!');
       } else {
         toast.error('Failed to transform image');
       }
