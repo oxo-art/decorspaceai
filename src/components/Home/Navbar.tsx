@@ -37,20 +37,9 @@ const Navbar = () => {
           </Button>
         </div>
         
-        {/* Center - Logo */}
+        {/* Center - Empty space where logo was */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          {!logoError ? (
-            <img 
-              src="/lovable-uploads/37d0ffa0-0417-431c-8ecc-ccdd2cf2e2b4.png" 
-              alt="DecorspaceAI Logo" 
-              className="h-20 object-contain" 
-              onError={handleLogoError}
-            />
-          ) : (
-            <div className="h-20 flex items-center justify-center">
-              <span className="text-2xl font-bold text-foreground">DecorspaceAI</span>
-            </div>
-          )}
+          {/* Logo removed */}
         </div>
         
         {/* Right side - Removed theme toggle button */}
