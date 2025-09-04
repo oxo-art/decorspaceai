@@ -12,7 +12,7 @@ interface ImageSliderProps {
 const ImageSlider: React.FC<ImageSliderProps> = ({ 
   beforeImage, 
   afterImage,
-  height = "400px",
+  height = "500px",
   width = "100%"
 }) => {
   const [sliderPosition, setSliderPosition] = useState(50);
