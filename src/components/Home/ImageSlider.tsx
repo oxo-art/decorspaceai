@@ -171,7 +171,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
       
       {/* Bottom Slider Control */}
       {bothImagesLoaded && !hasErrors && (
-        <div className="absolute bottom-4 left-4 right-4">
+        <div className="absolute bottom-4 left-4 right-4 z-10">
           <Slider
             value={[sliderPosition]}
             min={0}
