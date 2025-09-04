@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 import InputSection from '@/components/InteriorDesign/InputSection';
 import OutputSection from '@/components/InteriorDesign/OutputSection';
-import { transformImage } from '@/services/replicateService';
+import { generateImage } from '@/services/openaiService';
 import Navbar from '@/components/Home/Navbar';
 
 const Index = () => {
@@ -33,13 +33,9 @@ const Index = () => {
     setIsLoading(true);
     
     try {
-      const result = await transformImage({
+      const result = await generateImage({
         prompt,
-        image: image,
-        model: "interiorDesign",
-        guidance_scale: advancedSettings.guidance_scale,
-        prompt_strength: advancedSettings.prompt_strength,
-        num_inference_steps: advancedSettings.num_inference_steps
+        image: image
       });
       
       if (result.output) {

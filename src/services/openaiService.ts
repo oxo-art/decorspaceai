@@ -1,77 +1,112 @@
-
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
-interface OpenAIRequest {
+export interface ImageGenerationRequest {
   prompt: string;
-  model?: string;
-  isVariation?: boolean;
+  image?: string;
 }
 
-interface OpenAIResponse {
-  result: string;
-  model: string;
-  error?: string;
+export interface ImageGenerationResponse {
+  id: string;
+  status: string;
+  output: string | null;
+  error: string | null;
 }
 
 /**
- * Calls the OpenAI API through a Supabase Edge Function
+ * Generate an image using OpenAI DALL-E through Supabase Edge Function
  */
-export const getAIDesignSuggestion = async ({
+export const generateImage = async ({
   prompt,
-  model = "gpt-4o-mini",
-  isVariation = false
-}: OpenAIRequest): Promise<OpenAIResponse> => {
+  image
+}: ImageGenerationRequest): Promise<ImageGenerationResponse> => {
+  if (!prompt) {
+    throw new Error("Prompt is required");
+  }
+
   try {
-    console.log("Requesting AI design suggestion with prompt:", prompt);
+    console.log("Starting image generation with OpenAI DALL-E");
     
-    const { data, error } = await supabase.functions.invoke("openai-chat", {
+    const { data, error } = await supabase.functions.invoke("openai-image-generation", {
       body: {
         prompt,
-        model,
-        isVariation
+        image
       }
     });
     
     if (error) {
-      console.error("Error calling Edge Function:", error);
-      const errorMessage = error.message || "Failed to get AI suggestions";
-      toast.error(errorMessage);
-      return {
-        result: "",
-        model: "",
-        error: errorMessage
-      };
+      console.error("Error calling OpenAI Edge Function:", error);
+      throw new Error(error.message || "Failed to generate image");
     }
     
-    console.log("AI response received:", data);
-    
-    if (!data || !data.result) {
-      const errorMessage = "No result received from AI service";
-      console.error(errorMessage);
-      toast.error(errorMessage);
-      return {
-        result: "",
-        model: "",
-        error: errorMessage
-      };
-    }
+    console.log("OpenAI Edge Function response:", data);
     
     return {
-      result: data.result,
-      model: data.model || model
+      id: "openai-generation",
+      status: data.success ? "success" : "error",
+      output: data.imageUrl || null,
+      error: data.error || null
     };
   } catch (error) {
-    console.error("Error getting AI design suggestion:", error);
+    console.error("Error generating image:", error);
     
-    const errorMessage = error instanceof Error ? error.message : "Failed to get AI design suggestions. Please try again later.";
-    
+    const errorMessage = error.message || "Failed to generate image. Please try again later.";
     toast.error(errorMessage);
     
     return {
-      result: "",
-      model: "",
+      id: "error",
+      status: "error",
+      output: null,
       error: errorMessage
+    };
+  }
+};
+
+export interface AIDesignSuggestionRequest {
+  prompt: string;
+  isVariation?: boolean;
+}
+
+export interface AIDesignSuggestionResponse {
+  result?: string;
+  error?: string;
+}
+
+/**
+ * Get AI design suggestion for interior design prompts
+ */
+export const getAIDesignSuggestion = async ({
+  prompt,
+  isVariation = false
+}: AIDesignSuggestionRequest): Promise<AIDesignSuggestionResponse> => {
+  if (!prompt) {
+    throw new Error("Prompt is required");
+  }
+
+  try {
+    console.log("Getting AI design suggestion");
+    
+    const { data, error } = await supabase.functions.invoke("openai-chat", {
+      body: {
+        messages: [{
+          role: "user",
+          content: `Generate a detailed interior design prompt based on these keywords: ${prompt}. ${isVariation ? 'Create a different variation from previous suggestions.' : ''} Focus on specific design elements, colors, furniture, and atmosphere.`
+        }]
+      }
+    });
+    
+    if (error) {
+      console.error("Error calling OpenAI Chat Edge Function:", error);
+      return { error: error.message || "Failed to get design suggestion" };
+    }
+    
+    return {
+      result: data.content || data.message || "No suggestion generated"
+    };
+  } catch (error) {
+    console.error("Error getting AI design suggestion:", error);
+    return {
+      error: error.message || "Failed to get design suggestion. Please try again later."
     };
   }
 };
