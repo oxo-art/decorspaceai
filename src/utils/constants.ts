@@ -2,11 +2,6 @@
 export const APP_CONFIG = {
   MAX_IMAGE_SIZE: 10 * 1024 * 1024, // 10MB
   SUPPORTED_IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/webp'],
-  DEFAULT_GENERATION_SETTINGS: {
-    guidance_scale: 15,
-    prompt_strength: 1,
-    num_inference_steps: 100
-  }
 };
 
 export const ERROR_MESSAGES = {

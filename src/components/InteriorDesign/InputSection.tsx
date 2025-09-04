@@ -16,16 +16,6 @@ interface InputSectionProps {
   isDragging: boolean;
   setIsDragging: (isDragging: boolean) => void;
   setOutput: (output: string | null) => void;
-  advancedSettings: {
-    guidance_scale: number;
-    prompt_strength: number;
-    num_inference_steps: number;
-  };
-  setAdvancedSettings: React.Dispatch<React.SetStateAction<{
-    guidance_scale: number;
-    prompt_strength: number;
-    num_inference_steps: number;
-  }>>;
   isLoading: boolean;
   handleGenerate: () => void;
 }
@@ -38,8 +28,6 @@ const InputSection: React.FC<InputSectionProps> = ({
   isDragging,
   setIsDragging,
   setOutput,
-  advancedSettings,
-  setAdvancedSettings,
   isLoading,
   handleGenerate
 }) => {
@@ -86,8 +74,6 @@ const InputSection: React.FC<InputSectionProps> = ({
             <PromptInput 
               prompt={prompt}
               setPrompt={setPrompt}
-              advancedSettings={advancedSettings}
-              setAdvancedSettings={setAdvancedSettings}
             />
           </div>
         </div>

@@ -12,11 +12,6 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [advancedSettings, setAdvancedSettings] = useState({
-    guidance_scale: 15,
-    prompt_strength: 1,
-    num_inference_steps: 100
-  });
 
   const handleGenerate = async () => {
     if (!image) {
@@ -78,8 +73,6 @@ const Index = () => {
             isDragging={isDragging}
             setIsDragging={setIsDragging}
             setOutput={setOutput}
-            advancedSettings={advancedSettings}
-            setAdvancedSettings={setAdvancedSettings}
             isLoading={isLoading}
             handleGenerate={handleGenerate}
           />
