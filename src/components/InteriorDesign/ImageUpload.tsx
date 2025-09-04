@@ -132,12 +132,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         />
         
         {image ? (
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full flex items-center justify-center bg-muted/10 rounded-lg">
             <img 
               src={image} 
               alt="Uploaded room for interior design transformation" 
-              className="w-full h-full object-cover rounded-lg"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
+              className="max-w-full max-h-full object-contain rounded-lg shadow-md"
               onLoad={() => console.log('Image loaded successfully')}
               onError={() => {
                 console.error('Error loading image');

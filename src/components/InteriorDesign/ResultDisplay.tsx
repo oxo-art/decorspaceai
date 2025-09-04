@@ -64,7 +64,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
 
   return (
     <div>
-      <div className="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden relative max-w-md mx-auto">
+      <div className="w-full h-64 bg-muted/20 rounded-lg flex items-center justify-center relative max-w-md mx-auto">
         {isLoading ? (
           <div className="w-full h-full flex items-center justify-center">
             <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
@@ -73,7 +73,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
           <img 
             src={output} 
             alt="AI-generated interior design transformation" 
-            className="w-full h-full object-cover"
+            className="max-w-full max-h-full object-contain rounded-lg shadow-md"
             onError={handleImageError}
             onLoad={handleImageLoad}
           />
