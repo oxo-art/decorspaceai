@@ -56,14 +56,10 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col bg-gradient-background"
-         style={{
-           backgroundImage: 'var(--gradient-background), var(--cyber-grid)',
-           backgroundSize: 'cover, 50px 50px'
-         }}>
+    <div className="min-h-screen w-full flex flex-col bg-gradient-background">
       <Navbar />
       
-      <div className="pt-24 px-2 sm:px-4 md:px-6 lg:px-8 w-full max-w-6xl mx-auto flex-grow animate-fade-in">
+      <div className="pt-24 px-2 sm:px-4 md:px-6 lg:px-8 w-full max-w-6xl mx-auto flex-grow opacity-0 animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
           <InputSection
             image={image}
