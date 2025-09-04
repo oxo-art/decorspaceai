@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100">
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
       
       {/* Hero Section - Starts below the navbar */}
@@ -22,7 +22,7 @@ const HomePage = () => {
             Upload a photo of your room and get stunning design transformations instantly.
           </p>
           
-          <div className="glassmorphism-card p-4 sm:p-6 rounded-lg w-full max-w-4xl mb-8">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md w-full max-w-4xl mb-8">
             {/* Before/After Image Slider */}
             <div className="aspect-video w-full mb-6">
               <ImageSlider 
@@ -47,7 +47,7 @@ const HomePage = () => {
               How It Works
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
-              <Card className="glassmorphism-light hover:shadow-xl transition-all duration-300 hover:glassmorphism-medium">
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
                     <HomeIcon className="h-6 w-6 text-yellow-500" />
@@ -68,7 +68,7 @@ const HomePage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="glassmorphism-light hover:shadow-xl transition-all duration-300 hover:glassmorphism-medium">
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
                     <Keyboard className="h-6 w-6 text-yellow-500" />
@@ -89,7 +89,7 @@ const HomePage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="glassmorphism-light hover:shadow-xl transition-all duration-300 hover:glassmorphism-medium">
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
                     <Wand2 className="h-6 w-6 text-yellow-500" />
@@ -120,7 +120,7 @@ const HomePage = () => {
             
             <div className="grid md:grid-cols-2 gap-8">
               {/* Testimonial 1 */}
-              <Card className="glassmorphism-light hover:shadow-xl transition-all duration-300 hover:glassmorphism-medium">
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
                     <Avatar className="h-12 w-12 border-2 border-yellow-200">
@@ -144,7 +144,7 @@ const HomePage = () => {
               </Card>
 
               {/* Testimonial 2 */}
-              <Card className="glassmorphism-light hover:shadow-xl transition-all duration-300 hover:glassmorphism-medium">
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
                     <Avatar className="h-12 w-12 border-2 border-yellow-200">
@@ -168,7 +168,7 @@ const HomePage = () => {
               </Card>
 
               {/* Testimonial 3 */}
-              <Card className="glassmorphism-light hover:shadow-xl transition-all duration-300 hover:glassmorphism-medium">
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
                     <Avatar className="h-12 w-12 border-2 border-yellow-200">
@@ -193,7 +193,7 @@ const HomePage = () => {
               </Card>
               
               {/* Testimonial 4 */}
-              <Card className="glassmorphism-light hover:shadow-xl transition-all duration-300 hover:glassmorphism-medium">
+              <Card className="hover:shadow-lg transition-shadow">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
                     <Avatar className="h-12 w-12 border-2 border-yellow-200">
@@ -228,7 +228,7 @@ const HomePage = () => {
             </p>
             
             <div className="w-full flex justify-center mb-8">
-              <Card className="glassmorphism-medium max-w-md w-full hover:shadow-xl transition-all duration-300">
+              <Card className="max-w-md w-full hover:shadow-lg transition-shadow">
                 <CardHeader className="text-center">
                   <CardTitle className="flex flex-col items-center gap-3">
                     <div className="bg-yellow-100 p-3 rounded-full">

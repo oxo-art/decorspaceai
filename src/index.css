@@ -168,27 +168,7 @@
 }
 
 .glassmorphism {
-  @apply bg-white/10 backdrop-blur-lg border border-white/20 shadow-lg;
-}
-
-.glassmorphism-light {
-  @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-md;
-}
-
-.glassmorphism-medium {
-  @apply bg-white/15 backdrop-blur-xl border border-white/25 shadow-xl;
-}
-
-.glassmorphism-strong {
-  @apply bg-white/25 backdrop-blur-2xl border border-white/30 shadow-2xl;
-}
-
-.glassmorphism-card {
-  @apply bg-white/80 backdrop-blur-sm border border-white/40 shadow-lg;
-}
-
-.glassmorphism-navbar {
-  @apply bg-white/90 backdrop-blur-lg border-b border-white/20 shadow-sm;
+  @apply bg-white bg-opacity-10 backdrop-blur-lg border border-white border-opacity-20 shadow-lg;
 }
 
 .transition-all-300 {

@@ -23,7 +23,7 @@ const Navbar = () => {
   };
   
   return (
-    <div className="glassmorphism-navbar w-full fixed top-0 z-20">
+    <div className="bg-background w-full shadow-sm fixed top-0 z-20">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Left side - Hamburger menu */}
         <div className="flex items-center">
@@ -61,7 +61,7 @@ const Navbar = () => {
       
       {/* Mobile menu dropdown */}
       {isMenuOpen && (
-        <div className="glassmorphism-medium shadow-md py-4 px-6 absolute w-full animate-fade-in z-20">
+        <div className="bg-background shadow-md py-4 px-6 absolute w-full animate-fade-in z-20">
           <nav className="flex flex-col space-y-3">
             <Link 
               to="/" 
