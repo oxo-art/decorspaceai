@@ -50,6 +50,23 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
     setSliderPosition(Math.max(0, Math.min(100, position)));
   };
 
+  const handleContainerClick = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    
+    let clientX: number;
+    
+    if ('touches' in e) {
+      clientX = e.touches[0].clientX;
+    } else {
+      clientX = e.clientX;
+    }
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const position = ((clientX - rect.left) / rect.width) * 100;
+    
+    setSliderPosition(Math.max(0, Math.min(100, position)));
+  };
+
   const handleBeforeImageLoad = () => {
     setImagesLoaded(prev => ({ ...prev, before: true }));
   };
@@ -106,8 +123,10 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
 
       <div 
         ref={containerRef}
-        className="relative w-full h-full"
+        className="relative w-full h-full cursor-pointer"
         style={{ opacity: bothImagesLoaded && !hasErrors ? 1 : 0 }}
+        onClick={handleContainerClick}
+        onTouchStart={handleContainerClick}
       >
         {/* Before Image (Full width) */}
         <div className="absolute inset-0 w-full h-full">
