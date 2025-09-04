@@ -25,16 +25,9 @@ const Navbar = () => {
   return (
     <div className="bg-background w-full shadow-sm fixed top-0 z-20">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        {/* Left side - Hamburger menu */}
+        {/* Left side - Empty */}
         <div className="flex items-center">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="mr-2"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <Menu className="h-6 w-6" />
-          </Button>
+          {/* Intentionally left empty */}
         </div>
         
         {/* Center - Empty space where logo was */}
@@ -42,9 +35,16 @@ const Navbar = () => {
           {/* Logo removed */}
         </div>
         
-        {/* Right side - Removed theme toggle button */}
+        {/* Right side - Hamburger menu */}
         <div className="flex items-center">
-          {/* Intentionally left empty to maintain layout */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="ml-2"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <Menu className="h-6 w-6" />
+          </Button>
         </div>
       </div>
       
