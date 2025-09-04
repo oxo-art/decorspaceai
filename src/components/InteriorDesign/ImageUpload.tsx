@@ -1,9 +1,10 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Upload, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ImageUploadProps {
   image: string | null;
@@ -21,54 +22,92 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   setIsDragging
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isMobile = useIsMobile();
+  const [imageData, setImageData] = useState<{
+    url: string;
+    width: number;
+    height: number;
+    aspectRatio: number;
+  } | null>(null);
 
-  const convertImageToBase64 = (file: File): Promise<string> => {
+  // Enhanced mobile optimization
+  const [optimization, setOptimization] = useState({
+    isLowEndDevice: false,
+    reducedMotion: false
+  });
+
+  useEffect(() => {
+    const checkDevice = () => {
+      const hardwareConcurrency = navigator.hardwareConcurrency || 4;
+      const isLowEndDevice = hardwareConcurrency <= 4;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      setOptimization({ isLowEndDevice, reducedMotion });
+    };
+
+    checkDevice();
+  }, []);
+
+  const validateImageFile = (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      return "Only image files are allowed";
+    }
+    
+    // 10MB limit
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      return "File size must be less than 10MB";
+    }
+    
+    return null;
+  };
+
+  const processImageFile = (file: File): Promise<{url: string, width: number, height: number, aspectRatio: number}> => {
     return new Promise((resolve, reject) => {
+      const validationError = validateImageFile(file);
+      if (validationError) {
+        reject(new Error(validationError));
+        return;
+      }
+
       const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result) {
-          // Ensure we have a proper base64 string
-          const base64String = reader.result as string;
-          console.log('Image converted to base64, size:', base64String.length);
-          resolve(base64String);
-        } else {
-          reject(new Error('Failed to read file'));
-        }
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        
+        const img = new Image();
+        img.onload = () => {
+          resolve({ 
+            url: result,
+            width: img.width,
+            height: img.height,
+            aspectRatio: img.width / img.height
+          });
+        };
+        img.onerror = () => {
+          reject(new Error("Failed to load image"));
+        };
+        img.src = result;
       };
-      reader.onerror = () => reject(new Error('Error reading file'));
+      reader.onerror = () => {
+        reject(new Error("Failed to read file"));
+      };
       reader.readAsDataURL(file);
     });
   };
 
   const handleImageUpload = async (file: File) => {
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please upload an image file');
-      return;
-    }
-
-    // Check file size (limit to 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error('Image size should be less than 10MB');
-      return;
-    }
-
     try {
       console.log('Processing image file:', file.name, 'Size:', file.size);
       
-      // Convert to base64
-      const base64Image = await convertImageToBase64(file);
+      const processedImage = await processImageFile(file);
       
-      // Validate base64 string
-      if (!base64Image || base64Image.length < 100) {
-        throw new Error('Invalid image data');
-      }
-      
-      setImage(base64Image);
+      setImageData(processedImage);
+      setImage(processedImage.url);
       setOutput(null);
       toast.success('Image uploaded successfully');
     } catch (error) {
       console.error('Error uploading image:', error);
-      toast.error('Failed to upload image. Please try again.');
+      toast.error((error as Error).message || 'Failed to upload image. Please try again.');
     }
   };
 
@@ -132,17 +171,34 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         />
         
         {image ? (
-          <div className="relative w-full h-full flex items-center justify-center bg-muted/10 rounded-lg">
+          <div className={`relative group overflow-hidden rounded-xl ${
+            isMobile ? 'p-2' : 'p-4'
+          }`}>
             <img 
               src={image} 
               alt="Uploaded room for interior design transformation" 
-              className="max-w-full max-h-full object-contain rounded-lg shadow-md"
+              className={`
+                w-full h-auto object-contain rounded-xl 
+                border border-gray-200 shadow-lg 
+                ${isMobile ? 'max-h-[60vh]' : 'max-h-[80vh]'} 
+                mx-auto
+              `}
+              style={{ 
+                display: 'block',
+                objectFit: 'contain'
+              }}
+              loading="lazy"
               onLoad={() => console.log('Image loaded successfully')}
               onError={() => {
                 console.error('Error loading image');
                 toast.error('Error displaying image');
               }}
             />
+            
+            {/* Overlay for desktop hover effects */}
+            {!isMobile && !optimization.isLowEndDevice && (
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            )}
           </div>
         ) : (
           <div className="image-placeholder">
