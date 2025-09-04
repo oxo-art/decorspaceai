@@ -23,7 +23,7 @@ const Navbar = () => {
   };
   
   return (
-    <div className="bg-background w-full shadow-sm fixed top-0 z-20">
+    <div className="glass-navbar w-full fixed top-0 z-20">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Left side - Empty */}
         <div className="flex items-center">
@@ -39,7 +39,7 @@ const Navbar = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="ml-2"
+            className="ml-2 glass-button hover:shadow-glow transition-all duration-300"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <Menu className="h-6 w-6" />
@@ -49,31 +49,31 @@ const Navbar = () => {
       
       {/* Mobile menu dropdown */}
       {isMenuOpen && (
-        <div className="bg-background shadow-md py-4 px-6 absolute w-full animate-fade-in z-20">
+        <div className="glassmorphism py-4 px-6 absolute w-full animate-fade-in z-20">
           <nav className="flex flex-col space-y-3">
             <Link 
               to="/" 
-              className="text-foreground hover:text-yellow-500 transition-colors"
+              className="text-foreground hover:text-primary transition-colors hover:drop-shadow-lg"
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link 
               to="/design" 
-              className="text-foreground hover:text-yellow-500 transition-colors"
+              className="text-foreground hover:text-primary transition-colors hover:drop-shadow-lg"
               onClick={() => setIsMenuOpen(false)}
             >
               Design Tool
             </Link>
             <Link 
               to="/about" 
-              className="text-foreground hover:text-yellow-500 transition-colors"
+              className="text-foreground hover:text-primary transition-colors hover:drop-shadow-lg"
               onClick={() => setIsMenuOpen(false)}
             >
               About
             </Link>
             <button 
-              className="text-left text-foreground hover:text-yellow-500 transition-colors"
+              className="text-left text-foreground hover:text-primary transition-colors hover:drop-shadow-lg"
               onClick={scrollToContact}
             >
               Contact
