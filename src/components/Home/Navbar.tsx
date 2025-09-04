@@ -49,7 +49,7 @@ const Navbar = () => {
       
       {/* Mobile menu dropdown */}
       {isMenuOpen && (
-        <div className="glassmorphism py-4 px-6 absolute w-full animate-fade-in z-20">
+        <div className="bg-card py-4 px-6 absolute w-full animate-fade-in z-20 border-t border-border shadow-lg">
           <nav className="flex flex-col space-y-3">
             <Link 
               to="/" 
