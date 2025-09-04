@@ -72,7 +72,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
         ) : output && !imageError ? (
           <img 
             src={output} 
-            alt="Generated Interior Design" 
+            alt="AI-generated interior design transformation" 
             className="w-full h-full object-cover"
             onError={handleImageError}
             onLoad={handleImageLoad}
@@ -120,7 +120,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
                 <div className="flex-1 w-full flex items-center justify-center p-1">
                   <img 
                     src={output}
-                    alt="Interior Design Preview" 
+                    alt="Full-size preview of AI-generated interior design" 
                     className="max-w-[98%] max-h-[98%] object-contain"
                     onError={handleImageError}
                   />

@@ -105,13 +105,22 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     <div className="space-y-4">
       <div 
         className={cn(
-          "file-drop-area h-64",
+          "file-drop-area h-64 cursor-pointer",
           isDragging && "active"
         )}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={triggerFileInput}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            triggerFileInput();
+          }
+        }}
+        aria-label="Upload room image by clicking or dragging and dropping"
       >
         <input 
           type="file" 
@@ -119,13 +128,14 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           accept="image/*" 
           ref={fileInputRef}
           onChange={handleFileInputChange}
+          aria-label="Upload room image"
         />
         
         {image ? (
           <div className="relative w-full h-full">
             <img 
               src={image} 
-              alt="Uploaded" 
+              alt="Uploaded room for interior design transformation" 
               className="w-full h-full object-cover rounded-lg"
               style={{ maxWidth: '100%', maxHeight: '100%' }}
               onLoad={() => console.log('Image loaded successfully')}

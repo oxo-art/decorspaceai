@@ -50,7 +50,8 @@ const Index = () => {
       }
     } catch (error) {
       console.error('Error generating image:', error);
-      toast.error(error.message || 'An error occurred');
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+      toast.error(`Failed to transform image: ${errorMessage}`);
     } finally {
       setIsLoading(false);
     }
@@ -79,7 +80,6 @@ const Index = () => {
           <OutputSection 
             isLoading={isLoading}
             output={output}
-            inputImage={image}
           />
         </div>
       </div>

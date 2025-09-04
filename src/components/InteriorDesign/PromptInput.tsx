@@ -45,7 +45,12 @@ const PromptInput: React.FC<PromptInputProps> = ({
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         className="resize-none min-h-[150px] focus-visible:ring-primary"
+        aria-describedby="prompt-description"
       />
+      <p id="prompt-description" className="sr-only">
+        Enter a detailed description of the interior design you want to create. 
+        Be specific about colors, furniture, style, and atmosphere.
+      </p>
     </div>
   );
 };

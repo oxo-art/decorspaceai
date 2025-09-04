@@ -6,13 +6,11 @@ import { PartyPopper } from 'lucide-react';
 interface OutputSectionProps {
   isLoading: boolean;
   output: string | null;
-  inputImage: string | null;
 }
 
 const OutputSection: React.FC<OutputSectionProps> = ({ 
   isLoading, 
-  output, 
-  inputImage 
+  output 
 }) => {
   return (
     <div className="space-y-4 md:space-y-6 animate-scale-in" style={{ animationDelay: '0.2s' }}>
