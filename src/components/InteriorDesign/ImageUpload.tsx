@@ -1,6 +1,6 @@
 
 import React, { useRef } from 'react';
-import { Upload, Image as ImageIcon } from 'lucide-react';
+import { Upload, Image as ImageIcon, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -101,10 +101,16 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     fileInputRef.current?.click();
   };
 
+  const handleRemoveImage = () => {
+    setImage(null);
+    setOutput(null);
+    toast.success('Image removed');
+  };
+
   return (
     <div className="space-y-4">
       {image ? (
-        <div className="w-full">
+        <div className="relative w-full">
           <img 
             src={image} 
             alt="Uploaded room for interior design transformation" 
@@ -115,6 +121,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               toast.error('Error displaying image');
             }}
           />
+          <Button
+            variant="secondary"
+            size="icon"
+            className="absolute top-2 right-2 h-8 w-8 bg-black/50 hover:bg-black/70 text-white border-none"
+            onClick={handleRemoveImage}
+            aria-label="Remove image"
+          >
+            <X size={16} />
+          </Button>
         </div>
       ) : (
         <div 
