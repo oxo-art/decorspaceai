@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 import InputSection from '@/components/InteriorDesign/InputSection';
 import OutputSection from '@/components/InteriorDesign/OutputSection';
-import { generateImage } from '@/services/openaiService';
+// import { generateImage } from '@/services/aiService'; // Placeholder for future AI integration
 import Navbar from '@/components/Home/Navbar';
 
 const Index = () => {
@@ -33,6 +33,12 @@ const Index = () => {
     setIsLoading(true);
     
     try {
+      // TODO: Replace with your new AI model integration
+      console.log("AI model integration needed:", { prompt, image });
+      toast.error('AI model not configured. Please integrate your preferred AI model.');
+      
+      // Placeholder for future AI integration
+      /*
       const result = await generateImage({
         prompt,
         image: image
@@ -44,6 +50,7 @@ const Index = () => {
       } else {
         toast.error('Failed to transform image');
       }
+      */
     } catch (error) {
       console.error('Error generating image:', error);
       const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';

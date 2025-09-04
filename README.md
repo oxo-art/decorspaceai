@@ -1,22 +1,21 @@
 
 # AI Interior Design App
 
-This application uses AI to generate interior design transformations based on text prompts.
+This application provides a foundation for AI-powered interior design transformations.
 
 ## Features
 
 - Upload room images
-- Generate AI-powered interior design suggestions
-- Transform images using OpenAI DALL-E
+- Text prompt input for design specifications  
 - Interactive before/after image comparison
 - Responsive design for all devices
+- Clean architecture ready for AI model integration
 
 ## Technology Stack
 
 - React + TypeScript
 - Tailwind CSS
 - Supabase (Backend & Database)
-- OpenAI DALL-E API
 - Vite (Build Tool)
 
 ## Setup
@@ -30,19 +29,23 @@ npm install
 3. Set up Supabase:
    - Create a new Supabase project
    - Configure environment variables
-   - Set up OpenAI API key in Supabase secrets
 
 4. Start the development server:
 ```bash
 npm run dev
 ```
 
-## Environment Variables
+## AI Model Integration
 
-Make sure to configure the following in your Supabase project:
+The codebase is prepared for AI model integration. You can add your preferred AI model by:
 
-- `OPENAI_API_KEY` - Your OpenAI API key for image generation
+1. Creating a service file in `src/services/` 
+2. Implementing the required functions:
+   - `generateImage()` for image transformation
+   - `getAIDesignSuggestion()` for prompt suggestions
+3. Adding backend functions in `supabase/functions/` if needed
+4. Updating the imports in the components
 
 ## Deployment
 
-The app can be deployed using any modern hosting platform that supports React applications. Supabase Edge Functions handle the backend API calls securely.
+The app can be deployed using any modern hosting platform that supports React applications.

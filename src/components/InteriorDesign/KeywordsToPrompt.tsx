@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Loader2, RefreshCw, Info } from 'lucide-react';
-import { getAIDesignSuggestion } from '@/services/openaiService';
+// import { getAIDesignSuggestion } from '@/services/aiService'; // Placeholder for future AI integration
 import { toast } from 'sonner';
 
 interface KeywordsToPromptProps {
@@ -46,6 +46,12 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
       // Save current keywords to track when we're generating a new variation
       setLastKeywords(keywordsToUse);
 
+      // TODO: Replace with your new AI model integration
+      console.log("AI suggestion needed for keywords:", keywordsToUse);
+      toast.error('AI model not configured. Please integrate your preferred AI model.');
+      
+      // Placeholder for future AI integration
+      /*
       const response = await getAIDesignSuggestion({
         prompt: keywordsToUse,
         isVariation: isVariation,
@@ -60,6 +66,7 @@ const KeywordsToPrompt: React.FC<KeywordsToPromptProps> = ({
       } else {
         toast.error('Failed to generate prompt - no response received');
       }
+      */
     } catch (error) {
       console.error("Error generating prompt:", error);
       toast.error('Failed to generate prompt. Please try again.');
