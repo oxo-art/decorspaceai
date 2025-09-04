@@ -47,7 +47,7 @@ const InputSection: React.FC<InputSectionProps> = ({
 
   return (
     <div className="space-y-4 md:space-y-6 animate-scale-in" style={{ animationDelay: '0.1s' }}>
-      <Card className="overflow-hidden border border-gray-200 shadow-sm">
+      <Card className="glassmorphism-light overflow-hidden hover:glassmorphism-medium transition-all duration-300">
         <div className="p-4 md:p-6">
           <h2 className="text-lg md:text-xl font-medium mb-3 md:mb-4 flex items-center gap-2">
             <Camera className="h-4 w-4 md:h-5 md:w-5 text-yellow-500" /> Upload
@@ -63,7 +63,7 @@ const InputSection: React.FC<InputSectionProps> = ({
         </div>
       </Card>
 
-      <Card className="overflow-hidden border border-gray-200 shadow-sm">
+      <Card className="glassmorphism-light overflow-hidden hover:glassmorphism-medium transition-all duration-300">
         <div className="p-3 md:p-4">
           <h2 className="text-base md:text-lg font-medium mb-2 md:mb-3 flex items-center gap-2">
             <KeySquare className="h-4 w-4 text-yellow-500" /> Keywords to Prompt
@@ -76,7 +76,7 @@ const InputSection: React.FC<InputSectionProps> = ({
         </div>
       </Card>
       
-      <Card className="overflow-hidden border border-gray-200 shadow-sm">
+      <Card className="glassmorphism-light overflow-hidden hover:glassmorphism-medium transition-all duration-300">
         <div className="p-4 md:p-6">
           <h2 className="text-lg md:text-xl font-medium mb-3 md:mb-4 flex items-center gap-2">
             <Pencil className="h-4 w-4 md:h-5 md:w-5 text-yellow-500" /> Prompt
