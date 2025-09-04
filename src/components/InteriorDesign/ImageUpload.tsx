@@ -103,48 +103,39 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
   return (
     <div className="space-y-4">
-      <div 
-        className={cn(
-          "file-drop-area h-64 cursor-pointer",
-          isDragging && "active"
-        )}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        onClick={triggerFileInput}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            triggerFileInput();
-          }
-        }}
-        aria-label="Upload room image by clicking or dragging and dropping"
-      >
-        <input 
-          type="file" 
-          className="hidden" 
-          accept="image/*" 
-          ref={fileInputRef}
-          onChange={handleFileInputChange}
-          aria-label="Upload room image"
-        />
-        
-        {image ? (
-          <div className="relative w-full h-full flex items-center justify-center rounded-lg">
-            <img 
-              src={image} 
-              alt="Uploaded room for interior design transformation" 
-              className="max-w-full max-h-full object-contain rounded-lg"
-              onLoad={() => console.log('Image loaded successfully')}
-              onError={() => {
-                console.error('Error loading image');
-                toast.error('Error displaying image');
-              }}
-            />
-          </div>
-        ) : (
+      {image ? (
+        <div className="w-full">
+          <img 
+            src={image} 
+            alt="Uploaded room for interior design transformation" 
+            className="w-full h-auto object-contain rounded-lg"
+            onLoad={() => console.log('Image loaded successfully')}
+            onError={() => {
+              console.error('Error loading image');
+              toast.error('Error displaying image');
+            }}
+          />
+        </div>
+      ) : (
+        <div 
+          className={cn(
+            "file-drop-area h-64 cursor-pointer",
+            isDragging && "active"
+          )}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={triggerFileInput}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              triggerFileInput();
+            }
+          }}
+          aria-label="Upload room image by clicking or dragging and dropping"
+        >
           <div className="image-placeholder">
             <div className="flex flex-col items-center text-gray-500">
               <Upload size={32} className="mb-2 text-gray-400" />
@@ -152,17 +143,26 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               <p className="text-xs">or click to browse</p>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+      
+      <input 
+        type="file" 
+        className="hidden" 
+        accept="image/*" 
+        ref={fileInputRef}
+        onChange={handleFileInputChange}
+        aria-label="Upload room image"
+      />
       
       {image && (
         <Button 
           variant="outline" 
           size="sm" 
-          className="w-full gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 border-gray-300" 
+          className="w-full gap-2" 
           onClick={triggerFileInput}
         >
-          <ImageIcon size={16} className="text-gray-700" />
+          <ImageIcon size={16} />
           Change Image
         </Button>
       )}
