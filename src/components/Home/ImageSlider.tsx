@@ -159,17 +159,21 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
         
         {/* Simple Slider Divider Line */}
         <div 
-          className="absolute top-0 bottom-0 w-0.5 bg-white/80 cursor-ew-resize"
+          className="absolute top-0 bottom-0 w-1 bg-white/80 cursor-ew-resize"
           style={{ 
             left: `${sliderPosition}%`, 
-            marginLeft: "-1px",
+            marginLeft: "-2px",
             zIndex: 5
           }}
           onMouseDown={handleMouseDown}
           onTouchStart={handleMouseDown}
         >
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-4 h-4 flex items-center justify-center shadow-md cursor-ew-resize">
-            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg cursor-ew-resize border-2 border-gray-200">
+            <div className="flex space-x-0.5">
+              <div className="w-0.5 h-3 bg-gray-400 rounded-full"></div>
+              <div className="w-0.5 h-3 bg-gray-400 rounded-full"></div>
+              <div className="w-0.5 h-3 bg-gray-400 rounded-full"></div>
+            </div>
           </div>
         </div>
         
