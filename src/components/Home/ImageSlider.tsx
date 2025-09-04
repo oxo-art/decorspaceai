@@ -170,9 +170,9 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
         >
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg cursor-ew-resize border-2 border-gray-200">
             <div className="flex space-x-0.5">
-              <div className="w-0.5 h-3 bg-gray-400 rounded-full"></div>
-              <div className="w-0.5 h-3 bg-gray-400 rounded-full"></div>
-              <div className="w-0.5 h-3 bg-gray-400 rounded-full"></div>
+              <div className="w-0.5 h-3 bg-black rounded-full"></div>
+              <div className="w-0.5 h-3 bg-black rounded-full"></div>
+              <div className="w-0.5 h-3 bg-black rounded-full"></div>
             </div>
           </div>
         </div>
