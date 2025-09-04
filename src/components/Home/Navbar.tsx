@@ -25,9 +25,14 @@ const Navbar = () => {
   return (
     <div className="bg-background w-full shadow-sm fixed top-0 z-20">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        {/* Left side - Empty */}
+        {/* Left side - Logo and Brand */}
         <div className="flex items-center">
-          {/* Intentionally left empty */}
+          <img 
+            src="/lovable-uploads/2e419d09-661e-4121-b4fb-3f9d80cb2371.png" 
+            alt="Decorspaceai Logo" 
+            className="h-12 w-12 object-contain" 
+          />
+          <span className="ml-3 text-xl font-bold text-black">Decorspaceai</span>
         </div>
         
         {/* Center - Empty space where logo was */}
