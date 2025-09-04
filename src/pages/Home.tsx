@@ -18,7 +18,10 @@ const HomePage = () => {
       {/* Hero Section - Starts below the navbar */}
       <div className="pt-24 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center">
-          <h1 className="text-4xl md:text-5xl font-volkhov text-foreground font-bold mb-4 animate-glow-pulse">
+          <h1 className="text-4xl md:text-5xl font-volkhov text-white font-bold mb-4" 
+              style={{
+                textShadow: "0 4px 8px rgba(6, 182, 212, 0.3), 0 0 0 transparent"
+              }}>
             Transform Your Living Space with AI
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl mb-8">
