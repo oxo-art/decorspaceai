@@ -30,9 +30,9 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/2e419d09-661e-4121-b4fb-3f9d80cb2371.png" 
             alt="Decorspaceai Logo" 
-            className="h-12 w-12 object-contain" 
+            className="h-16 w-16 object-contain" 
           />
-          <span className="ml-3 text-xl font-bold text-black">Decorspaceai</span>
+          <span className="ml-4 text-2xl font-bold text-black">Decorspaceai</span>
         </div>
         
         {/* Center - Empty space where logo was */}
