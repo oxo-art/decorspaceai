@@ -65,27 +65,27 @@ const Navbar = () => {
           <nav className="flex flex-col space-y-3">
             <Link 
               to="/" 
-              className="text-foreground hover:text-yellow-500 transition-colors"
+              className="text-foreground hover:text-terracotta transition-colors font-montserrat"
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link 
               to="/design" 
-              className="text-foreground hover:text-yellow-500 transition-colors"
+              className="text-foreground hover:text-terracotta transition-colors font-montserrat"
               onClick={() => setIsMenuOpen(false)}
             >
               Design Tool
             </Link>
             <Link 
               to="/about" 
-              className="text-foreground hover:text-yellow-500 transition-colors"
+              className="text-foreground hover:text-terracotta transition-colors font-montserrat"
               onClick={() => setIsMenuOpen(false)}
             >
               About
             </Link>
             <button 
-              className="text-left text-foreground hover:text-yellow-500 transition-colors"
+              className="text-left text-foreground hover:text-terracotta transition-colors font-montserrat"
               onClick={scrollToContact}
             >
               Contact

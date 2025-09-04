@@ -8,21 +8,21 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-warm-cream to-soft-beige">
       <Navbar />
       
       {/* Hero Section - Starts below the navbar */}
       <div className="pt-24 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center">
-          <h1 className="text-4xl md:text-5xl font-volkhov text-gunmetal font-bold mb-4">
+          <h1 className="text-4xl md:text-5xl font-playfair text-sage-green font-bold mb-4">
             Transform Your Living Space with AI
           </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mb-8">
+          <p className="text-lg text-soft-taupe max-w-3xl mb-8">
             Experience the power of AI to reimagine and enhance your interior spaces with just a few clicks.
             Upload a photo of your room and get stunning design transformations instantly.
           </p>
           
-          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md w-full max-w-4xl mb-8">
+          <div className="bg-ivory-white/90 backdrop-blur-sm p-4 sm:p-6 rounded-lg shadow-lg border border-soft-beige w-full max-w-4xl mb-8">
             {/* Before/After Image Slider */}
             <div className="aspect-video w-full mb-6">
               <ImageSlider 
@@ -35,7 +35,7 @@ const HomePage = () => {
             
             <Link 
               to="/design" 
-              className="inline-block w-full bg-yellow-500 hover:bg-yellow-600 text-black font-medium py-3 px-4 rounded-md text-center transition-colors"
+              className="inline-block w-full bg-terracotta hover:bg-terracotta/90 text-ivory-white font-montserrat font-medium py-3 px-4 rounded-md text-center transition-all duration-300 shadow-md hover:shadow-lg"
             >
               Start Designing Now
             </Link>
@@ -43,14 +43,14 @@ const HomePage = () => {
 
           {/* How It Works Section */}
           <div className="w-full max-w-4xl mt-12">
-            <h2 className="text-3xl font-volkhov text-gunmetal font-bold mb-8 text-center">
+            <h2 className="text-3xl font-playfair text-sage-green font-bold mb-8 text-center">
               How It Works
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg transition-all duration-300 bg-ivory-white/80 backdrop-blur-sm border-soft-beige">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-3">
-                    <HomeIcon className="h-6 w-6 text-yellow-500" />
+                  <CardTitle className="flex items-center gap-3 font-montserrat">
+                    <HomeIcon className="h-6 w-6 text-terracotta" />
                     Upload Your Space
                   </CardTitle>
                 </CardHeader>
@@ -62,16 +62,16 @@ const HomePage = () => {
                       className="w-full rounded-lg shadow-sm"
                     />
                   </div>
-                  <p className="text-gray-600">
+                  <p className="text-soft-taupe">
                     Take a photo of the room you want to design and upload it to our platform.
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg transition-all duration-300 bg-ivory-white/80 backdrop-blur-sm border-soft-beige">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-3">
-                    <Keyboard className="h-6 w-6 text-yellow-500" />
+                  <CardTitle className="flex items-center gap-3 font-montserrat">
+                    <Keyboard className="h-6 w-6 text-terracotta" />
                     Describe your dream interior
                   </CardTitle>
                 </CardHeader>
@@ -80,19 +80,19 @@ const HomePage = () => {
                     <img 
                       src="/lovable-uploads/579e3acf-8c33-4d0a-b885-e9c28c09e91d.png"
                       alt="Prompt example" 
-                      className="w-full rounded-lg shadow-sm border border-gray-200"
+                      className="w-full rounded-lg shadow-sm border border-soft-beige"
                     />
                   </div>
-                  <p className="text-gray-600">
+                  <p className="text-soft-taupe">
                     Describe the interior design which you want, type it in the prompt field and click on generate.
                   </p>
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg transition-all duration-300 bg-ivory-white/80 backdrop-blur-sm border-soft-beige">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-3">
-                    <Wand2 className="h-6 w-6 text-yellow-500" />
+                  <CardTitle className="flex items-center gap-3 font-montserrat">
+                    <Wand2 className="h-6 w-6 text-terracotta" />
                     AI Transformation
                   </CardTitle>
                 </CardHeader>
@@ -104,7 +104,7 @@ const HomePage = () => {
                       className="w-full rounded-lg shadow-sm"
                     />
                   </div>
-                  <p className="text-gray-600">
+                  <p className="text-soft-taupe">
                     Our AI takes a few seconds and generates a stunning design of your space.
                   </p>
                 </CardContent>
@@ -114,103 +114,103 @@ const HomePage = () => {
 
           {/* Testimonials Section */}
           <div className="w-full max-w-4xl mt-16 mb-16">
-            <h2 className="text-3xl font-volkhov text-gunmetal font-bold mb-8 text-center">
+            <h2 className="text-3xl font-playfair text-sage-green font-bold mb-8 text-center">
               What Our Customers Say
             </h2>
             
             <div className="grid md:grid-cols-2 gap-8">
               {/* Testimonial 1 */}
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg transition-all duration-300 bg-ivory-white/80 backdrop-blur-sm border-soft-beige">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <Avatar className="h-12 w-12 border-2 border-yellow-200">
+                    <Avatar className="h-12 w-12 border-2 border-terracotta/30">
                       <AvatarImage src="/lovable-uploads/ae68b5d0-b4d1-4602-87b2-540dd58e0c80.png" alt="Sophie Chen" />
                       <AvatarFallback>SC</AvatarFallback>
                     </Avatar>
                     <div>
-                      <h3 className="font-medium">Sophie Chen</h3>
-                      <p className="text-sm text-muted-foreground">Interior Designer</p>
+                      <h3 className="font-montserrat font-medium">Sophie Chen</h3>
+                      <p className="text-sm text-soft-taupe">Interior Designer</p>
                     </div>
                     <div className="ml-auto flex">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <Star key={i} className="h-4 w-4 fill-muted-gold text-muted-gold" />
                       ))}
                     </div>
                   </div>
-                  <p className="text-gray-600 italic">
+                  <p className="text-soft-taupe italic">
                     "As an interior designer, this tool is a game-changer for visualizing concepts quickly. I can show clients multiple design directions without creating full mood boards. It's become essential for my initial client presentations."
                   </p>
                 </CardContent>
               </Card>
 
               {/* Testimonial 2 */}
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg transition-all duration-300 bg-ivory-white/80 backdrop-blur-sm border-soft-beige">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <Avatar className="h-12 w-12 border-2 border-yellow-200">
+                    <Avatar className="h-12 w-12 border-2 border-terracotta/30">
                       <AvatarImage src="/lovable-uploads/c1da7f79-5457-4663-95f5-025298e8f5a5.png" alt="Marcus Johnson" />
                       <AvatarFallback>MJ</AvatarFallback>
                     </Avatar>
                     <div>
-                      <h3 className="font-medium">Marcus Johnson</h3>
-                      <p className="text-sm text-muted-foreground">Architect</p>
+                      <h3 className="font-montserrat font-medium">Marcus Johnson</h3>
+                      <p className="text-sm text-soft-taupe">Architect</p>
                     </div>
                     <div className="ml-auto flex">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <Star key={i} className="h-4 w-4 fill-muted-gold text-muted-gold" />
                       ))}
                     </div>
                   </div>
-                  <p className="text-gray-600 italic">
+                  <p className="text-soft-taupe italic">
                     "The spatial awareness of this AI is remarkable. I use it to help clients visualize how architectural changes might look before we commit to detailed renders. Saves me hours of work on preliminary designs."
                   </p>
                 </CardContent>
               </Card>
 
               {/* Testimonial 3 */}
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg transition-all duration-300 bg-ivory-white/80 backdrop-blur-sm border-soft-beige">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <Avatar className="h-12 w-12 border-2 border-yellow-200">
+                    <Avatar className="h-12 w-12 border-2 border-terracotta/30">
                       <AvatarImage src="/lovable-uploads/e5cf5be6-d84f-4606-bfbb-f6fcaa3738a7.png" alt="Priya Sharma" />
                       <AvatarFallback>PS</AvatarFallback>
                     </Avatar>
                     <div>
-                      <h3 className="font-medium">Priya Sharma</h3>
-                      <p className="text-sm text-muted-foreground">Home Stager</p>
+                      <h3 className="font-montserrat font-medium">Priya Sharma</h3>
+                      <p className="text-sm text-soft-taupe">Home Stager</p>
                     </div>
                     <div className="ml-auto flex">
                       {[...Array(4)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <Star key={i} className="h-4 w-4 fill-muted-gold text-muted-gold" />
                       ))}
-                      <Star className="h-4 w-4 text-gray-300" />
+                      <Star className="h-4 w-4 text-soft-taupe/40" />
                     </div>
                   </div>
-                  <p className="text-gray-600 italic">
+                  <p className="text-soft-taupe italic">
                     "This tool has revolutionized how I prepare properties for sale. I can show potential buyers how their space could look with proper staging, which helps me win more contracts. The results are incredibly realistic."
                   </p>
                 </CardContent>
               </Card>
               
               {/* Testimonial 4 */}
-              <Card className="hover:shadow-lg transition-shadow">
+              <Card className="hover:shadow-lg transition-all duration-300 bg-ivory-white/80 backdrop-blur-sm border-soft-beige">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <Avatar className="h-12 w-12 border-2 border-yellow-200">
+                    <Avatar className="h-12 w-12 border-2 border-terracotta/30">
                       <AvatarImage src="/lovable-uploads/be650492-5527-4cbb-9b07-03f33138eef3.png" alt="Emma Reynolds" />
                       <AvatarFallback>ER</AvatarFallback>
                     </Avatar>
                     <div>
-                      <h3 className="font-medium">Emma Reynolds</h3>
-                      <p className="text-sm text-muted-foreground">Real Estate Agent</p>
+                      <h3 className="font-montserrat font-medium">Emma Reynolds</h3>
+                      <p className="text-sm text-soft-taupe">Real Estate Agent</p>
                     </div>
                     <div className="ml-auto flex">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        <Star key={i} className="h-4 w-4 fill-muted-gold text-muted-gold" />
                       ))}
                     </div>
                   </div>
-                  <p className="text-gray-600 italic">
+                  <p className="text-soft-taupe italic">
                     "This AI design tool has completely transformed my real estate business. Now I can show clients the potential of any property by visualizing different design styles before they even make an offer. My listings sell faster thanks to these realistic visualizations."
                   </p>
                 </CardContent>
@@ -220,26 +220,26 @@ const HomePage = () => {
           
           {/* Contact Us Section - Simplified version */}
           <div id="contact" className="w-full max-w-4xl mt-8 mb-16">
-            <h2 className="text-4xl font-volkhov text-gunmetal font-bold mb-4 text-center">
+            <h2 className="text-4xl font-playfair text-sage-green font-bold mb-4 text-center">
               Contact Us
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mb-12 text-center">
+            <p className="text-lg text-soft-taupe max-w-3xl mb-12 text-center">
               Have questions about our AI design services? Reach out to our team and we'll be happy to help.
             </p>
             
             <div className="w-full flex justify-center mb-8">
-              <Card className="max-w-md w-full hover:shadow-lg transition-shadow">
+              <Card className="max-w-md w-full hover:shadow-lg transition-all duration-300 bg-ivory-white/80 backdrop-blur-sm border-soft-beige">
                 <CardHeader className="text-center">
-                  <CardTitle className="flex flex-col items-center gap-3">
-                    <div className="bg-yellow-100 p-3 rounded-full">
-                      <Mail className="h-6 w-6 text-yellow-500" />
+                  <CardTitle className="flex flex-col items-center gap-3 font-montserrat">
+                    <div className="bg-terracotta/10 p-3 rounded-full">
+                      <Mail className="h-6 w-6 text-terracotta" />
                     </div>
                     Email
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <p className="text-gray-600">
-                    <a href="mailto:contact@decorspaceai.com" className="text-yellow-500 hover:underline">
+                  <p className="text-soft-taupe">
+                    <a href="mailto:contact@decorspaceai.com" className="text-terracotta hover:underline">
                       contact@decorspaceai.com
                     </a>
                   </p>
