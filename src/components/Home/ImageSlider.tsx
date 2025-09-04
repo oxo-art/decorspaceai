@@ -138,19 +138,19 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
           />
         </div>
         
-        {/* Slider Divider Line with Circle Handle */}
+        {/* Simple Slider Divider Line */}
         <div 
-          className="absolute top-0 bottom-0 w-1 bg-primary cursor-ew-resize"
+          className="absolute top-0 bottom-0 w-0.5 bg-white/80 cursor-ew-resize"
           style={{ 
             left: `${sliderPosition}%`, 
-            marginLeft: "-2px",
+            marginLeft: "-1px",
             zIndex: 5
           }}
           onMouseDown={handleMouseDown}
           onTouchStart={handleMouseDown}
         >
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-6 h-6 flex items-center justify-center shadow-lg border-2 border-primary cursor-ew-resize">
-            <div className="w-2 h-2 bg-primary rounded-full"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-4 h-4 flex items-center justify-center shadow-md cursor-ew-resize">
+            <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
           </div>
         </div>
         
@@ -169,19 +169,6 @@ const ImageSlider: React.FC<ImageSliderProps> = ({
         </div>
       </div>
       
-      {/* Bottom Slider Control */}
-      {bothImagesLoaded && !hasErrors && (
-        <div className="absolute bottom-4 left-4 right-4 z-10">
-          <Slider
-            value={[sliderPosition]}
-            min={0}
-            max={100}
-            step={1}
-            onValueChange={handleSliderChange}
-            className="w-full"
-          />
-        </div>
-      )}
     </div>
   );
 };
