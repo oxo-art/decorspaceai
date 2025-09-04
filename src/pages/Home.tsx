@@ -29,7 +29,7 @@ const HomePage = () => {
             Upload a photo of your room and get stunning design transformations instantly.
           </p>
           
-          <div className="glass-card p-4 sm:p-6 w-full max-w-4xl mb-8 animate-float">
+          <div className="glass-card p-4 sm:p-6 w-full max-w-4xl mb-8">
             {/* Before/After Image Slider */}
             <div className="aspect-video w-full mb-6">
               <ImageSlider 
