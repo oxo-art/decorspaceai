@@ -64,27 +64,27 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
 
   return (
     <div>
-      <div className="w-full h-64 bg-muted/20 rounded-lg flex items-center justify-center relative max-w-md mx-auto">
+      <div className="w-full bg-muted/20 rounded-lg flex items-center justify-center relative max-w-md mx-auto" style={{ aspectRatio: 'auto' }}>
         {isLoading ? (
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="w-full min-h-[200px] flex items-center justify-center">
             <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
           </div>
         ) : output && !imageError ? (
           <img 
             src={output} 
             alt="AI-generated interior design transformation" 
-            className="max-w-full max-h-full object-contain rounded-lg shadow-md"
+            className="w-full h-auto object-contain rounded-lg shadow-md"
             onError={handleImageError}
             onLoad={handleImageLoad}
           />
         ) : imageError ? (
-          <div className="w-full h-full flex items-center justify-center p-4">
+          <div className="w-full min-h-[200px] flex items-center justify-center p-4">
             <p className="text-red-500 text-xs md:text-sm text-center">
               Failed to load image. Please try generating again.
             </p>
           </div>
         ) : (
-          <div className="w-full h-full flex items-center justify-center p-4">
+          <div className="w-full min-h-[200px] flex items-center justify-center p-4">
             <p className="text-muted-foreground text-xs md:text-sm text-center">
               Your AI-generated design will appear here
             </p>
