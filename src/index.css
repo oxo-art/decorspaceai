@@ -97,7 +97,8 @@
   body {
     @apply bg-background text-foreground;
     background: var(--gradient-background);
-    background-attachment: fixed;
+    background-attachment: scroll;
+    min-height: 100vh;
   }
 }
 
