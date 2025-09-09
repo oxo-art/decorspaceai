@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 import InputSection from '@/components/InteriorDesign/InputSection';
 import OutputSection from '@/components/InteriorDesign/OutputSection';
+import { supabase } from '@/integrations/supabase/client';
 
 import Navbar from '@/components/Home/Navbar';
 
@@ -28,28 +29,32 @@ const Index = () => {
     setIsLoading(true);
     
     try {
-      // TODO: Replace with your new AI model integration
-      console.log("AI model integration needed:", { prompt, image });
-      toast.error('AI model not configured. Please integrate your preferred AI model.');
+      console.log("Generating design with:", { prompt, image });
       
-      // Placeholder for future AI integration
-      /*
-      const result = await generateImage({
-        prompt,
-        image: image
+      // Call Supabase Edge Function to generate interior design
+      const response = await supabase.functions.invoke('generate-interior-design', {
+        body: {
+          prompt: prompt,
+          imageInput: [image], // Pass the base64 image
+          outputFormat: 'jpg'
+        }
       });
-      
-      if (result.output) {
-        setOutput(result.output);
-        toast.success('Interior design transformation completed successfully!');
-      } else {
-        toast.error('Failed to transform image');
+
+      if (response.error) {
+        throw new Error(response.error.message || 'Failed to generate design');
       }
-      */
+
+      if (response.data?.success && response.data?.imageUrl) {
+        setOutput(response.data.imageUrl);
+        toast.success('Design generated successfully!');
+      } else {
+        throw new Error('No image URL received from AI service');
+      }
+      
     } catch (error) {
-      console.error('Error generating image:', error);
+      console.error('Error generating design:', error);
       const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
-      toast.error(`Failed to transform image: ${errorMessage}`);
+      toast.error(`Failed to generate design: ${errorMessage}`);
     } finally {
       setIsLoading(false);
     }
