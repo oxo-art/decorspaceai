@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 import InputSection from '@/components/InteriorDesign/InputSection';
 import OutputSection from '@/components/InteriorDesign/OutputSection';
-// import { generateImage } from '@/services/aiService'; // Placeholder for future AI integration
+
 import Navbar from '@/components/Home/Navbar';
 
 const Index = () => {

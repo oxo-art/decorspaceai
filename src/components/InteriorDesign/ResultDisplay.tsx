@@ -33,7 +33,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
       // Create an anchor element and trigger download
       const link = document.createElement('a');
       link.href = url;
-      link.download = `interior-design-${Date.now()}.png`;
+      link.download = `ai-design-${Date.now()}.png`;
       document.body.appendChild(link);
       link.click();
       
