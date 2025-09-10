@@ -32,7 +32,12 @@ const Navbar = () => {
               src="/logo.svg" 
               alt="Interior AI Design - Home" 
               className="h-12 w-auto object-contain"
+              onError={handleLogoError}
+              onLoad={() => console.log('Logo loaded successfully')}
             />
+            {logoError && (
+              <span className="text-primary font-semibold">Interior AI</span>
+            )}
           </Link>
         </div>
         
