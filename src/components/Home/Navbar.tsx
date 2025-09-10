@@ -26,12 +26,14 @@ const Navbar = () => {
     <div className="glass-navbar w-full fixed top-0 z-20">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Left side - Logo */}
-        <div className="flex items-center">
-          <img 
-            src="/lovable-uploads/64546f55-a4c1-4b52-abf3-ed5a63f8a947.png" 
-            alt="Company Logo" 
-            className="h-20 w-auto object-contain"
-          />
+        <div className="flex items-center h-full">
+          <Link to="/">
+            <img 
+              src="/lovable-uploads/64546f55-a4c1-4b52-abf3-ed5a63f8a947.png" 
+              alt="Company Logo" 
+              className="h-20 w-auto object-contain cursor-pointer hover:opacity-80 transition-opacity"
+            />
+          </Link>
         </div>
         
         {/* Center - Empty space where logo was */}
