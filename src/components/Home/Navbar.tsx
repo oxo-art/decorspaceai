@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Menu, Home, Leaf } from "lucide-react";
+import { Menu, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -27,7 +27,7 @@ const Navbar = () => {
             <div className="flex items-center space-x-3">
               <div className="relative flex items-center">
                 <Home className="h-8 w-8 text-primary" />
-                <Leaf className="h-4 w-4 text-green-500 absolute -top-1 -right-1" />
+                <span className="absolute -top-1 -right-1 text-sm">🌼</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-foreground font-serif text-2xl font-bold tracking-wide">Decorspaceai</span>
