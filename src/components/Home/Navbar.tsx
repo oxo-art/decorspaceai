@@ -27,7 +27,7 @@ const Navbar = () => {
             <div className="flex items-center space-x-3">
               <div className="relative flex items-center">
                 <Home className="h-8 w-8 text-primary" />
-                <span className="absolute -top-1 -right-1 text-sm">🌼</span>
+                <span className="absolute -top-1 -right-1 text-sm text-yellow-500">🎀</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-foreground font-serif text-2xl font-bold tracking-wide">Decorspaceai</span>
