@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Menu, Home } from "lucide-react";
+import { Menu, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -26,7 +26,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
             <div className="flex items-center space-x-3">
               <div className="relative flex items-center">
-                <Home className="h-8 w-8 text-primary" />
+                <Building2 className="h-8 w-8 text-primary" />
                 <span className="absolute -top-1 -right-1 text-sm">🌼</span>
               </div>
               <div className="flex flex-col">
