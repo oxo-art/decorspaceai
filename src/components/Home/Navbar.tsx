@@ -28,16 +28,21 @@ const Navbar = () => {
         {/* Left side - Logo */}
         <div className="flex items-center">
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
-            <img 
-              src="/logo.svg" 
-              alt="Interior AI Design - Home" 
-              className="h-12 w-auto object-contain"
-              onError={handleLogoError}
-              onLoad={() => console.log('Logo loaded successfully')}
-            />
-            {logoError && (
-              <span className="text-primary font-semibold">Interior AI</span>
-            )}
+            <div className="border border-red-500 p-2">
+              <img 
+                src="/logo.svg" 
+                alt="Interior AI Design - Home" 
+                className="h-12 w-auto object-contain border border-blue-500"
+                onError={(e) => {
+                  console.log('Logo failed to load:', e);
+                  handleLogoError();
+                }}
+                onLoad={() => console.log('Logo loaded successfully')}
+              />
+              {logoError && (
+                <span className="text-primary font-semibold">Interior AI (fallback)</span>
+              )}
+            </div>
           </Link>
         </div>
         
