@@ -29,8 +29,7 @@ const HomePage = () => {
             Transform Your Living Space with AI
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mb-6 md:mb-8 px-4 sm:px-0">
-            Experience the power of AI to reimagine and enhance your interior spaces with just a few clicks.
-            Upload a photo of your room and get stunning design transformations instantly.
+            Experience the power of AI to imagine and enhance your space with just a few clicks.
           </p>
           
           <div className="glass-card p-4 sm:p-6 w-full max-w-4xl mb-8">
