@@ -5,10 +5,14 @@ import ImageSlider from '@/components/Home/ImageSlider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { HomeIcon, Keyboard, Wand2, Star, Mail } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import StructuredData from '@/components/SEO/StructuredData';
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-gradient-background"
+    <>
+      <StructuredData type="WebApplication" />
+      <StructuredData type="Organization" />
+      <div className="min-h-screen bg-gradient-background"
          style={{
            backgroundImage: 'var(--gradient-background), var(--cyber-grid)',
            backgroundSize: 'cover, 50px 50px'
@@ -18,13 +22,13 @@ const HomePage = () => {
       {/* Hero Section - Starts below the navbar */}
       <div className="pt-24 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center">
-          <h1 className="text-4xl md:text-5xl font-volkhov text-white font-bold mb-4" 
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-volkhov text-white font-bold mb-4 leading-tight" 
               style={{
                 textShadow: "0 4px 8px rgba(6, 182, 212, 0.3), 0 0 0 transparent"
               }}>
             Transform Your Living Space with AI
           </h1>
-          <p className="text-lg text-muted-foreground max-w-3xl mb-8">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mb-6 md:mb-8 px-4 sm:px-0">
             Experience the power of AI to reimagine and enhance your interior spaces with just a few clicks.
             Upload a photo of your room and get stunning design transformations instantly.
           </p>
@@ -53,7 +57,7 @@ const HomePage = () => {
             <h2 className="text-3xl font-volkhov text-foreground font-bold mb-8 text-center">
               How It Works
             </h2>
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               <Card className="glass-card hover:shadow-glass-hover transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
@@ -125,7 +129,7 @@ const HomePage = () => {
               What Our Customers Say
             </h2>
             
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
               {/* Testimonial 1 */}
               <Card className="glass-card hover:shadow-glass-hover transition-all duration-300">
                 <CardContent className="pt-6">
@@ -257,6 +261,7 @@ const HomePage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

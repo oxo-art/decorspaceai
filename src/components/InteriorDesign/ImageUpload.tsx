@@ -134,7 +134,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       ) : (
         <div 
           className={cn(
-            "file-drop-area h-64 cursor-pointer",
+            "file-drop-area h-48 sm:h-56 md:h-64 cursor-pointer",
             isDragging && "active"
           )}
           onDragOver={handleDragOver}
@@ -152,10 +152,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           aria-label="Upload room image by clicking or dragging and dropping"
         >
           <div className="image-placeholder">
-            <div className="flex flex-col items-center text-gray-500">
-              <Upload size={32} className="mb-2 text-gray-400" />
-              <p className="text-sm font-medium mb-1">Upload a room photo</p>
-              <p className="text-xs">or click to browse</p>
+            <div className="flex flex-col items-center text-muted-foreground">
+              <Upload size={28} className="mb-2 sm:mb-3 text-muted-foreground/70" />
+              <p className="text-sm md:text-base font-medium mb-1">Upload a room photo</p>
+              <p className="text-xs md:text-sm opacity-80">or click to browse</p>
             </div>
           </div>
         </div>

@@ -1,10 +1,24 @@
+import React, { useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import Navbar from '@/components/Home/Navbar';
 import { Palette, Lightbulb, Users, Target } from 'lucide-react';
 
 const About = () => {
+  // Update page title for SEO
+  useEffect(() => {
+    document.title = 'About Us - AI Interior Design Innovation | Decorspace AI';
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Learn about Decorspace AI - we\'re revolutionizing interior design with cutting-edge AI technology, making beautiful spaces accessible to everyone.');
+    }
+  }, []);
+
   return (
-    <div className="min-h-screen w-full flex flex-col bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen w-full flex flex-col bg-gradient-background"
+         style={{
+           backgroundImage: 'var(--gradient-background), var(--cyber-grid)',
+           backgroundSize: 'cover, 50px 50px'
+         }}>
       <Navbar />
       
       <div className="pt-24 px-4 md:px-6 lg:px-8 w-full max-w-6xl mx-auto flex-grow">

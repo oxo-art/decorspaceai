@@ -64,7 +64,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
 
   return (
     <div>
-      <div className="w-full bg-muted/20 rounded-lg flex items-center justify-center relative max-w-md mx-auto" style={{ aspectRatio: 'auto' }}>
+      <div className="w-full bg-muted/20 rounded-lg flex items-center justify-center relative" style={{ aspectRatio: 'auto' }}>
         {isLoading ? (
           <div className="w-full min-h-[200px] flex items-center justify-center">
             <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-gray-300 border-t-primary animate-spin"></div>
@@ -94,7 +94,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, output }) => {
       
       {output && !imageError && (
         <>
-          <div className="mt-3 md:mt-4 flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
+          <div className="mt-3 md:mt-4 flex flex-col sm:flex-row gap-2">
             <Button 
               variant="outline" 
               className="flex-1 min-h-[44px] text-sm md:text-base"

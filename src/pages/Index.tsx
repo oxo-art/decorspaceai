@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import InputSection from '@/components/InteriorDesign/InputSection';
 import OutputSection from '@/components/InteriorDesign/OutputSection';
@@ -13,6 +13,15 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [output, setOutput] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+
+  // Update page title for SEO
+  useEffect(() => {
+    document.title = 'AI Interior Design Tool - Create Your Dream Space | Decorspace AI';
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Use our AI-powered interior design tool to transform any room. Upload your photo, describe your vision, and get professional design results instantly.');
+    }
+  }, []);
 
   const handleGenerate = async () => {
     if (!image) {
@@ -64,7 +73,7 @@ const Index = () => {
     <div className="min-h-screen w-full flex flex-col bg-gradient-background">
       <Navbar />
       
-      <div className="pt-24 px-2 sm:px-4 md:px-6 lg:px-8 w-full max-w-6xl mx-auto flex-grow opacity-0 animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
+      <div className="pt-24 pb-8 px-2 sm:px-4 md:px-6 lg:px-8 w-full max-w-6xl mx-auto flex-grow opacity-0 animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
           <InputSection
             image={image}

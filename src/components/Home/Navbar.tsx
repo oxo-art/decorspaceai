@@ -49,14 +49,14 @@ const Navbar = () => {
             className="ml-2 glass-button hover:shadow-glow transition-all duration-300"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <Menu className="h-6 w-6 text-black" />
+            <Menu className="h-6 w-6 text-foreground" />
           </Button>
         </div>
       </div>
       
       {/* Mobile menu dropdown */}
       {isMenuOpen && (
-        <div className="bg-card py-4 px-6 absolute w-full animate-fade-in z-20 border-t border-border shadow-lg">
+        <div className="bg-card/95 backdrop-blur-md py-4 px-6 absolute w-full animate-fade-in z-20 border-t border-border shadow-lg">
           <nav className="flex flex-col space-y-3">
             <Link 
               to="/" 
