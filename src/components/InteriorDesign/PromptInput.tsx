@@ -19,7 +19,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
       <Textarea
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        placeholder="e.g., Modern minimalist living room with warm wood accents, comfortable seating, and natural lighting"
+        placeholder="e.g., Cozy bedroom with soft lighting"
         className="min-h-[120px] resize-none"
       />
     </div>
