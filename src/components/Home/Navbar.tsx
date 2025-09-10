@@ -1,13 +1,12 @@
 
 import { Link } from "react-router-dom";
-import { Menu } from "lucide-react";
+import { Menu, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [logoError, setLogoError] = useState(false);
   const isMobile = useIsMobile();
   
   const scrollToContact = () => {
@@ -17,10 +16,6 @@ const Navbar = () => {
     }
     setIsMenuOpen(false);
   };
-
-  const handleLogoError = () => {
-    setLogoError(true);
-  };
   
   return (
     <div className="glass-navbar w-full fixed top-0 z-20">
@@ -28,20 +23,12 @@ const Navbar = () => {
         {/* Left side - Logo */}
         <div className="flex items-center">
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
-            <div className="border border-red-500 p-2">
-              <img 
-                src="/logo.svg" 
-                alt="Interior AI Design - Home" 
-                className="h-12 w-auto object-contain border border-blue-500"
-                onError={(e) => {
-                  console.log('Logo failed to load:', e);
-                  handleLogoError();
-                }}
-                onLoad={() => console.log('Logo loaded successfully')}
-              />
-              {logoError && (
-                <span className="text-primary font-semibold">Interior AI (fallback)</span>
-              )}
+            <div className="flex items-center space-x-2">
+              <Home className="h-8 w-8 text-primary" />
+              <div className="flex flex-col">
+                <span className="text-foreground font-semibold text-sm leading-tight">INTERIOR</span>
+                <span className="text-muted-foreground text-xs leading-tight">AI DESIGN</span>
+              </div>
             </div>
           </Link>
         </div>
