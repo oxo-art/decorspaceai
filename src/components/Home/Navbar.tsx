@@ -34,15 +34,9 @@ const Navbar = () => {
           />
         </div>
         
-        {/* Center - Logo */}
+        {/* Center - Empty space where logo was */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <Link to="/" className="flex items-center">
-            <img 
-              src="/lovable-uploads/64546f55-a4c1-4b52-abf3-ed5a63f8a947.png" 
-              alt="Company Logo" 
-              className="h-20 w-auto object-contain hover:scale-105 transition-transform duration-300"
-            />
-          </Link>
+          {/* Logo removed */}
         </div>
         
         {/* Right side - Hamburger menu */}
