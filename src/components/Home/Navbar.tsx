@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Menu } from "lucide-react";
+import { Menu, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -25,7 +25,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
             <div className="flex items-center space-x-3">
-              <img src="/lovable-uploads/8de8a315-33e9-46e8-8bdd-03eb3d114814.png" alt="Decorspaceai Logo" className="h-20 w-auto object-contain" />
+              <Home className="h-8 w-8 text-primary" />
               <div className="flex flex-col">
                 <span className="text-foreground font-serif text-2xl font-bold tracking-wide">Decorspaceai</span>
               </div>
