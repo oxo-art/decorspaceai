@@ -25,8 +25,15 @@ const Navbar = () => {
   return (
     <div className="glass-navbar w-full fixed top-0 z-20">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        {/* Left side - Empty */}
+        {/* Left side - Logo */}
         <div className="flex items-center">
+          <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
+            <img 
+              src="/logo.svg" 
+              alt="Interior AI Design - Home" 
+              className="h-12 w-auto object-contain"
+            />
+          </Link>
         </div>
         
         {/* Center - Empty space where logo was */}
