@@ -49,7 +49,7 @@ const Navbar = () => {
             className="ml-2 glass-button hover:shadow-glow transition-all duration-300"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <Menu className="h-6 w-6 text-foreground" />
+            <Menu className="h-6 w-6 text-black" />
           </Button>
         </div>
       </div>
