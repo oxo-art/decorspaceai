@@ -3,9 +3,10 @@ import Navbar from '@/components/Home/Navbar';
 import { Link } from 'react-router-dom';
 import ImageSlider from '@/components/Home/ImageSlider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { HomeIcon, Keyboard, Wand2, Star, Mail } from 'lucide-react';
+import { HomeIcon, Keyboard, Wand2, Star } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import StructuredData from '@/components/SEO/StructuredData';
+import ContactForm from '@/components/Home/ContactForm';
 
 const HomePage = () => {
   return (
@@ -228,7 +229,7 @@ const HomePage = () => {
             </div>
           </div>
           
-          {/* Contact Us Section - Simplified version */}
+          {/* Contact Us Section */}
           <div id="contact" className="w-full max-w-4xl mt-8 mb-16">
             <h2 className="text-4xl font-volkhov text-foreground font-bold mb-4 text-center">
               Contact Us
@@ -237,25 +238,7 @@ const HomePage = () => {
               Have questions about our AI design services? Reach out to our team and we'll be happy to help.
             </p>
             
-            <div className="w-full flex justify-center mb-8">
-              <Card className="glass-card max-w-md w-full hover:shadow-glass-hover transition-all duration-300">
-                <CardHeader className="text-center">
-                  <CardTitle className="flex flex-col items-center gap-3">
-                    <div className="bg-primary/20 p-3 rounded-full backdrop-blur-sm">
-                      <Mail className="h-6 w-6 text-primary" />
-                    </div>
-                    Email
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-muted-foreground">
-                    <a href="mailto:contact@decorspaceai.com" className="text-primary hover:underline hover:shadow-glow transition-all duration-300">
-                      contact@decorspaceai.com
-                    </a>
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+            <ContactForm />
           </div>
         </div>
       </div>
