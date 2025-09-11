@@ -114,7 +114,7 @@ const ContactForm = () => {
               <Textarea
                 id="message"
                 name="message"
-                placeholder="Tell us about your project or ask any questions..."
+                placeholder="Ask if you have any questions"
                 value={formData.message}
                 onChange={handleInputChange}
                 rows={4}
