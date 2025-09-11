@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { HomeIcon, Keyboard, Wand2, Star } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import StructuredData from '@/components/SEO/StructuredData';
-import ContactForm from '@/components/Home/ContactForm';
+
 
 const HomePage = () => {
   return (
@@ -229,14 +229,6 @@ const HomePage = () => {
             </div>
           </div>
           
-          {/* Contact Us Section */}
-          <div id="contact" className="w-full max-w-4xl mt-8 mb-16">
-            <h2 className="text-4xl font-volkhov text-foreground font-bold mb-8 text-center">
-              Contact Us
-            </h2>
-            
-            <ContactForm />
-          </div>
         </div>
       </div>
     </div>
