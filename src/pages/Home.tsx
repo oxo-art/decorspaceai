@@ -231,12 +231,9 @@ const HomePage = () => {
           
           {/* Contact Us Section */}
           <div id="contact" className="w-full max-w-4xl mt-8 mb-16">
-            <h2 className="text-4xl font-volkhov text-foreground font-bold mb-4 text-center">
+            <h2 className="text-4xl font-volkhov text-foreground font-bold mb-8 text-center">
               Contact Us
             </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mb-12 text-center">
-              Have questions about our AI design services? Reach out to our team and we'll be happy to help.
-            </p>
             
             <ContactForm />
           </div>
