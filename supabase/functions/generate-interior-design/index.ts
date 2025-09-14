@@ -52,23 +52,46 @@ serve(async (req) => {
     console.log("Generating interior design with prompt:", body.prompt)
     console.log("Image inputs:", body.imageInput)
 
-    const input = {
-      prompt: body.prompt,
-      image_input: body.imageInput,
-      output_format: body.outputFormat || "jpg"
-    }
+    // Use first image from the array
+    const imageData = Array.isArray(body.imageInput) ? body.imageInput[0] : null
 
-    const output = await replicate.run("google/nano-banana", { input })
+    // Generate using a reliable image-editing model on Replicate
+    // timbrooks/instruct-pix2pix takes an input image and a text instruction (prompt)
+    const output = await replicate.run(
+      "timbrooks/instruct-pix2pix",
+      {
+        input: {
+          prompt: body.prompt,
+          image: imageData,
+          guidance_scale: 7.5,
+          image_guidance_scale: 1.5,
+          num_inference_steps: 30
+        }
+      }
+    )
 
     console.log("Generation response:", output)
 
-    // Extract the URL from the output
-    const imageUrl = typeof output === 'object' && output.url ? output.url() : output
+    // Replicate typically returns an array of image URLs
+    const imageUrl = Array.isArray(output)
+      ? (output[0] || null)
+      : (typeof output === 'string' ? output : null)
+
+    if (!imageUrl) {
+      return new Response(JSON.stringify({ 
+        success: false,
+        error: "Failed to get image URL from model output",
+        output
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 502,
+      })
+    }
 
     return new Response(JSON.stringify({ 
       success: true,
-      imageUrl: imageUrl,
-      output: output
+      imageUrl,
+      output
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
