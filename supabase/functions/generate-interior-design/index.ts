@@ -52,36 +52,44 @@ serve(async (req) => {
     console.log("Generating interior design with prompt:", body.prompt)
     console.log("Image inputs:", body.imageInput)
 
-    // Use first image from the array
-    const imageData = Array.isArray(body.imageInput) ? body.imageInput[0] : null
+    console.log("Generating interior design with Google Nano Banana")
 
-    // Generate using a reliable image-editing model on Replicate
-    // timbrooks/instruct-pix2pix takes an input image and a text instruction (prompt)
+    // Generate using Google Nano Banana model with correct schema
     const output = await replicate.run(
-      "timbrooks/instruct-pix2pix",
+      "google/nano-banana",
       {
         input: {
           prompt: body.prompt,
-          image: imageData,
-          guidance_scale: 7.5,
-          image_guidance_scale: 1.5,
-          num_inference_steps: 30
+          image_input: body.imageInput,
+          output_format: "jpg"
         }
       }
     )
 
     console.log("Generation response:", output)
 
-    // Replicate typically returns an array of image URLs
-    const imageUrl = Array.isArray(output)
-      ? (output[0] || null)
-      : (typeof output === 'string' ? output : null)
+    // Google Nano Banana returns an object with .url() method
+    let imageUrl = null
+    
+    try {
+      if (output && typeof output.url === 'function') {
+        imageUrl = output.url()
+      } else if (typeof output === 'string') {
+        imageUrl = output
+      } else if (Array.isArray(output) && output.length > 0) {
+        imageUrl = output[0]
+      } else if (output && output.url) {
+        imageUrl = output.url
+      }
+    } catch (urlError) {
+      console.error("Error extracting URL:", urlError)
+    }
 
     if (!imageUrl) {
       return new Response(JSON.stringify({ 
         success: false,
-        error: "Failed to get image URL from model output",
-        output
+        error: "Failed to get image URL from Google Nano Banana output",
+        output: typeof output
       }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 502,
@@ -91,7 +99,7 @@ serve(async (req) => {
     return new Response(JSON.stringify({ 
       success: true,
       imageUrl,
-      output
+      output: typeof output
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
