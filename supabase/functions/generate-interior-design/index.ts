@@ -55,17 +55,13 @@ serve(async (req) => {
     // Use first image from the array
     const imageData = Array.isArray(body.imageInput) ? body.imageInput[0] : null
 
-    // Generate using a reliable image-editing model on Replicate
-    // timbrooks/instruct-pix2pix takes an input image and a text instruction (prompt)
+    // Generate using Google Nano Banana AI model
     const output = await replicate.run(
-      "timbrooks/instruct-pix2pix",
+      "google/nano-banana",
       {
         input: {
           prompt: body.prompt,
-          image: imageData,
-          guidance_scale: 7.5,
-          image_guidance_scale: 1.5,
-          num_inference_steps: 30
+          image: imageData
         }
       }
     )
