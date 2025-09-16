@@ -86,7 +86,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Create order with Cashfree API
-    const cashfreeResponse = await fetch('https://sandbox-api.cashfree.com/pg/orders', {
+    const cashfreeResponse = await fetch('https://sandbox.cashfree.com/pg/orders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
