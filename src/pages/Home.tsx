@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { HomeIcon, Keyboard, Wand2, Star } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import StructuredData from '@/components/SEO/StructuredData';
+import QuickPayment from '@/components/Payment/QuickPayment';
 
 
 const HomePage = () => {
@@ -228,6 +229,9 @@ const HomePage = () => {
               </Card>
             </div>
           </div>
+
+          {/* Quick Payment Section */}
+          <QuickPayment />
           
         </div>
       </div>
