@@ -4,10 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CreditCard, Zap, CheckCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 export default function QuickPayment() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const handleQuickPayment = async () => {
     try {
@@ -163,24 +166,35 @@ export default function QuickPayment() {
             </div>
           </div>
 
-          <Button 
-            onClick={handleQuickPayment}
-            disabled={loading}
-            className="w-full glass-button hover:shadow-glow-lg transition-all duration-300 py-6 text-lg font-medium"
-            size="lg"
-          >
-            {loading ? (
-              <div className="flex items-center gap-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                Processing...
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Zap className="h-5 w-5" />
-                Pay ₹50 & Start Designing
-              </div>
-            )}
-          </Button>
+          {user ? (
+            <Button 
+              onClick={handleQuickPayment}
+              disabled={loading}
+              className="w-full glass-button hover:shadow-glow-lg transition-all duration-300 py-6 text-lg font-medium"
+              size="lg"
+            >
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  Processing...
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Zap className="h-5 w-5" />
+                  Pay ₹50 & Start Designing
+                </div>
+              )}
+            </Button>
+          ) : (
+            <Button asChild className="w-full glass-button hover:shadow-glow-lg transition-all duration-300 py-6 text-lg font-medium" size="lg">
+              <Link to="/auth">
+                <div className="flex items-center gap-2">
+                  <Zap className="h-5 w-5" />
+                  Sign In to Purchase
+                </div>
+              </Link>
+            </Button>
+          )}
 
           <p className="text-xs text-center text-muted-foreground">
             Secure payment powered by Cashfree • Instant credit delivery
