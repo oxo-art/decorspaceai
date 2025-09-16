@@ -101,7 +101,15 @@ const handler = async (req: Request): Promise<Response> => {
     console.log('Cashfree API response:', cashfreeData);
 
     if (!cashfreeResponse.ok) {
-      throw new Error(`Cashfree API error: ${JSON.stringify(cashfreeData)}`);
+      console.error('Cashfree API error response:', cashfreeData);
+      return new Response(JSON.stringify({
+        success: false,
+        error: cashfreeData?.message || 'Cashfree API error',
+        details: cashfreeData
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
+      });
     }
 
     // Store payment record in database
@@ -138,10 +146,11 @@ const handler = async (req: Request): Promise<Response> => {
     console.error('Error creating payment order:', error);
     return new Response(JSON.stringify({ 
       success: false,
-      error: error.message 
+      error: error?.message || 'Failed to create payment order',
+      details: String(error)
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 500,
+      status: 200,
     });
   }
 };
