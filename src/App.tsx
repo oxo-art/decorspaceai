@@ -4,6 +4,7 @@ import HomePage from './pages/Home';
 import NotFoundPage from './pages/NotFound';
 import IndexPage from './pages/Index';
 import AboutPage from './pages/About';
+import CreditsPage from './pages/Credits';
 import ErrorBoundary from './components/ui/error-boundary';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/design" element={<IndexPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/credits" element={<CreditsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
