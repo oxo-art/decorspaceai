@@ -72,10 +72,18 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     const cashfreeData = await cashfreeResponse.json();
-    console.log('Cashfree payment status:', cashfreeData);
+    console.log('Cashfree payment status response:', cashfreeData);
 
     if (!cashfreeResponse.ok) {
-      throw new Error(`Cashfree API error: ${JSON.stringify(cashfreeData)}`);
+      console.error('Cashfree API error response:', cashfreeData);
+      return new Response(JSON.stringify({
+        success: false,
+        error: cashfreeData?.message || 'Cashfree API error',
+        details: cashfreeData
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
+      });
     }
 
     // Get payment record from database
@@ -124,13 +132,23 @@ const handler = async (req: Request): Promise<Response> => {
     if (paymentStatus === 'success' && payment.metadata?.credits_to_purchase) {
       const creditsToAdd = payment.metadata.credits_to_purchase as number;
       
-      // Upsert user credits
+      // Get existing credits first
+      const { data: existingCredits } = await supabase
+        .from('user_credits')
+        .select('credits, total_purchased')
+        .eq('user_id', user.id)
+        .single();
+
+      const currentCredits = existingCredits?.credits || 0;
+      const currentTotalPurchased = existingCredits?.total_purchased || 0;
+      
+      // Add to existing credits instead of overwriting
       const { error: creditsError } = await supabase
         .from('user_credits')
         .upsert({
           user_id: user.id,
-          credits: creditsToAdd,
-          total_purchased: creditsToAdd,
+          credits: currentCredits + creditsToAdd,
+          total_purchased: currentTotalPurchased + creditsToAdd,
         }, {
           onConflict: 'user_id',
           ignoreDuplicates: false,
@@ -140,7 +158,7 @@ const handler = async (req: Request): Promise<Response> => {
         console.error('Failed to update user credits:', creditsError);
         // Still return success for payment verification
       } else {
-        console.log(`Added ${creditsToAdd} credits to user ${user.id}`);
+        console.log(`Added ${creditsToAdd} credits to user ${user.id}. New total: ${currentCredits + creditsToAdd}`);
       }
     }
 
@@ -163,10 +181,11 @@ const handler = async (req: Request): Promise<Response> => {
     console.error('Error verifying payment:', error);
     return new Response(JSON.stringify({ 
       success: false,
-      error: error.message 
+      error: error?.message || 'Failed to verify payment',
+      details: String(error)
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      status: 500,
+      status: 200,
     });
   }
 };
