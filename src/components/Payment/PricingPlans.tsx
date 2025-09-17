@@ -95,6 +95,7 @@ export default function PricingPlans({ onPlanSelect }: PricingPlansProps) {
 
       // Get user details for payment
       const customerDetails = {
+        customer_id: user.id, // Add required customer_id field
         customer_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
         customer_email: user.email || '',
         customer_phone: user.user_metadata?.phone || '9999999999',
