@@ -10,6 +10,7 @@ interface CreateOrderRequest {
   amount: number;
   currency?: string;
   customer_details: {
+    customer_id?: string;
     customer_name: string;
     customer_email: string;
     customer_phone: string;
@@ -24,6 +25,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Create a basic client for auth ops
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? ''
@@ -48,6 +50,13 @@ const handler = async (req: Request): Promise<Response> => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
+
+    // Create a Supabase client with user's JWT for RLS-aware DB operations
+    const supabaseDb = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      { global: { headers: { Authorization: authHeader } } }
+    );
 
     const body: CreateOrderRequest = await req.json();
     console.log('Creating payment order for user:', user.id, 'Amount:', body.amount);
@@ -113,7 +122,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Store payment record in database
-    const { error: dbError } = await supabase
+    const { error: dbError } = await supabaseDb
       .from('payments')
       .insert({
         user_id: user.id,

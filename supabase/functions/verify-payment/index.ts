@@ -42,6 +42,13 @@ const handler = async (req: Request): Promise<Response> => {
       });
     }
 
+    // Create a Supabase client with user's JWT for RLS-aware DB operations
+    const supabaseDb = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
     const body: VerifyPaymentRequest = await req.json();
     console.log('Verifying payment for user:', user.id, 'Order ID:', body.order_id);
 
@@ -87,7 +94,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Get payment record from database
-    const { data: payment, error: paymentError } = await supabase
+    const { data: payment, error: paymentError } = await supabaseDb
       .from('payments')
       .select('*')
       .eq('cashfree_order_id', body.order_id)
@@ -115,7 +122,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Update payment record
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabaseDb
       .from('payments')
       .update({
         status: paymentStatus,
@@ -133,7 +140,7 @@ const handler = async (req: Request): Promise<Response> => {
       const creditsToAdd = payment.metadata.credits_to_purchase as number;
       
       // Get existing credits first
-      const { data: existingCredits } = await supabase
+      const { data: existingCredits } = await supabaseDb
         .from('user_credits')
         .select('credits, total_purchased')
         .eq('user_id', user.id)
@@ -143,7 +150,7 @@ const handler = async (req: Request): Promise<Response> => {
       const currentTotalPurchased = existingCredits?.total_purchased || 0;
       
       // Add to existing credits instead of overwriting
-      const { error: creditsError } = await supabase
+      const { error: creditsError } = await supabaseDb
         .from('user_credits')
         .upsert({
           user_id: user.id,
