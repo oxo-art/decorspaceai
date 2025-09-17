@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Menu, User as PersonIcon, User, LogOut, LogIn } from "lucide-react";
+import { Menu, Home, User, LogOut, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -54,7 +54,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
             <div className="flex items-center space-x-3">
               <div className="relative flex items-center">
-                <PersonIcon className="h-8 w-8 text-primary" />
+                <Home className="h-8 w-8 text-primary" />
                 <span className="absolute -top-1 -right-1 text-sm">🌼</span>
               </div>
               <div className="flex flex-col">
