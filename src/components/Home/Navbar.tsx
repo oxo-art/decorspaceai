@@ -51,7 +51,7 @@ const Navbar = () => {
     <div className="glass-navbar w-full fixed top-0 z-20">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Left side - Logo */}
-        <div className="flex items-center ml-4">
+        <div className="flex items-center ml-8">
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
             <div className="flex items-center space-x-3">
               <div className="relative flex items-center">
