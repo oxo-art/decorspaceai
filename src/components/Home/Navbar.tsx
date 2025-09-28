@@ -63,7 +63,7 @@ const Navbar = () => {
         {/* Right side - Logo, Auth and Menu */}
         <div className="flex items-center gap-4 mr-8">
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center gap-1">
               <div className="relative flex items-center">
                 <img src={houseLogo} alt="Decorspaceai Logo" className="h-18 w-auto" />
               </div>
