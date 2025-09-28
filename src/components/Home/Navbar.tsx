@@ -55,7 +55,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
             <div className="flex items-center space-x-3">
               <div className="relative flex items-center">
-                <img src={houseLogo} alt="Decorspaceai Logo" className="h-18 w-auto" />
+                <img src={houseLogo} alt="Decorspaceai Logo" className="h-16 w-auto" />
               </div>
               <div className="flex flex-col">
                 <span className="text-foreground font-serif text-2xl font-bold tracking-wide">Decorspaceai</span>
