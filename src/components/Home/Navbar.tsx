@@ -49,23 +49,23 @@ const Navbar = () => {
   
   return (
     <div className="glass-navbar w-full fixed top-0 z-20">
-      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+      <div className="container mx-auto px-2 sm:px-4 h-20 flex items-center justify-between">
         {/* Left side - Logo and Brand Name */}
-        <div className="flex items-center ml-2 sm:ml-4 md:ml-6 lg:ml-8">
+        <div className="flex items-center ml-0 sm:ml-2 md:ml-4 lg:ml-6">
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5">
               <div className="relative flex items-center">
-                <img src={houseLogo} alt="Decorspaceai Logo" className="h-[72px] w-auto" />
+                <img src={houseLogo} alt="Decorspaceai Logo" className="h-12 sm:h-14 md:h-16 lg:h-[72px] w-auto" />
               </div>
               <div className="flex flex-col">
-                <span className="text-foreground font-serif text-xl sm:text-2xl font-bold tracking-wide">Decorspaceai</span>
+                <span className="text-foreground font-serif text-base sm:text-lg md:text-xl lg:text-2xl font-bold tracking-wide">Decorspaceai</span>
               </div>
             </div>
           </Link>
         </div>
         
         {/* Right side - Auth and Menu */}
-        <div className="flex items-center gap-4 mr-8">
+        <div className="flex items-center gap-4 mr-2 sm:mr-4 md:mr-6 lg:mr-8">
           {!loading && (
             <>
               {user ? (
