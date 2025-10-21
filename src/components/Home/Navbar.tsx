@@ -50,18 +50,8 @@ const Navbar = () => {
   return (
     <div className="glass-navbar w-full fixed top-0 z-20">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        {/* Left side - Empty space */}
-        <div className="flex items-center">
-          {/* Empty space where logo was */}
-        </div>
-        
-        {/* Center - Empty space where logo was */}
-        <div className="absolute left-1/2 transform -translate-x-1/2">
-          {/* Logo removed */}
-        </div>
-        
-        {/* Right side - Logo, Auth and Menu */}
-        <div className="flex items-center gap-4 mr-8">
+        {/* Left side - Logo and Brand Name */}
+        <div className="flex items-center ml-8">
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
             <div className="flex items-center gap-1">
               <div className="relative flex items-center">
@@ -72,7 +62,10 @@ const Navbar = () => {
               </div>
             </div>
           </Link>
-          
+        </div>
+        
+        {/* Right side - Auth and Menu */}
+        <div className="flex items-center gap-4 mr-8">
           {!loading && (
             <>
               {user ? (
