@@ -51,14 +51,14 @@ const Navbar = () => {
     <div className="glass-navbar w-full fixed top-0 z-20">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Left side - Logo and Brand Name */}
-        <div className="flex items-center ml-8">
+        <div className="flex items-center ml-2 sm:ml-4 md:ml-6 lg:ml-8">
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-3">
               <div className="relative flex items-center">
-                <img src={houseLogo} alt="Decorspaceai Logo" className="h-18 w-auto" />
+                <img src={houseLogo} alt="Decorspaceai Logo" className="h-[72px] w-auto" />
               </div>
               <div className="flex flex-col">
-                <span className="text-foreground font-serif text-2xl font-bold tracking-wide">Decorspaceai</span>
+                <span className="text-foreground font-serif text-xl sm:text-2xl font-bold tracking-wide">Decorspaceai</span>
               </div>
             </div>
           </Link>
