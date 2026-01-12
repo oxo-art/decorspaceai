@@ -29,6 +29,7 @@ export default {
 				'jacques-francois-shadow': ['"Jacques Francois Shadow"', 'cursive'],
 				'volkhov': ['Volkhov', 'serif'],
 				'covered-by-your-grace': ['"Covered By Your Grace"', 'cursive'],
+				'mansalva': ['"Mansalva"', 'cursive'],
 			},
 			colors: {
 				'gunmetal': '#122C34',
