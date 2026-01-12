@@ -28,6 +28,7 @@ export default {
 			fontFamily: {
 				'jacques-francois-shadow': ['"Jacques Francois Shadow"', 'cursive'],
 				'volkhov': ['Volkhov', 'serif'],
+				'covered-by-your-grace': ['"Covered By Your Grace"', 'cursive'],
 			},
 			colors: {
 				'gunmetal': '#122C34',
