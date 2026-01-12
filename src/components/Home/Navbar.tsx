@@ -53,7 +53,7 @@ const Navbar = () => {
         {/* Left side - Logo and Brand Name */}
         <div className="flex items-center ml-2 sm:ml-4 md:ml-6 lg:ml-8">
           <Link to="/" className="hover:opacity-80 transition-opacity duration-300">
-            <span className="text-foreground font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-wide">Decorspaceai</span>
+            <span className="text-foreground font-covered-by-your-grace text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-wide">Decorspaceai</span>
           </Link>
         </div>
         
