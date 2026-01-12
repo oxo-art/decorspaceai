@@ -53,13 +53,9 @@ const Navbar = () => {
         {/* Left side - Logo and Brand Name */}
         <div className="flex items-center ml-0 sm:ml-2 md:ml-4 lg:ml-6">
           <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
-            <div className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5">
-              <div className="relative flex items-center">
-                <img src={houseLogo} alt="Decorspaceai Logo" className="h-12 sm:h-14 md:h-16 lg:h-[72px] w-auto" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-foreground font-serif text-base sm:text-lg md:text-xl lg:text-2xl font-bold tracking-wide">Decorspaceai</span>
-              </div>
+            <div className="flex items-center gap-2 sm:gap-2.5 md:gap-3">
+              <img src={houseLogo} alt="Decorspaceai Logo" className="h-14 sm:h-16 md:h-[72px] lg:h-20 w-auto object-contain" />
+              <span className="text-foreground font-serif text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-wide leading-tight">Decorspaceai</span>
             </div>
           </Link>
         </div>
