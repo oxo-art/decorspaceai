@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { Menu, User, LogOut, LogIn } from "lucide-react";
-import houseLogo from "@/assets/house-logo.png";
+
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -51,12 +51,9 @@ const Navbar = () => {
     <div className="glass-navbar w-full fixed top-0 z-20">
       <div className="container mx-auto px-2 sm:px-4 h-20 flex items-center justify-between">
         {/* Left side - Logo and Brand Name */}
-        <div className="flex items-center ml-0 sm:ml-2 md:ml-4 lg:ml-6">
-          <Link to="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
-            <div className="flex items-center gap-2 sm:gap-2.5 md:gap-3">
-              <img src={houseLogo} alt="Decorspaceai Logo" className="h-14 sm:h-16 md:h-[72px] lg:h-20 w-auto object-contain" />
-              <span className="text-foreground font-serif text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-wide leading-tight">Decorspaceai</span>
-            </div>
+        <div className="flex items-center ml-2 sm:ml-4 md:ml-6 lg:ml-8">
+          <Link to="/" className="hover:opacity-80 transition-opacity duration-300">
+            <span className="text-foreground font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-wide">Decorspaceai</span>
           </Link>
         </div>
         
